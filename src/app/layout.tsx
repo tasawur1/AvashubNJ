@@ -3,7 +3,6 @@ import "./fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -71,7 +70,6 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col font-sans">
         <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );

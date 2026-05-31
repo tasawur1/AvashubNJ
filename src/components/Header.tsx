@@ -53,8 +53,8 @@ export function Header() {
       : "text-brand-navy hover:bg-brand-teal-light");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-brand-teal/10 bg-white/95 backdrop-blur-md">
-      <SectionContainer className="flex min-h-[4.25rem] items-center justify-between gap-3 py-3 sm:min-h-[4.5rem] sm:gap-4 sm:py-3.5 lg:min-h-[5rem] lg:gap-6 lg:py-4">
+    <header className="sticky top-0 z-50 border-b border-brand-teal/10 bg-[#fffaf4]/95 backdrop-blur-md lg:bg-white/95">
+      <SectionContainer className="flex min-h-[5rem] items-center justify-between gap-3 py-4 sm:min-h-[5.25rem] sm:gap-4 sm:py-4 lg:min-h-[5rem] lg:gap-6 lg:py-4">
         {/* Brand: logo image + tagline only */}
         <Link
           href="/"
@@ -62,7 +62,7 @@ export function Header() {
           onClick={() => setOpen(false)}
         >
           <span className="sr-only">Ava&apos;s Hub — Home</span>
-          <div className="relative h-10 w-[7.25rem] shrink-0 sm:h-11 sm:w-[8.5rem] md:h-12 md:w-36 lg:h-14 lg:w-40">
+          <div className="relative h-12 w-36 shrink-0 sm:h-12 sm:w-40 md:h-12 md:w-40 lg:h-14 lg:w-40">
             <PlaceholderImage
               src={siteImages.logo}
               alt="Ava's Hub"
@@ -110,7 +110,7 @@ export function Header() {
           </CTAButton>
           <button
             type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-brand-purple-deep hover:bg-brand-lavender focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold lg:hidden"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-2xl text-brand-navy hover:bg-brand-lavender focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
