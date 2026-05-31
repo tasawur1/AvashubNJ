@@ -12,9 +12,9 @@ const config: Config = {
         brand: {
           teal: "#007C89",
           "teal-light": "#EAF7F7",
-          "purple-deep": "#7A3F86",
-          "purple-bright": "#A24FA3",
-          "logo-purple": "#8A4698",
+          "purple-deep": "#8B5A92",
+          "purple-bright": "#B56AB3",
+          "logo-purple": "#9D63A3",
           gold: "#FDBA2D",
           navy: "#171347",
           lavender: "#F8EAF7",
@@ -24,7 +24,7 @@ const config: Config = {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 10px 40px -12px rgba(122, 63, 134, 0.16)",
+        card: "0 10px 40px -12px rgba(139, 90, 146, 0.16)",
       },
       borderRadius: {
         "3xl": "1.5rem",

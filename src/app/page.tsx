@@ -89,6 +89,25 @@ const mobilePrograms = [
   },
 ];
 
+function TiltedHeartOutline({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={`inline-block h-[1em] w-[1em] rotate-[-12deg] align-[-0.08em] ${className}`}
+      fill="none"
+    >
+      <path
+        d="M20.4 5.7c-1.8-1.9-4.7-1.9-6.5 0L12 7.6l-1.9-1.9c-1.8-1.9-4.7-1.9-6.5 0-1.9 2-1.9 5.1 0 7.1L12 21l8.4-8.2c1.9-2 1.9-5.1 0-7.1z"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   return (
     <main className="flex-1 bg-[#fffaf4] md:bg-white">
@@ -124,6 +143,9 @@ export default function HomePage() {
                 A Place Where Your Child Can{" "}
                 <span className="italic text-brand-purple-bright">
                   Truly Belong
+                </span>
+                <span className="ml-3 whitespace-nowrap text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
                 </span>
               </h2>
               <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
@@ -208,8 +230,11 @@ export default function HomePage() {
         </section>
 
         <section id="programs-mobile" className="px-6 pb-8">
-          <h2 className="text-[2rem] font-extrabold leading-tight text-brand-navy">
+          <h2 className="whitespace-nowrap font-serif text-[1.72rem] font-semibold leading-tight tracking-tight text-brand-navy">
             Programs for Every Stage
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
           </h2>
           <div className="mt-5 space-y-4">
             {mobilePrograms.map((program) => (
@@ -247,32 +272,21 @@ export default function HomePage() {
 
         <section className="px-6 pb-10">
           <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
-            <div className="grid min-h-48 grid-cols-[1fr_8.5rem]">
-              <div className="p-6">
-                <Icon name="heart" className="text-brand-purple-bright" size="2x" />
-                <p className="mt-4 text-lg font-extrabold leading-relaxed text-brand-navy">
-                  Every child is unique.
-                  <br />
-                  Every stage is important.
-                </p>
-                <p className="mt-3 text-lg font-extrabold text-brand-purple-bright">
-                  We&apos;re here for every step of the way.
-                </p>
-              </div>
-              <div className="relative min-h-full overflow-hidden">
-                <PlaceholderImage
-                  src={siteImages.homeFinalCta}
-                  alt="Ava's Hub family support"
-                  fill
-                  className="object-cover object-center"
-                  sizes="136px"
-                />
-              </div>
+            <div className="p-6">
+              <TiltedHeartOutline className="text-[2.4rem] text-brand-purple-bright/55" />
+              <p className="mt-4 text-lg font-extrabold leading-relaxed text-brand-navy">
+                Every child is unique.
+                <br />
+                Every stage is important.
+              </p>
+              <p className="mt-3 text-lg font-extrabold text-brand-purple-bright">
+                We&apos;re here for every step of the way.
+              </p>
             </div>
           </div>
 
           <div className="mt-4 rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card">
-            <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-[1fr_auto] items-center gap-4">
               <div>
                 <h2 className="text-lg font-extrabold">Ready to Get Started?</h2>
                 <p className="mt-1 text-sm text-white/90">
@@ -282,11 +296,11 @@ export default function HomePage() {
               <CTAButton
                 href="/contact"
                 variant="secondary"
-                className="w-full !border-white !bg-white !text-brand-purple-deep hover:!bg-brand-lavender"
+                className="!border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
               >
                 <span className="inline-flex items-center gap-2">
                   <Icon name="calendar" size="sm" />
-                  Schedule a Consultation
+                  <span className="text-xs">Schedule Consultation</span>
                 </span>
               </CTAButton>
             </div>
