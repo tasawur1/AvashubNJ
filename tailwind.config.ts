@@ -12,19 +12,19 @@ const config: Config = {
         brand: {
           teal: "#007C89",
           "teal-light": "#EAF7F7",
-          "purple-deep": "#8B5A92",
-          "purple-bright": "#B56AB3",
-          "logo-purple": "#9D63A3",
+          "purple-deep": "#906398",
+          "purple-bright": "#BD7ABB",
+          "logo-purple": "#A66CAB",
           gold: "#FDBA2D",
           navy: "#171347",
-          lavender: "#F8EAF7",
+          lavender: "#FAEFF9",
         },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 10px 40px -12px rgba(139, 90, 146, 0.16)",
+        card: "0 10px 40px -12px rgba(144, 99, 152, 0.15)",
       },
       borderRadius: {
         "3xl": "1.5rem",

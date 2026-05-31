@@ -139,7 +139,7 @@ export default function HomePage() {
               <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
                 More Than Therapy
               </p>
-              <h2 className="mt-5 text-[2.35rem] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
+              <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
                 A Place Where Your Child Can{" "}
                 <span className="italic text-brand-purple-bright">
                   Truly Belong
@@ -229,10 +229,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="programs-mobile" className="px-6 pb-8">
-          <h2 className="whitespace-nowrap font-serif text-[1.72rem] font-semibold leading-tight tracking-tight text-brand-navy">
+        <section id="programs-mobile" className="px-5 pb-8 min-[520px]:px-6">
+          <h2 className="whitespace-nowrap font-serif text-[clamp(1.32rem,6vw,1.72rem)] font-semibold leading-tight tracking-tight text-brand-navy">
             Programs for Every Stage
-            <span className="ml-3 text-brand-purple-bright/55">
+            <span className="ml-2 text-brand-purple-bright/55 min-[520px]:ml-3">
               <TiltedHeartOutline />
             </span>
           </h2>
@@ -240,9 +240,9 @@ export default function HomePage() {
             {mobilePrograms.map((program) => (
               <article
                 key={program.title}
-                className="grid grid-cols-[8rem_1fr_auto] items-center gap-4 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10"
+                className="grid grid-cols-[clamp(5.75rem,28vw,8rem)_minmax(0,1fr)_2.25rem] items-center gap-3 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10 min-[520px]:grid-cols-[8rem_1fr_auto] min-[520px]:gap-4"
               >
-                <div className="relative h-24 overflow-hidden rounded-2xl bg-brand-teal-light">
+                <div className="relative h-20 overflow-hidden rounded-2xl bg-brand-teal-light min-[520px]:h-24">
                   <PlaceholderImage
                     src={siteImages[program.imageKey]}
                     alt={`${program.title} program`}
@@ -252,17 +252,17 @@ export default function HomePage() {
                   />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-lg font-extrabold leading-tight text-brand-purple-bright">
+                  <h3 className="text-[clamp(0.95rem,4.2vw,1.125rem)] font-extrabold leading-tight text-brand-purple-bright">
                     {program.title}
-                    <span className="ml-2 text-base font-bold text-brand-navy/50">
+                    <span className="ml-1.5 text-[clamp(0.86rem,3.8vw,1rem)] font-bold text-brand-navy/50 min-[520px]:ml-2">
                       {program.ageRange}
                     </span>
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-navy/85">
+                  <p className="mt-1.5 text-[clamp(0.78rem,3.4vw,0.875rem)] leading-relaxed text-brand-navy/85 min-[520px]:mt-2">
                     {program.description}
                   </p>
                 </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm min-[520px]:h-10 min-[520px]:w-10">
                   <Icon name="arrowRight" size="sm" />
                 </span>
               </article>
