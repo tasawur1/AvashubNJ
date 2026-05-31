@@ -16,6 +16,7 @@ export const siteImages = {
   afterSchoolThree: "/images/home/after-school-3.png",
   afterSchoolFour: "/images/home/after-school-4.png",
   bottomBanner: "/images/home/bottom-banner.png",
+  homeFinalCta: "/images/home/bottom-banner.png",
 } as const;
 
 export type SiteImageKey = keyof typeof siteImages;

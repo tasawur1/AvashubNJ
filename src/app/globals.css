@@ -18,18 +18,18 @@ svg.svg-inline--fa {
 :root {
   --brand-teal: #007c89;
   --brand-teal-light: #eaf7f7;
-  --brand-purple-deep: #3b168c;
-  --brand-purple-bright: #5b2dc4;
+  --brand-purple-deep: #7a3f86;
+  --brand-purple-bright: #a24fa3;
   --brand-gold: #fdba2d;
   --brand-navy: #171347;
-  --brand-lavender: #f4f0ff;
+  --brand-lavender: #f8eaf7;
   --brand-white: #ffffff;
 
   /* Hero CTA buttons (editable here or in theme) */
-  --hero-cta-primary-bg: #5b2dc4;
+  --hero-cta-primary-bg: #a24fa3;
   --hero-cta-primary-fg: #ffffff;
-  --hero-cta-primary-hover: #3b168c;
-  --hero-cta-primary-shadow: 0 4px 14px rgba(91, 45, 196, 0.35);
+  --hero-cta-primary-hover: #7a3f86;
+  --hero-cta-primary-shadow: 0 4px 14px rgba(162, 79, 163, 0.32);
 
   --hero-cta-secondary-bg: #008c95;
   --hero-cta-secondary-fg: #ffffff;

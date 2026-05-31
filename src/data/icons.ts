@@ -1,5 +1,6 @@
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
+  faArrowRight,
   faBookOpen,
   faBriefcase,
   faCalendarDays,
@@ -26,6 +27,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export const icons = {
+  arrowRight: faArrowRight,
   home: faHouse,
   lifeSkills: faHouse,
   independence: faPersonWalking,

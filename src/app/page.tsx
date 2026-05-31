@@ -237,8 +237,8 @@ export default function HomePage() {
                     {program.description}
                   </p>
                 </div>
-                <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-navy/40 text-xl font-bold text-brand-navy">
-                  &gt;
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                  <Icon name="arrowRight" size="sm" />
                 </span>
               </article>
             ))}
@@ -247,18 +247,47 @@ export default function HomePage() {
 
         <section className="px-6 pb-10">
           <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
-            <div className="p-6">
-              <Icon name="heart" className="text-brand-purple-bright" size="2x" />
-              <p className="mt-4 text-lg font-extrabold leading-relaxed text-brand-navy">
-                Every child is unique.
-                <br />
-                Every stage is important.
-              </p>
-              <p className="mt-3 text-lg font-extrabold text-brand-purple-bright">
-                We&apos;re here for every step of the way.
-              </p>
-              <CTAButton href="/contact" className="mt-6 w-full">
-                Schedule a Consultation
+            <div className="grid min-h-48 grid-cols-[1fr_8.5rem]">
+              <div className="p-6">
+                <Icon name="heart" className="text-brand-purple-bright" size="2x" />
+                <p className="mt-4 text-lg font-extrabold leading-relaxed text-brand-navy">
+                  Every child is unique.
+                  <br />
+                  Every stage is important.
+                </p>
+                <p className="mt-3 text-lg font-extrabold text-brand-purple-bright">
+                  We&apos;re here for every step of the way.
+                </p>
+              </div>
+              <div className="relative min-h-full overflow-hidden">
+                <PlaceholderImage
+                  src={siteImages.homeFinalCta}
+                  alt="Ava's Hub family support"
+                  fill
+                  className="object-cover object-center"
+                  sizes="136px"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2 className="text-lg font-extrabold">Ready to Get Started?</h2>
+                <p className="mt-1 text-sm text-white/90">
+                  We&apos;d love to meet your family.
+                </p>
+              </div>
+              <CTAButton
+                href="/contact"
+                variant="secondary"
+                className="w-full !border-white !bg-white !text-brand-purple-deep hover:!bg-brand-lavender"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule a Consultation
+                </span>
               </CTAButton>
             </div>
           </div>
