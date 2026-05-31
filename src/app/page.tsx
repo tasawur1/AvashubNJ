@@ -286,9 +286,11 @@ export default function HomePage() {
           </div>
 
           <div className="mt-4 rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card">
-            <div className="grid grid-cols-[1fr_auto] items-center gap-4">
+            <div className="flex flex-col gap-4">
               <div>
-                <h2 className="text-lg font-extrabold">Ready to Get Started?</h2>
+                <h2 className="text-xl font-extrabold leading-tight">
+                  Ready to Get Started?
+                </h2>
                 <p className="mt-1 text-sm text-white/90">
                   We&apos;d love to meet your family.
                 </p>
@@ -296,9 +298,9 @@ export default function HomePage() {
               <CTAButton
                 href="/contact"
                 variant="secondary"
-                className="!border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+                className="w-full !border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
               >
-                <span className="inline-flex items-center gap-2">
+                <span className="inline-flex items-center justify-center gap-2">
                   <Icon name="calendar" size="sm" />
                   <span className="text-xs">Schedule Consultation</span>
                 </span>
