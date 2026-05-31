@@ -124,13 +124,14 @@ export default function HomePage() {
       <div className="md:hidden">
         <section className="px-6 pb-8 pt-5">
           <div className="rounded-[2rem] bg-[#fffaf4]">
-            <div className="relative mx-auto aspect-[4/3] w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
+            <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
               <PlaceholderImage
                 src={heroBannerImages.heroBannerMobile}
                 alt="Ava's Hub child and caregiver occupational therapy"
-                fill
+                width={1123}
+                height={1401}
                 priority
-                className="object-cover object-center"
+                className="block h-auto w-full"
                 sizes="100vw"
               />
             </div>
