@@ -4,9 +4,9 @@
 export const siteImages = {
   logo: "/images/logo.png",
   /** About desktop hero — shown at `lg` and up */
-  aboutHeroBanner: "/images/about/about-hero-banner.png",
+  aboutHeroBanner: "/images/About/hero-banner-about.png",
   /** About mobile + tablet hero — shown below `lg` */
-  aboutHeroBannerMobile: "/images/about/about-hero-banner-mobile.png",
+  aboutHeroBannerMobile: "/images/About/hero-banner-about-mobile.png",
   kidsProgram: "/images/home/kids-program.png",
   schoolAgeProgram: "/images/home/school-age-program.png",
   teensProgram: "/images/home/teens-program.png",
