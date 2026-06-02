@@ -115,7 +115,7 @@ function MobileAboutHero() {
       <div className="rounded-[2rem] bg-[#fffaf4]">
         <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
           <PlaceholderImage
-            src={siteImages.aboutHeroBannerMobile}
+            src={siteImages.aboutMobileHero}
             alt={ABOUT_HERO_ALT}
             width={1080}
             height={1080}
@@ -206,7 +206,7 @@ function MobileAboutPage() {
         <div className="rounded-[1.75rem] bg-gradient-to-br from-[#0f5758] to-[#063f46] p-7 text-white shadow-card">
           <div className="relative mb-6 h-56 overflow-hidden rounded-[1.5rem] bg-brand-teal-light">
             <PlaceholderImage
-              src={siteImages.aboutHeroBanner}
+              src={siteImages.aboutMobileBuiltFromRealLife}
               alt="Ava's Hub family support story"
               fill
               className="object-cover object-center"
@@ -261,7 +261,7 @@ function MobileAboutPage() {
         <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
           <div className="relative h-72 bg-brand-teal-light">
             <PlaceholderImage
-              src={siteImages.afterSchoolTwo}
+              src={siteImages.aboutMobileFounderStory}
               alt="Founder story at Ava's Hub"
               fill
               className="object-cover object-center"
@@ -373,7 +373,7 @@ function MobileAboutPage() {
         <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
           <div className="relative h-72 bg-brand-teal-light">
             <PlaceholderImage
-              src={siteImages.afterSchoolThree}
+              src={siteImages.aboutMobileCommunityBelonging}
               alt="Community and belonging at Ava's Hub"
               fill
               className="object-cover object-center"

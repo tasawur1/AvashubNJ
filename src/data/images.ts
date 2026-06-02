@@ -7,6 +7,10 @@ export const siteImages = {
   aboutHeroBanner: "/images/About/hero-banner-about.png",
   /** About mobile + tablet hero — shown below `lg` */
   aboutHeroBannerMobile: "/images/About/hero-banner-about-mobile.png",
+  aboutMobileHero: "/images/About/mobile/hero-banner-about-mobile.png",
+  aboutMobileBuiltFromRealLife: "/images/About/mobile/built-from-real-life.png",
+  aboutMobileFounderStory: "/images/About/mobile/founder-story.png",
+  aboutMobileCommunityBelonging: "/images/About/mobile/community-belonging.png",
   kidsProgram: "/images/home/kids-program.png",
   schoolAgeProgram: "/images/home/school-age-program.png",
   teensProgram: "/images/home/teens-program.png",
