@@ -43,7 +43,6 @@ type JourneyStep = {
   title: string;
   description: string;
   tone: Tone;
-  image: string;
 };
 
 type FamilyCard = {
@@ -132,7 +131,6 @@ const journeySteps: JourneyStep[] = [
     icon: "phone",
     title: "Getting Started",
     tone: "teal",
-    image: familiesImages.journeyGettingStartedImage,
     description:
       "We make the process simple from your first call to the initial assessment.",
   },
@@ -140,7 +138,6 @@ const journeySteps: JourneyStep[] = [
     icon: "check",
     title: "Personalized Plan",
     tone: "purple",
-    image: familiesImages.journeyPersonalizedPlanImage,
     description:
       "We create a customized plan based on your loved one's strengths, needs, and goals.",
   },
@@ -148,7 +145,6 @@ const journeySteps: JourneyStep[] = [
     icon: "family",
     title: "Therapy & Support",
     tone: "gold",
-    image: familiesImages.journeyTherapySupportImage,
     description:
       "Our therapists and team work together to build skills that improve daily life and independence.",
   },
@@ -156,7 +152,6 @@ const journeySteps: JourneyStep[] = [
     icon: "home",
     title: "Home & Community",
     tone: "teal",
-    image: familiesImages.journeyHomeCommunityImage,
     description:
       "We help carry strategies into everyday routines so progress happens where life happens.",
   },
@@ -164,7 +159,6 @@ const journeySteps: JourneyStep[] = [
     icon: "confidence",
     title: "Growth & Independence",
     tone: "purple",
-    image: familiesImages.journeyGrowthIndependenceImage,
     description:
       "We celebrate milestones and build skills that lead to greater independence and confidence.",
   },
@@ -193,6 +187,7 @@ const familyCards: FamilyCard[] = [
     text: "Caring for a loved one is a big job. Let us help with guidance, resources, and a community that has your back.",
     highlight:
       "Take care of you, so you can continue to take care of them.",
+    bullets: ["Take care of you, so you can continue to take care of them."],
   },
   {
     icon: "resources",
@@ -310,8 +305,8 @@ function MobileFamiliesHero() {
           <PlaceholderImage
             src={familiesImages.familiesMobileHero}
             alt="Ava's Hub families mobile hero banner"
-            width={1101}
-            height={1429}
+            width={1182}
+            height={1331}
             priority
             className="block h-auto w-full"
             sizes="100vw"
@@ -323,18 +318,12 @@ function MobileFamiliesHero() {
             For Families
           </p>
           <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
-            You&apos;re{" "}
-            <span className="italic text-brand-purple-bright">
-              Not Alone
+            You&apos;re Not Alone.
+            <br />
+            We&apos;re Here With You.{" "}
+            <span aria-hidden className="align-[0.02em] text-brand-gold">
+              💛
             </span>
-            . We&apos;re Here{" "}
-            <span className="italic text-brand-purple-bright">
-              With You
-              <span className="ml-3 text-brand-purple-bright/55">
-                <TiltedHeartOutline />
-              </span>
-            </span>
-            .
           </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
             At Ava&apos;s Hub, we partner with families every step of the way,
@@ -387,7 +376,7 @@ function MobileFamiliesPage() {
               key={card.title}
               className={`overflow-hidden rounded-[1.75rem] shadow-card ring-1 ${toneStyles[card.tone].soft} ${toneStyles[card.tone].ring}`}
             >
-              <div className="relative h-44 bg-brand-teal-light">
+              <div className="relative h-56 bg-brand-teal-light">
                 <PlaceholderImage
                   src={card.image}
                   alt={`${card.title} at Ava's Hub`}
@@ -397,21 +386,12 @@ function MobileFamiliesPage() {
                 />
               </div>
               <div className="p-6">
-                <div className="flex items-start gap-4">
-                  <span
-                    className={`flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-                  >
-                    <Icon name={card.icon} size="lg" />
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
-                      {card.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
+                <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                  {card.description}
+                </p>
               </div>
             </article>
           ))}
@@ -425,25 +405,16 @@ function MobileFamiliesPage() {
             <TiltedHeartOutline />
           </span>
         </h2>
-        <div className="relative mt-6 space-y-5 pl-5 before:absolute before:left-[2.15rem] before:top-4 before:h-[calc(100%-2rem)] before:w-px before:bg-brand-teal/25">
+        <div className="mt-6 space-y-3">
           {journeySteps.map((step, index) => (
-            <article
-              key={step.title}
-              className="relative rounded-[1.75rem] bg-white/90 p-5 pl-12 shadow-card ring-1 ring-brand-teal/10"
-            >
-              <span className="absolute -left-1 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-brand-teal text-white shadow-sm">
-                {index + 1}
-              </span>
-              <div className="grid grid-cols-[4.5rem_1fr] items-center gap-4">
-                <div className="relative h-16 overflow-hidden rounded-2xl bg-brand-teal-light">
-                  <PlaceholderImage
-                    src={step.image}
-                    alt={`${step.title} family journey step`}
-                    fill
-                    className="object-cover object-center"
-                    sizes="72px"
-                  />
-                </div>
+            <div key={step.title}>
+              <article className="rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
+                <div className="grid grid-cols-[4rem_1fr] items-center gap-4">
+                  <span
+                    className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
+                  >
+                    <Icon name={step.icon} size="lg" />
+                  </span>
                 <div>
                   <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
                     {step.title}
@@ -453,7 +424,32 @@ function MobileFamiliesPage() {
                   </p>
                 </div>
               </div>
-            </article>
+              </article>
+              {index < journeySteps.length - 1 ? (
+                <div className="flex justify-center py-2" aria-hidden>
+                  <svg
+                    className="h-10 w-16 text-brand-purple-bright/70"
+                    viewBox="0 0 64 40"
+                    fill="none"
+                  >
+                    <path
+                      d="M19 4c20 3 26 13 17 27"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeDasharray="2 6"
+                    />
+                    <path
+                      d="M31 29l5 6 7-4"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              ) : null}
+            </div>
           ))}
         </div>
       </section>
@@ -475,25 +471,15 @@ function MobileFamiliesPage() {
                 />
               </div>
               <div className="p-6">
-                <Icon name={card.icon} className={toneStyles[card.tone].text} size="lg" />
-                <h2 className="mt-4 text-2xl font-extrabold leading-tight text-brand-navy">
+                <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h2>
                 <p className="mt-4 text-sm leading-relaxed text-brand-navy/85">
                   {card.text}
                 </p>
-                {card.bullets ? (
-                  <div className="mt-5">
-                    <CheckList items={card.bullets} />
-                  </div>
-                ) : null}
-                {card.highlight ? (
-                  <div className="mt-6 rounded-2xl bg-white/75 px-5 py-4 ring-1 ring-brand-teal/10">
-                    <p className="text-base font-extrabold leading-relaxed text-brand-teal">
-                      {card.highlight}
-                    </p>
-                  </div>
-                ) : null}
+                <div className="mt-5">
+                  <CheckList items={card.bullets ?? []} />
+                </div>
               </div>
             </article>
           ))}
