@@ -4,7 +4,7 @@ Use this folder for mobile-only Resources page section images.
 
 Recommended filenames:
 
-- `hero-banner-resources-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `feelings-check-in.png` - Feelings Check-In printable
 - `first-then.png` - First, Then Visual Schedule printable
 - `morning-routine.png` - Morning Routine Chart printable

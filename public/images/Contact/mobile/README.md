@@ -4,7 +4,7 @@ Use this folder for mobile-only Contact page section images.
 
 Recommended filenames:
 
-- `hero-banner-contact-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `get-in-touch.png` - Get in Touch card image, if used
 - `send-message.png` - Send Us a Message form image, if used
 - `find-us-map.png` - Find Us map image or placeholder

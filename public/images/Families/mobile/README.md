@@ -4,7 +4,7 @@ Use this folder for mobile-only Families page section images.
 
 Recommended filenames:
 
-- `hero-banner-families-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `family-centered-care.png` - Family-Centered Care support card image, if used
 - `education-empowerment.png` - Education & Empowerment support card image, if used
 - `emotional-support.png` - Emotional Support support card image, if used

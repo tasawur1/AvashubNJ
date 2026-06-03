@@ -3,7 +3,7 @@
  */
 export const familiesImages = {
   familiesHeroBanner: "/images/Families/hero-banner-families.png",
-  familiesHeroBannerMobile: "/images/Families/hero-banner-families-mobile.png",
+  familiesHeroBannerMobile: "/images/Families/mobile/hero-banner-mobile.png",
   hero: "/images/Families/hero-banner-families.png",
-  heroMobile: "/images/Families/hero-banner-families-mobile.png",
+  heroMobile: "/images/Families/mobile/hero-banner-mobile.png",
 } as const;

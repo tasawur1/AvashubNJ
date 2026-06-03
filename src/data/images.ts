@@ -6,8 +6,8 @@ export const siteImages = {
   /** About desktop hero — shown at `lg` and up */
   aboutHeroBanner: "/images/About/hero-banner-about.png",
   /** About mobile + tablet hero — shown below `lg` */
-  aboutHeroBannerMobile: "/images/About/hero-banner-about-mobile.png",
-  aboutMobileHero: "/images/About/mobile/hero-banner-about-mobile.png",
+  aboutHeroBannerMobile: "/images/About/mobile/hero-banner-mobile.png",
+  aboutMobileHero: "/images/About/mobile/hero-banner-mobile.png",
   aboutMobileBuiltFromRealLife: "/images/About/mobile/built-from-real-life.png",
   aboutMobileFounderStory: "/images/About/mobile/founder-story.png",
   aboutMobileCommunityBelonging: "/images/About/mobile/community-belonging.png",

@@ -136,8 +136,8 @@ function MobileAboutHero() {
           <PlaceholderImage
             src={siteImages.aboutMobileHero}
             alt={ABOUT_HERO_ALT}
-            width={1080}
-            height={1080}
+            width={1023}
+            height={1537}
             priority
             className="block h-auto w-full"
             sizes="100vw"

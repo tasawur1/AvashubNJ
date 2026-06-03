@@ -3,7 +3,7 @@
  */
 export const eventsImages = {
   eventsHeroBanner: "/images/events/hero-banner-events.png",
-  eventsHeroBannerMobile: "/images/events/hero-banner-events-mobile.png",
+  eventsHeroBannerMobile: "/images/events/mobile/hero-banner-mobile.png",
   hero: "/images/events/hero-banner-events.png",
-  heroMobile: "/images/events/hero-banner-events-mobile.png",
+  heroMobile: "/images/events/mobile/hero-banner-mobile.png",
 } as const;

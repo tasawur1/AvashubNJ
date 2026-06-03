@@ -4,7 +4,7 @@ Use this folder for mobile-only Events page section images.
 
 Recommended filenames:
 
-- `hero-banner-events-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `calendar-empty-state.png` - empty month / stay tuned image, if used
 - `highlight-parent-training.png` - Upcoming Highlights card 1
 - `highlight-family-fun.png` - Upcoming Highlights card 2

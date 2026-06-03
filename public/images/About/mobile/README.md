@@ -4,7 +4,7 @@ Use this folder for mobile-only About page section images.
 
 Recommended filenames:
 
-- `hero-banner-about-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `built-from-real-life.png` - "Built From Real Life" section
 - `founder-story.png` - "Meet the Heart Behind Ava's Hub" / Founder Story section
 - `children.png` - "Who We Serve" Children card

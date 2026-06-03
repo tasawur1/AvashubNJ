@@ -4,7 +4,7 @@ Use this folder for mobile-only Programs page section images.
 
 Recommended filenames:
 
-- `hero-banner-programs-mobile.png` - top mobile hero image
+- `hero-banner-mobile.png` - top mobile hero image
 - `individual-parent-coaching.png` - Individual Parent Coaching card
 - `parent-child-coaching.png` - Parent + Child Coaching card
 - `parent-partnership-sessions.png` - Parent Partnership Sessions card
