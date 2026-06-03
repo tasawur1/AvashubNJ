@@ -321,7 +321,9 @@ function MobileFamiliesHero() {
             You&apos;re Not Alone.
             <br />
             We&apos;re Here With You.{" "}
-            <span className="text-brand-purple-bright/55">`r`n              <TiltedHeartOutline />`r`n            </span>
+            <span className="text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
             At Ava&apos;s Hub, we partner with families every step of the way,
@@ -407,7 +409,7 @@ function MobileFamiliesPage() {
           {journeySteps.map((step, index) => (
             <div
               key={step.title}
-              className={`relative ${index < journeySteps.length - 1 ? "pb-9" : ""}`}
+              className={`relative ${index < journeySteps.length - 1 ? "pb-16" : ""}`}
             >
               <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
                 <div className="grid grid-cols-[4rem_1fr] items-center gap-4">
@@ -428,26 +430,26 @@ function MobileFamiliesPage() {
               </article>
               {index < journeySteps.length - 1 ? (
                 <div
-                  className="pointer-events-none absolute -bottom-7 left-1/2 z-20 -translate-x-1/2"
+                  className="pointer-events-none absolute -bottom-3 left-1/2 z-20 -translate-x-1/2"
                   aria-hidden
                 >
                   <svg
-                    className="h-20 w-24 text-brand-purple-bright/70"
-                    viewBox="0 0 120 96"
+                    className="h-24 w-32 text-brand-purple-bright/65"
+                    viewBox="0 0 160 120"
                     fill="none"
                   >
                     <path
-                      d="M28 18c24-18 56-3 42 23-10 19-42 18-40-7 2-22 34-29 58-5 18 18 20 38 19 48"
+                      d="M28 22c31-25 80-7 58 29-17 28-62 16-51-16 9-26 55-27 82 4 20 23 24 48 23 68"
                       stroke="currentColor"
-                      strokeWidth="7"
+                      strokeWidth="5.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeDasharray="9 13"
+                      strokeDasharray="10 14"
                     />
                     <path
-                      d="M98 75c-2.6-1.2-2.5-5 .2-6.1l19-7.7c3.2-1.3 6.3 1.8 5 5l-7.7 19c-1.1 2.7-4.9 2.8-6.1.2L98 75z"
+                      d="M130 100c-2.5-1.2-2.5-4.9.2-6l18.8-7.6c3.1-1.3 6.2 1.8 4.9 4.9l-7.6 18.8c-1.1 2.6-4.8 2.7-6 .2L130 100z"
                       fill="currentColor"
-                      transform="rotate(18 109 74)"
+                      transform="rotate(18 142 99)"
                     />
                   </svg>
                 </div>
