@@ -257,6 +257,36 @@ function TiltedHeartOutline({ className = "" }: { className?: string }) {
   );
 }
 
+function JourneyArrow() {
+  return (
+    <div
+      className="pointer-events-none absolute -bottom-7 right-5 z-20 hidden min-[360px]:block"
+      aria-hidden
+    >
+      <svg
+        className="h-16 w-16 text-brand-purple-bright/35"
+        viewBox="0 0 72 72"
+        fill="none"
+      >
+        <path
+          d="M18 10c24 8 34 23 24 47"
+          stroke="currentColor"
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeDasharray="4 7"
+        />
+        <path
+          d="M35 54l8 9 9-8"
+          stroke="currentColor"
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
 function CheckList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2.5">
@@ -409,7 +439,7 @@ function MobileFamiliesPage() {
           {journeySteps.map((step, index) => (
             <div
               key={step.title}
-              className={`relative ${index < journeySteps.length - 1 ? "pb-16" : ""}`}
+              className={`relative ${index < journeySteps.length - 1 ? "pb-9" : ""}`}
             >
               <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
                 <div className="grid grid-cols-[4rem_1fr] items-center gap-4">
@@ -428,32 +458,7 @@ function MobileFamiliesPage() {
                 </div>
               </div>
               </article>
-              {index < journeySteps.length - 1 ? (
-                <div
-                  className="pointer-events-none absolute -bottom-3 left-1/2 z-20 -translate-x-1/2"
-                  aria-hidden
-                >
-                  <svg
-                    className="h-24 w-32 text-brand-purple-bright/65"
-                    viewBox="0 0 160 120"
-                    fill="none"
-                  >
-                    <path
-                      d="M28 22c31-25 80-7 58 29-17 28-62 16-51-16 9-26 55-27 82 4 20 23 24 48 23 68"
-                      stroke="currentColor"
-                      strokeWidth="5.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeDasharray="10 14"
-                    />
-                    <path
-                      d="M130 100c-2.5-1.2-2.5-4.9.2-6l18.8-7.6c3.1-1.3 6.2 1.8 4.9 4.9l-7.6 18.8c-1.1 2.6-4.8 2.7-6 .2L130 100z"
-                      fill="currentColor"
-                      transform="rotate(18 142 99)"
-                    />
-                  </svg>
-                </div>
-              ) : null}
+              {index < journeySteps.length - 1 ? <JourneyArrow /> : null}
             </div>
           ))}
         </div>
