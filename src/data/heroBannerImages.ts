@@ -6,10 +6,10 @@ export const heroBannerImages = {
   /** Wide desktop hero (1920×800) — shown at `lg` and up */
   heroBanner: "/images/home/hero-banner.png",
   /**
-   * Mobile + tablet hero (e.g. 1080×1080) — shown below `lg`.
-   * Suggested export name on disk: hero-banner-mobile.png
+   * Mobile + tablet hero — shown below `lg`.
+   * Suggested export path on disk: public/images/home/mobile/hero-banner-mobile.png
    */
-  heroBannerMobile: "/images/home/hero-banner-mobile.png",
+  heroBannerMobile: "/images/home/mobile/hero-banner-mobile.png",
 } as const;
 
 export type HeroBannerImageKey = keyof typeof heroBannerImages;

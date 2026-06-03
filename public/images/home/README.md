@@ -5,7 +5,7 @@ Use this folder for Home page desktop/tablet images.
 ## Current Images
 
 - `hero-banner.png` - desktop/tablet home hero banner
-- `hero-banner-mobile.png` - mobile home hero image currently used on the mobile homepage
+- `mobile/hero-banner-mobile.png` - mobile home hero image currently used on the mobile homepage
 - `kids-program.png` - Kids program card image
 - `school-age-program.png` - School-Age program card image
 - `teens-program.png` - Teens program card image

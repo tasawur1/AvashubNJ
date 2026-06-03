@@ -128,8 +128,8 @@ export default function HomePage() {
               <PlaceholderImage
                 src={heroBannerImages.heroBannerMobile}
                 alt="Ava's Hub child and caregiver occupational therapy"
-                width={1123}
-                height={1401}
+                width={1021}
+                height={1540}
                 priority
                 className="block h-auto w-full"
                 sizes="100vw"
