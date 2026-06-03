@@ -578,23 +578,23 @@ function MobileProgramsPage() {
           {helpCards.map((card) => (
             <article
               key={card.title}
-              className={`grid grid-cols-[5.75rem_1fr] gap-4 rounded-3xl p-5 shadow-card ring-1 ${toneStyles[card.tone].card}`}
+              className="grid grid-cols-[6.25rem_1fr] items-center gap-4 rounded-3xl bg-brand-teal-light/75 p-5 shadow-card ring-1 ring-brand-teal/10"
             >
-              <span
-                className={`flex h-20 w-20 items-center justify-center rounded-[1.35rem] ${toneStyles[card.tone].softIcon}`}
-              >
+              <span className="flex h-24 w-24 items-center justify-center rounded-[1.4rem] bg-white/75 text-brand-teal shadow-sm">
                 <Icon name={card.icon} size="2x" />
               </span>
               <div className="min-w-0">
-                <p className="text-xs leading-relaxed text-brand-navy/75">
-                  {card.intro}
-                </p>
-                <h3 className="mt-2 text-[1.05rem] font-extrabold leading-tight text-brand-navy">
+                <h3 className="text-[1.05rem] font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h3>
-                <span className="mt-4 flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                  <Icon name="arrowRight" size="sm" />
-                </span>
+                <div className="mt-2 grid grid-cols-[1fr_2.25rem] items-center gap-3">
+                  <p className="text-xs leading-relaxed text-brand-navy/75">
+                    {card.intro}
+                  </p>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                    <Icon name="arrowRight" size="sm" />
+                  </span>
+                </div>
               </div>
             </article>
           ))}
