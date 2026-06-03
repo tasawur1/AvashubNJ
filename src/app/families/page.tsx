@@ -321,9 +321,7 @@ function MobileFamiliesHero() {
             You&apos;re Not Alone.
             <br />
             We&apos;re Here With You.{" "}
-            <span aria-hidden className="align-[0.02em] text-brand-gold">
-              💛
-            </span>
+            <span className="text-brand-purple-bright/55">`r`n              <TiltedHeartOutline />`r`n            </span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
             At Ava&apos;s Hub, we partner with families every step of the way,
@@ -405,10 +403,13 @@ function MobileFamiliesPage() {
             <TiltedHeartOutline />
           </span>
         </h2>
-        <div className="mt-6 space-y-3">
+        <div className="mt-6">
           {journeySteps.map((step, index) => (
-            <div key={step.title}>
-              <article className="rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
+            <div
+              key={step.title}
+              className={`relative ${index < journeySteps.length - 1 ? "pb-9" : ""}`}
+            >
+              <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
                 <div className="grid grid-cols-[4rem_1fr] items-center gap-4">
                   <span
                     className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
@@ -426,25 +427,27 @@ function MobileFamiliesPage() {
               </div>
               </article>
               {index < journeySteps.length - 1 ? (
-                <div className="flex justify-center py-2" aria-hidden>
+                <div
+                  className="pointer-events-none absolute -bottom-7 left-1/2 z-20 -translate-x-1/2"
+                  aria-hidden
+                >
                   <svg
-                    className="h-10 w-16 text-brand-purple-bright/70"
-                    viewBox="0 0 64 40"
+                    className="h-20 w-24 text-brand-purple-bright/70"
+                    viewBox="0 0 120 96"
                     fill="none"
                   >
                     <path
-                      d="M19 4c20 3 26 13 17 27"
+                      d="M28 18c24-18 56-3 42 23-10 19-42 18-40-7 2-22 34-29 58-5 18 18 20 38 19 48"
                       stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeDasharray="2 6"
-                    />
-                    <path
-                      d="M31 29l5 6 7-4"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
+                      strokeWidth="7"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      strokeDasharray="9 13"
+                    />
+                    <path
+                      d="M98 75c-2.6-1.2-2.5-5 .2-6.1l19-7.7c3.2-1.3 6.3 1.8 5 5l-7.7 19c-1.1 2.7-4.9 2.8-6.1.2L98 75z"
+                      fill="currentColor"
+                      transform="rotate(18 109 74)"
                     />
                   </svg>
                 </div>
