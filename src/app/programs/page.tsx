@@ -349,23 +349,71 @@ const serviceCards = [
     featured: true,
   },
   {
-    icon: "communication",
-    title: "Speech Therapy",
-    badge: "Coming Soon",
-    badgeClass: "bg-brand-purple-bright text-white",
+    icon: "heart",
+    title: "Social & Emotional Builders",
+    badge: "$155/month",
+    badgeClass: "bg-brand-lavender text-brand-purple-deep",
     description:
-      "Support for communication, language, social skills, and confidence.",
-    skills: [],
+      "A playful, structured program that builds fine motor skills, sensory exploration, social readiness, emotional regulation, and school prep.",
+    schedule: "Once a week for 60-75 minutes",
+    skills: [
+      "Fine motor skills",
+      "Sensory exploration",
+      "Social readiness",
+      "Emotional regulation",
+      "School preparation",
+    ],
     featured: false,
   },
   {
-    icon: "independence",
-    title: "Physical Therapy",
-    badge: "Coming Soon",
+    icon: "resources",
+    title: "Executive Function Club",
+    badge: "$165/month",
+    badgeClass: "bg-brand-teal-light text-brand-teal",
+    description:
+      "After-School Hub offers a supportive space where kids build regulation, cooperative play, motor skills, flexible thinking, and problem-solving.",
+    schedule: "Once a week for 60-75 minutes",
+    skills: [
+      "Emotional regulation",
+      "Cooperative play",
+      "Motor skills",
+      "Flexible thinking",
+      "Problem-solving",
+    ],
+    featured: false,
+  },
+  {
+    icon: "home",
+    title: "Life Skills & Vocational Crew",
+    badge: "Real-Life Practice",
+    badgeClass: "bg-brand-gold/25 text-brand-navy",
+    description:
+      "A welcoming space where preteens and teens practice independence, flexibility, planning, and social communication through real-life activities.",
+    schedule: "Creative challenges and collaborative problem solving",
+    skills: [
+      "Independence",
+      "Planning",
+      "Social communication",
+      "Flexible thinking",
+      "Collaborative problem-solving",
+    ],
+    featured: false,
+  },
+  {
+    icon: "vocational",
+    title: "Vocational Sensory Product Lab",
+    badge: "Ages 15-21",
     badgeClass: "bg-brand-purple-bright text-white",
     description:
-      "Helping kids build strength, coordination, mobility, and movement confidence.",
-    skills: [],
+      "A hands-on vocational program where young adults create sensory products like slime, kinetic sand, and fidget items.",
+    schedule: "Mixing, packaging, safety, and teamwork skills",
+    skills: [
+      "Product creation",
+      "Work habits",
+      "Safety awareness",
+      "Packaging",
+      "Teamwork",
+    ],
     featured: false,
   },
 ] as const;
@@ -530,24 +578,24 @@ function MobileProgramsPage() {
           {helpCards.map((card) => (
             <article
               key={card.title}
-              className={`grid grid-cols-[4.75rem_1fr_2.25rem] items-center gap-4 rounded-3xl p-4 shadow-card ring-1 ${toneStyles[card.tone].card}`}
+              className={`grid grid-cols-[5.75rem_1fr] gap-4 rounded-3xl p-5 shadow-card ring-1 ${toneStyles[card.tone].card}`}
             >
               <span
-                className={`flex h-16 w-16 items-center justify-center rounded-2xl ${toneStyles[card.tone].softIcon}`}
+                className={`flex h-20 w-20 items-center justify-center rounded-[1.35rem] ${toneStyles[card.tone].softIcon}`}
               >
-                <Icon name={card.icon} size="lg" />
+                <Icon name={card.icon} size="2x" />
               </span>
               <div className="min-w-0">
                 <p className="text-xs leading-relaxed text-brand-navy/75">
                   {card.intro}
                 </p>
-                <h3 className="mt-1 text-base font-extrabold leading-tight text-brand-navy">
+                <h3 className="mt-2 text-[1.05rem] font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h3>
+                <span className="mt-4 flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                  <Icon name="arrowRight" size="sm" />
+                </span>
               </div>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-teal text-white shadow-sm">
-                <Icon name="arrowRight" size="sm" />
-              </span>
             </article>
           ))}
         </div>
@@ -676,6 +724,11 @@ function MobileProgramsPage() {
                   <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                     {service.description}
                   </p>
+                  {"schedule" in service ? (
+                    <p className="mt-3 rounded-2xl bg-brand-lavender/45 px-4 py-3 text-xs font-bold leading-relaxed text-brand-navy/75">
+                      {service.schedule}
+                    </p>
+                  ) : null}
                   {service.skills.length ? (
                     <ul className="mt-4 space-y-2">
                       {service.skills.map((skill) => (
@@ -745,35 +798,45 @@ function MobileProgramsPage() {
           </span>
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-brand-navy/70">
-          Tools, education, and community-just for you.
+          Tools, education, and community, just for you.
         </p>
-        <div className="mt-6 grid grid-cols-3 gap-3">
-          {resourceCards.map((card) => (
-            <article
-              key={card.title}
-              className="rounded-3xl bg-white/90 p-4 text-center shadow-card ring-1 ring-brand-purple-deep/10"
-            >
-              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
-                <Icon name={card.icon} size="lg" />
-              </span>
-              <h3 className="mt-4 text-xs font-extrabold leading-snug text-brand-navy">
-                {card.title}
-              </h3>
-              <p className="mt-2 text-[0.68rem] leading-relaxed text-brand-navy/70">
-                {card.text}
-              </p>
-              <span className="mx-auto mt-4 flex h-8 w-8 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
-                <Icon name="arrowRight" size="sm" />
-              </span>
-            </article>
-          ))}
+        <div className="-mx-6 mt-6 overflow-x-auto px-6 pb-2">
+          <div className="flex min-w-max snap-x snap-mandatory gap-4">
+            {resourceCards.map((card) => (
+              <article
+                key={card.title}
+                className="w-[76vw] max-w-[20rem] snap-start rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+                  <Icon name={card.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
+                  {card.text}
+                </p>
+                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
+                  <Icon name="arrowRight" size="sm" />
+                </span>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
       <section className="px-6 pb-5">
         <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
-          <div className="grid grid-cols-[1fr_7rem] items-end gap-2">
-            <div className="p-6 pr-2">
+          <div className="relative h-56 bg-brand-teal-light">
+            <PlaceholderImage
+              src={programsImages.familySupportImage}
+              alt="Family support at Ava's Hub"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          <div className="p-6">
               <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
                 You don&apos;t have to figure this out alone.
               </h2>
@@ -786,16 +849,6 @@ function MobileProgramsPage() {
                   <TiltedHeartOutline />
                 </span>
               </CTAButton>
-            </div>
-            <div className="relative h-36">
-              <PlaceholderImage
-                src={programsImages.familySupportImage}
-                alt="Family support at Ava's Hub"
-                fill
-                className="object-cover object-center"
-                sizes="112px"
-              />
-            </div>
           </div>
         </div>
       </section>

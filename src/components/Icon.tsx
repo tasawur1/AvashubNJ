@@ -17,7 +17,7 @@ type IconProps = {
  */
 export function Icon({ name, className, size = "1x" }: IconProps) {
   return (
-    <span className="inline-flex shrink-0 items-center justify-center leading-none [&>svg]:max-h-[1.5rem] [&>svg]:max-w-[1.5rem] md:[&>svg]:max-h-[2rem] md:[&>svg]:max-w-[2rem]">
+    <span className="inline-flex shrink-0 items-center justify-center leading-none [&>svg]:max-h-[2rem] [&>svg]:max-w-[2rem]">
       <FontAwesomeIcon
         icon={icons[name]}
         size={size}
