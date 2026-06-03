@@ -4,6 +4,13 @@
 export const programsImages = {
   programsHeroBanner: "/images/Programs/hero-banner-programs.png",
   programsHeroBannerMobile: "/images/Programs/hero-banner-programs-mobile.png",
+  programsHeroMobile: "/images/Programs/mobile/hero-banner-mobile.png",
+  kidsProgramImage: "/images/home/kids-program.png",
+  schoolAgeProgramImage: "/images/home/school-age-program.png",
+  teenProgramImage: "/images/home/teens-program.png",
+  youngAdultProgramImage: "/images/home/young-adults-program.png",
+  otServiceImage: "/images/home/after-school-2.png",
+  familySupportImage: "/images/home/after-school-3.png",
   hero: "/images/Programs/hero-banner-programs.png",
   heroMobile: "/images/Programs/hero-banner-programs-mobile.png",
 } as const;
