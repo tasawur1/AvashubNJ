@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { CTAButton } from "@/components/CTAButton";
 import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
 import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
 import type { IconName } from "@/data/icons";
@@ -14,16 +16,15 @@ import {
 } from "@/lib/pageSectionStyles";
 
 export const metadata: Metadata = {
-  title: "Ava's Hub For Families | Parent Support, Family Guidance & OT-Based Care",
+  title: "For Families | Ava's Hub Family Support & Parent Resources",
   description:
-    "Ava's Hub partners with families through parent education, caregiver support, community connection, therapy strategies, and real-life tools that support children, teens, and young adults.",
+    "Ava's Hub supports families with parent education, caregiver training, emotional support, community resources, and real-life strategies that help children, teens, and young adults build independence.",
   alternates: { canonical: "/families" },
   openGraph: {
     url: "/families",
-    title:
-      "Ava's Hub For Families | Parent Support, Family Guidance & OT-Based Care",
+    title: "For Families | Ava's Hub Family Support & Parent Resources",
     description:
-      "Parent education, caregiver support, community connection, and OT-based real-life tools for families.",
+      "Parent education, caregiver support, community connection, and real-life tools for families.",
   },
 };
 
@@ -34,6 +35,7 @@ type SupportCard = {
   title: string;
   description: string;
   tone: Tone;
+  image: string;
 };
 
 type JourneyStep = {
@@ -41,12 +43,14 @@ type JourneyStep = {
   title: string;
   description: string;
   tone: Tone;
+  image: string;
 };
 
 type FamilyCard = {
   icon: IconName;
   title: string;
   text: string;
+  image: string;
   bullets?: string[];
   highlight?: string;
   tone: Tone;
@@ -64,16 +68,19 @@ const toneStyles = {
     icon: "bg-brand-purple-deep text-white",
     text: "text-brand-purple-deep",
     soft: "bg-brand-lavender/55",
+    ring: "ring-brand-purple-deep/10",
   },
   teal: {
     icon: "bg-brand-teal text-white",
     text: "text-brand-teal",
     soft: "bg-brand-teal-light/60",
+    ring: "ring-brand-teal/10",
   },
   gold: {
     icon: "bg-brand-gold text-brand-navy",
     text: "text-brand-gold",
     soft: "bg-brand-gold/15",
+    ring: "ring-brand-gold/20",
   },
 } satisfies Record<Tone, Record<string, string>>;
 
@@ -82,6 +89,7 @@ const supportCards: SupportCard[] = [
     icon: "family",
     title: "Family-Centered Care",
     tone: "teal",
+    image: familiesImages.familyCenteredCareImage,
     description:
       "We listen, collaborate, and create personalized plans that reflect your family's goals and priorities.",
   },
@@ -89,20 +97,23 @@ const supportCards: SupportCard[] = [
     icon: "bookOpen",
     title: "Education & Empowerment",
     tone: "purple",
+    image: familiesImages.educationEmpowermentImage,
     description:
-      "We provide the knowledge and strategies you need to support your loved one with confidence.",
+      "We provide knowledge and strategies you can use with confidence at home and in daily routines.",
   },
   {
     icon: "heart",
     title: "Emotional Support",
     tone: "gold",
+    image: familiesImages.emotionalSupportImage,
     description:
-      "We know this journey can be overwhelming. We're here to listen, encourage, and walk with you.",
+      "We know this journey can feel overwhelming. We're here to listen, encourage, and walk with you.",
   },
   {
     icon: "support",
     title: "Community Connection",
     tone: "teal",
+    image: familiesImages.communityConnectionImage,
     description:
       "We help you connect with resources, local supports, and other families who truly understand.",
   },
@@ -110,8 +121,9 @@ const supportCards: SupportCard[] = [
     icon: "communication",
     title: "Ongoing Communication",
     tone: "purple",
+    image: familiesImages.ongoingCommunicationImage,
     description:
-      "You'll always know where your loved one stands and what's next because we believe in transparency and teamwork.",
+      "You'll always know where your loved one stands and what's next because teamwork matters.",
   },
 ];
 
@@ -120,6 +132,7 @@ const journeySteps: JourneyStep[] = [
     icon: "phone",
     title: "Getting Started",
     tone: "teal",
+    image: familiesImages.journeyGettingStartedImage,
     description:
       "We make the process simple from your first call to the initial assessment.",
   },
@@ -127,6 +140,7 @@ const journeySteps: JourneyStep[] = [
     icon: "check",
     title: "Personalized Plan",
     tone: "purple",
+    image: familiesImages.journeyPersonalizedPlanImage,
     description:
       "We create a customized plan based on your loved one's strengths, needs, and goals.",
   },
@@ -134,6 +148,7 @@ const journeySteps: JourneyStep[] = [
     icon: "family",
     title: "Therapy & Support",
     tone: "gold",
+    image: familiesImages.journeyTherapySupportImage,
     description:
       "Our therapists and team work together to build skills that improve daily life and independence.",
   },
@@ -141,6 +156,7 @@ const journeySteps: JourneyStep[] = [
     icon: "home",
     title: "Home & Community",
     tone: "teal",
+    image: familiesImages.journeyHomeCommunityImage,
     description:
       "We help carry strategies into everyday routines so progress happens where life happens.",
   },
@@ -148,6 +164,7 @@ const journeySteps: JourneyStep[] = [
     icon: "confidence",
     title: "Growth & Independence",
     tone: "purple",
+    image: familiesImages.journeyGrowthIndependenceImage,
     description:
       "We celebrate milestones and build skills that lead to greater independence and confidence.",
   },
@@ -158,19 +175,21 @@ const familyCards: FamilyCard[] = [
     icon: "training",
     title: "Parent & Caregiver Training",
     tone: "purple",
-    text: "We equip parents and caregivers with practical skills and real-world strategies, including:",
+    image: familiesImages.parentCaregiverTrainingImage,
+    text: "We equip parents and caregivers with practical skills and real-world strategies.",
     bullets: [
-      "De-escalation Training",
-      "Crisis Management",
-      "Positive Behavior Support",
-      "Communication Strategies",
-      "Daily Routines & Life Skills Support",
+      "De-escalation training",
+      "Crisis management",
+      "Positive behavior support",
+      "Communication strategies",
+      "Daily routines & life skills support",
     ],
   },
   {
     icon: "heart",
     title: "You Deserve Support Too",
     tone: "teal",
+    image: familiesImages.youDeserveSupportImage,
     text: "Caring for a loved one is a big job. Let us help with guidance, resources, and a community that has your back.",
     highlight:
       "Take care of you, so you can continue to take care of them.",
@@ -179,13 +198,14 @@ const familyCards: FamilyCard[] = [
     icon: "resources",
     title: "Helpful Resources",
     tone: "gold",
+    image: familiesImages.helpfulResourcesImage,
     text: "We connect families with trusted resources including:",
     bullets: [
-      "Financial & Insurance Guidance",
-      "Special Education Support",
-      "Community Services",
-      "Respite Care Options",
-      "Transition & Future Planning",
+      "Financial & insurance guidance",
+      "Special education support",
+      "Community services",
+      "Respite care options",
+      "Transition & future planning",
     ],
   },
 ];
@@ -223,6 +243,25 @@ const actionItems: ActionItem[] = [
   },
 ];
 
+function TiltedHeartOutline({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={`inline-block h-[1em] w-[1em] rotate-[-12deg] align-[-0.08em] ${className}`}
+      fill="none"
+    >
+      <path
+        d="M20.4 5.7c-1.8-1.9-4.7-1.9-6.5 0L12 7.6l-1.9-1.9c-1.8-1.9-4.7-1.9-6.5 0-1.9 2-1.9 5.1 0 7.1L12 21l8.4-8.2c1.9-2 1.9-5.1 0-7.1z"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function CheckList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2.5">
@@ -236,10 +275,271 @@ function CheckList({ items }: { items: string[] }) {
   );
 }
 
-export default function FamiliesPage() {
+function MobileFinalCta() {
   return (
-    <main className="flex-1 bg-white">
-      <h1 className="sr-only">Ava's Hub For Families</h1>
+    <div className="rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card">
+      <div className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-xl font-extrabold leading-tight">
+            Ready to Get Started?
+          </h2>
+          <p className="mt-1 text-sm text-white/90">
+            We&apos;d love to meet your family.
+          </p>
+        </div>
+        <CTAButton
+          href="/contact"
+          variant="secondary"
+          className="w-full !border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+        >
+          <span className="inline-flex items-center justify-center gap-2">
+            <Icon name="calendar" size="sm" />
+            <span className="text-xs">Schedule Consultation</span>
+          </span>
+        </CTAButton>
+      </div>
+    </div>
+  );
+}
+
+function MobileFamiliesHero() {
+  return (
+    <section className="px-6 pb-8 pt-5">
+      <div className="rounded-[2rem] bg-[#fffaf4]">
+        <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
+          <PlaceholderImage
+            src={familiesImages.familiesMobileHero}
+            alt="Ava's Hub families mobile hero banner"
+            width={1101}
+            height={1429}
+            priority
+            className="block h-auto w-full"
+            sizes="100vw"
+          />
+        </div>
+
+        <div className="mt-7">
+          <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+            For Families
+          </p>
+          <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
+            You&apos;re{" "}
+            <span className="italic text-brand-purple-bright">
+              Not Alone
+            </span>
+            . We&apos;re Here{" "}
+            <span className="italic text-brand-purple-bright">
+              With You
+              <span className="ml-3 text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </span>
+            .
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
+            At Ava&apos;s Hub, we partner with families every step of the way,
+            providing support, guidance, and tools to help your loved one thrive
+            at home, in the community, and in life.
+          </p>
+        </div>
+
+        <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
+          <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
+          <p className="text-base font-extrabold leading-relaxed text-brand-navy">
+            Strong families build strong futures.
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-3">
+          <CTAButton href="/contact" className="w-full">
+            <span className="inline-flex items-center gap-2">
+              <Icon name="calendar" size="sm" />
+              Schedule Consultation
+            </span>
+          </CTAButton>
+          <CTAButton href="#family-support-mobile" variant="secondary" className="w-full">
+            <span className="inline-flex items-center gap-2">
+              <Icon name="family" size="sm" />
+              How We Support You
+            </span>
+          </CTAButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MobileFamiliesPage() {
+  return (
+    <div className="md:hidden">
+      <MobileFamiliesHero />
+
+      <section id="family-support-mobile" className="px-6 pb-10">
+        <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
+          How We Support Your Family
+          <span className="ml-2 text-brand-purple-bright/55">
+            <TiltedHeartOutline />
+          </span>
+        </h2>
+        <div className="mt-6 space-y-5">
+          {supportCards.map((card) => (
+            <article
+              key={card.title}
+              className={`overflow-hidden rounded-[1.75rem] shadow-card ring-1 ${toneStyles[card.tone].soft} ${toneStyles[card.tone].ring}`}
+            >
+              <div className="relative h-44 bg-brand-teal-light">
+                <PlaceholderImage
+                  src={card.image}
+                  alt={`${card.title} at Ava's Hub`}
+                  fill
+                  className="object-cover object-center"
+                  sizes="100vw"
+                />
+              </div>
+              <div className="p-6">
+                <div className="flex items-start gap-4">
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
+                  >
+                    <Icon name={card.icon} size="lg" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
+                      {card.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 pb-10">
+        <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
+          We&apos;re Here for Every Step of the Journey
+          <span className="ml-2 text-brand-purple-bright/55">
+            <TiltedHeartOutline />
+          </span>
+        </h2>
+        <div className="relative mt-6 space-y-5 pl-5 before:absolute before:left-[2.15rem] before:top-4 before:h-[calc(100%-2rem)] before:w-px before:bg-brand-teal/25">
+          {journeySteps.map((step, index) => (
+            <article
+              key={step.title}
+              className="relative rounded-[1.75rem] bg-white/90 p-5 pl-12 shadow-card ring-1 ring-brand-teal/10"
+            >
+              <span className="absolute -left-1 top-5 flex h-10 w-10 items-center justify-center rounded-full bg-brand-teal text-white shadow-sm">
+                {index + 1}
+              </span>
+              <div className="grid grid-cols-[4.5rem_1fr] items-center gap-4">
+                <div className="relative h-16 overflow-hidden rounded-2xl bg-brand-teal-light">
+                  <PlaceholderImage
+                    src={step.image}
+                    alt={`${step.title} family journey step`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="72px"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
+                    {step.description}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 pb-10">
+        <div className="space-y-5">
+          {familyCards.map((card) => (
+            <article
+              key={card.title}
+              className={`overflow-hidden rounded-[1.75rem] shadow-card ring-1 ${toneStyles[card.tone].soft} ${toneStyles[card.tone].ring}`}
+            >
+              <div className="relative h-48 bg-brand-teal-light">
+                <PlaceholderImage
+                  src={card.image}
+                  alt={`${card.title} family support`}
+                  fill
+                  className="object-cover object-center"
+                  sizes="100vw"
+                />
+              </div>
+              <div className="p-6">
+                <Icon name={card.icon} className={toneStyles[card.tone].text} size="lg" />
+                <h2 className="mt-4 text-2xl font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h2>
+                <p className="mt-4 text-sm leading-relaxed text-brand-navy/85">
+                  {card.text}
+                </p>
+                {card.bullets ? (
+                  <div className="mt-5">
+                    <CheckList items={card.bullets} />
+                  </div>
+                ) : null}
+                {card.highlight ? (
+                  <div className="mt-6 rounded-2xl bg-white/75 px-5 py-4 ring-1 ring-brand-teal/10">
+                    <p className="text-base font-extrabold leading-relaxed text-brand-teal">
+                      {card.highlight}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 pb-5">
+        <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
+          <div className="relative h-56 bg-brand-teal-light">
+            <PlaceholderImage
+              src={familiesImages.familyFinalCtaImage}
+              alt="Family support and belonging at Ava's Hub"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          <div className="p-6">
+            <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
+              We&apos;re more than a therapy center. We&apos;re a partner in
+              your family&apos;s journey.
+            </h2>
+            <p className="mt-4 text-base font-extrabold leading-relaxed text-brand-purple-bright">
+              Together, we build skills. Together, we build independence.
+              Together, we build futures.
+            </p>
+            <CTAButton href="/contact" className="mt-5 w-full">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="calendar" size="sm" />
+                Schedule Consultation
+              </span>
+            </CTAButton>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-10">
+        <MobileFinalCta />
+      </section>
+    </div>
+  );
+}
+
+function DesktopFamiliesPage() {
+  return (
+    <div className="hidden md:block">
       <HeroBanner
         images={{
           desktop: familiesImages.familiesHeroBanner,
@@ -369,8 +669,8 @@ export default function FamiliesPage() {
             <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 sm:flex-row">
               <Icon name="heart" className="text-brand-gold" size="2x" />
               <p className="text-base font-bold leading-relaxed sm:text-lg">
-                We're more than a therapy center; we're a partner in your
-                family's journey. Together, we build skills. Together, we build
+                We&apos;re more than a therapy center; we&apos;re a partner in your
+                family&apos;s journey. Together, we build skills. Together, we build
                 independence. Together, we build futures.
               </p>
             </div>
@@ -409,6 +709,16 @@ export default function FamiliesPage() {
           </div>
         </SectionContainer>
       </section>
+    </div>
+  );
+}
+
+export default function FamiliesPage() {
+  return (
+    <main className="flex-1 bg-[#fffaf4] md:bg-white">
+      <h1 className="sr-only">Ava&apos;s Hub For Families</h1>
+      <MobileFamiliesPage />
+      <DesktopFamiliesPage />
     </main>
   );
 }
