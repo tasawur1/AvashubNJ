@@ -4,10 +4,20 @@ import { CTAButton } from "@/components/CTAButton";
 import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
+import {
+  MobileDownloadCard,
+  MobileSectionHeading,
+  ResourceBottomCta,
+  ResourceNewsletterCard,
+  TiltedHeartOutline,
+} from "@/components/page/ResourceMobileComponents";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
 import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
+import { guides } from "@/data/guides";
 import type { IconName } from "@/data/icons";
 import { resourcesImages } from "@/data/pageImages/resourcesImages";
+import { printables } from "@/data/printables";
 import {
   cardInnerPad,
   cardShell,
@@ -17,9 +27,9 @@ import {
 } from "@/lib/pageSectionStyles";
 
 export const metadata: Metadata = {
-  title: "Ava's Hub Resources | Printable Tools, Parent Guides & Family Support",
+  title: "Resources | Ava's Hub Printables, Guides & Family Support",
   description:
-    "Explore Ava's Hub resources including printable worksheets, daily living tools, communication supports, behavior strategies, parent guides, and helpful links for families.",
+    "Browse Ava's Hub resources, printable worksheets, family guides, and helpful tools for daily living skills, emotional regulation, communication, routines, and independence.",
   alternates: { canonical: "/resources" },
   openGraph: {
     url: "/resources",
@@ -60,6 +70,14 @@ type FeatureItem = {
   icon: IconName;
   title: string;
   tone: Tone;
+};
+
+type MobileResourceCategory = {
+  title: string;
+  description: string;
+  image: string;
+  tone: Tone;
+  href: string;
 };
 
 const toneStyles = {
@@ -196,6 +214,67 @@ const featureItems: FeatureItem[] = [
   { icon: "heart", title: "Made With Love for Our Community", tone: "purple" },
 ];
 
+const mobileResourceCategories: MobileResourceCategory[] = [
+  {
+    title: "Printable Worksheets",
+    image: resourcesImages.mobilePrintableWorksheets,
+    tone: "purple",
+    href: "#mobile-printables",
+    description: "Download and print activities for skill-building at home.",
+  },
+  {
+    title: "Daily Living Skills",
+    image: resourcesImages.mobileDailyLivingSkills,
+    tone: "teal",
+    href: "#mobile-guides",
+    description: "Resources to support independence in everyday routines.",
+  },
+  {
+    title: "Social Emotional Learning",
+    image: resourcesImages.mobileSocialEmotionalLearning,
+    tone: "gold",
+    href: "#mobile-guides",
+    description:
+      "Tools to build emotional regulation, social skills, and self-confidence.",
+  },
+  {
+    title: "Communication Supports",
+    image: resourcesImages.mobileCommunicationSupports,
+    tone: "teal",
+    href: "#mobile-links",
+    description:
+      "Visuals, strategies, and tools to support effective communication.",
+  },
+  {
+    title: "Behavior Supports",
+    image: resourcesImages.mobileBehaviorSupports,
+    tone: "purple",
+    href: "#mobile-links",
+    description:
+      "Guides and strategies for positive behavior and challenging moments.",
+  },
+  {
+    title: "Parent & Caregiver Resources",
+    image: resourcesImages.mobileParentCaregiverResources,
+    tone: "teal",
+    href: "#mobile-guides",
+    description: "Support, training tools, and tips for families and caregivers.",
+  },
+];
+
+const mobilePrintableImages: Record<string, string> = {
+  "feelings-check-in": resourcesImages.mobileWorksheetCard1,
+  "first-then-visual-schedule": resourcesImages.mobileWorksheetCard2,
+  "morning-routine-chart": resourcesImages.mobileWorksheetCard3,
+};
+
+const mobileGuideImages: Record<string, string> = {
+  "support-independence-at-home": resourcesImages.mobileGuideCard1,
+  "calming-strategies": resourcesImages.mobileGuideCard2,
+  "successful-routines": resourcesImages.mobileGuideCard3,
+  "building-social-skills": resourcesImages.mobileGuideCard4,
+};
+
 function ImageTile({ src, title }: { src: string; title: string }) {
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand-teal/10">
@@ -212,9 +291,225 @@ function ImageTile({ src, title }: { src: string; title: string }) {
   );
 }
 
+function MobileResourcesPage() {
+  return (
+    <div className="bg-[#fffaf4] md:hidden">
+      <h1 className="sr-only">Ava's Hub Resources</h1>
+
+      <section className="px-6 pb-8 pt-5">
+        <div className="rounded-[2rem] bg-[#fffaf4]">
+          <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
+            <PlaceholderImage
+              src={resourcesImages.mobileHeroBanner}
+              alt="Ava's Hub resources mobile hero banner"
+              width={1182}
+              height={1331}
+              priority
+              className="block h-auto w-full"
+              sizes="100vw"
+            />
+          </div>
+
+          <div className="mt-7">
+            <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+              Resources for Every Step
+            </p>
+            <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
+              Tools. Support. Growth.{" "}
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
+              We&apos;re here to support your child&apos;s progress at home, in
+              the community, and beyond. Explore helpful tools, printable
+              worksheets, and trusted resources to make everyday learning and
+              life skills a little easier.
+            </p>
+          </div>
+
+          <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
+            <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
+            <p className="text-base font-extrabold leading-relaxed text-brand-navy">
+              You don&apos;t have to figure this out alone.
+            </p>
+          </div>
+
+          <div className="mt-6 space-y-3">
+            <CTAButton href="#mobile-printables" className="w-full">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="resources" size="sm" />
+                View Printables
+              </span>
+            </CTAButton>
+            <CTAButton href="#mobile-categories" variant="secondary" className="w-full">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="bookOpen" size="sm" />
+                Explore Resources
+              </span>
+            </CTAButton>
+          </div>
+        </div>
+      </section>
+
+      <section id="mobile-categories" className="px-6 pb-10">
+        <MobileSectionHeading title="Browse Resources by Category" />
+        <div className="mt-6 space-y-5">
+          {mobileResourceCategories.map((card) => (
+            <Link
+              key={card.title}
+              href={card.href}
+              className="grid grid-cols-[6.25rem_1fr_auto] items-center gap-4 rounded-[1.75rem] bg-white/95 p-3 shadow-card ring-1 ring-brand-teal/10"
+            >
+              <div className="relative h-24 overflow-hidden rounded-[1.25rem] bg-brand-teal-light">
+                <PlaceholderImage
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover object-center"
+                  sizes="40vw"
+                />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
+                  {card.description}
+                </p>
+              </div>
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
+                aria-hidden
+              >
+                <Icon name="arrowRight" size="sm" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section id="mobile-printables" className="px-6 pb-10">
+        <MobileSectionHeading
+          title="Printable Worksheets & Tools"
+          subtitle="Download, print, and use at home for practice and carryover."
+        />
+        <div className="mt-6 space-y-5">
+          {printables.slice(0, 3).map((printable) => (
+            <MobileDownloadCard
+              key={printable.slug}
+              title={printable.title}
+              description={printable.description}
+              image={mobilePrintableImages[printable.slug] ?? printable.image}
+              href={printable.pdf}
+              category={printable.category}
+              fileSize={printable.fileSize}
+              buttonLabel="Download"
+            />
+          ))}
+        </div>
+        <CTAButton href="/printables" className="mt-6 w-full">
+          View All Printables
+        </CTAButton>
+      </section>
+
+      <section id="mobile-links" className="px-6 pb-10">
+        <MobileSectionHeading
+          title="Helpful Websites & Resource Links"
+          subtitle="Trusted organizations and websites we recommend."
+        />
+        <div className="mt-6 space-y-4">
+          {helpfulLinks.map((item) => (
+            <Link
+              key={item.title}
+              href={`https://${item.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="grid grid-cols-[3.25rem_1fr_auto] items-center gap-4 rounded-[1.5rem] bg-white/95 p-4 shadow-card ring-1 ring-brand-teal/10"
+            >
+              <span
+                className={`flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+              >
+                <Icon name="bookOpen" size="sm" />
+              </span>
+              <div>
+                <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+                  {item.title}
+                </h3>
+                <p className="mt-1 text-xs font-bold text-brand-teal">
+                  {item.url}
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
+                  {item.description}
+                </p>
+              </div>
+              <Icon name="arrowRight" className="text-brand-purple-bright" size="sm" />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section id="mobile-guides" className="px-6 pb-10">
+        <MobileSectionHeading
+          title="Featured Guides & Downloads"
+          subtitle="In-depth guides to help you feel informed and empowered."
+        />
+        <div className="mt-6 space-y-5">
+          {guides.slice(0, 4).map((guide) => (
+            <MobileDownloadCard
+              key={guide.slug}
+              title={guide.title}
+              description={guide.description}
+              image={mobileGuideImages[guide.slug] ?? guide.image}
+              href={guide.pdf}
+              category={guide.category}
+              buttonLabel="Download Guide"
+            />
+          ))}
+        </div>
+        <CTAButton href="/guides" className="mt-6 w-full">
+          View All Guides
+        </CTAButton>
+      </section>
+
+      <ResourceNewsletterCard />
+
+      <section className="px-6 pb-10">
+        <div className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10">
+          <div className="relative h-44 bg-brand-teal-light">
+            <PlaceholderImage
+              src={resourcesImages.mobileFinalCta}
+              alt="Ava's Hub family resource support"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          <div className="p-6">
+            <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
+              We&apos;re here to walk beside you.
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+              Helpful tools are just the beginning. We can help your family
+              choose strategies that make everyday life feel more supported.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <ResourceBottomCta
+        title="Need Help Finding the Right Resource?"
+        text="We're here to walk beside you-every step of the way."
+      />
+    </div>
+  );
+}
+
 export default function ResourcesPage() {
   return (
     <main className="flex-1 bg-white">
+      <MobileResourcesPage />
+      <div className="hidden md:block">
       <h1 className="sr-only">Ava's Hub Resources</h1>
       <HeroBanner
         images={{
@@ -275,7 +570,7 @@ export default function ResourcesPage() {
                   ))}
                 </div>
                 <div className="mt-7 flex justify-center">
-                  <CTAButton href="/contact" className="w-full sm:w-auto">
+                  <CTAButton href="/printables" className="w-full sm:w-auto">
                     View All Printables
                   </CTAButton>
                 </div>
@@ -313,11 +608,6 @@ export default function ResourcesPage() {
                       <Icon name="check" className="text-brand-purple-deep" size="sm" />
                     </Link>
                   ))}
-                </div>
-                <div className="mt-7 flex justify-center">
-                  <CTAButton href="/contact" className="w-full !bg-brand-teal hover:!bg-brand-purple-deep sm:w-auto">
-                    View More Resources
-                  </CTAButton>
                 </div>
               </div>
             </div>
@@ -424,6 +714,7 @@ export default function ResourcesPage() {
           </div>
         </SectionContainer>
       </section>
+      </div>
     </main>
   );
 }

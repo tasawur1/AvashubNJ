@@ -2,18 +2,24 @@
 
 Use this folder for mobile-only Resources page section images.
 
-Recommended filenames:
+Current filenames:
 
-- `hero-banner-mobile.png` - top mobile hero image
-- `feelings-check-in.png` - Feelings Check-In printable
-- `first-then.png` - First, Then Visual Schedule printable
-- `morning-routine.png` - Morning Routine Chart printable
-- `good-choices.png` - Good Choices Sort printable
-- `guide-independence.png` - How to Support Independence at Home guide
-- `guide-calming.png` - Calming Strategies That Work guide
-- `guide-routines.png` - Creating Successful Routines guide
-- `guide-social-skills.png` - Building Social Skills Every Day guide
-- `stay-informed.png` - Stay Informed/newsletter section image, if used
+- `hero-banner-resources-mobile.png` - Resources mobile hero image
+- `printable-worksheets.png` - Printable Worksheets category card
+- `daily-living-skills.png` - Daily Living Skills category card
+- `social-emotional-learning.png` - Social Emotional Learning category card
+- `communication-supports.png` - Communication Supports category card
+- `behavior-supports.png` - Behavior Supports category card
+- `parent-caregiver-resources.png` - Parent & Caregiver Resources category card
+- `worksheet-card-1.png` - first worksheet card on Resources page
+- `worksheet-card-2.png` - second worksheet card on Resources page
+- `worksheet-card-3.png` - third worksheet card on Resources page
+- `guide-card-1.png` - first guide card on Resources page
+- `guide-card-2.png` - second guide card on Resources page
+- `guide-card-3.png` - third guide card on Resources page
+- `guide-card-4.png` - fourth guide card on Resources page
+- `newsletter-card.png` - Stay Informed/newsletter section image
+- `resources-final-cta.png` - final emotional CTA image
 
 ## How To Update
 
