@@ -351,7 +351,7 @@ const serviceCards = [
   {
     icon: "heart",
     title: "Social & Emotional Builders",
-    badge: "$155/month",
+    badge: "Weekly Skill Group",
     badgeClass: "bg-brand-lavender text-brand-purple-deep",
     description:
       "A playful, structured program that builds fine motor skills, sensory exploration, social readiness, emotional regulation, and school prep.",
@@ -368,7 +368,7 @@ const serviceCards = [
   {
     icon: "resources",
     title: "Executive Function Club",
-    badge: "$165/month",
+    badge: "After-School Support",
     badgeClass: "bg-brand-teal-light text-brand-teal",
     description:
       "After-School Hub offers a supportive space where kids build regulation, cooperative play, motor skills, flexible thinking, and problem-solving.",
