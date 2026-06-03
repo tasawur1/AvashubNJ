@@ -24,6 +24,25 @@ export const metadata: Metadata = {
 const ABOUT_HERO_ALT =
   "Ava's Hub About Us — occupational therapy-based life skills and independence";
 
+function TiltedHeartOutline({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={`inline-block h-[1em] w-[1em] rotate-[-12deg] align-[-0.08em] ${className}`}
+      fill="none"
+    >
+      <path
+        d="M20.4 5.7c-1.8-1.9-4.7-1.9-6.5 0L12 7.6l-1.9-1.9c-1.8-1.9-4.7-1.9-6.5 0-1.9 2-1.9 5.1 0 7.1L12 21l8.4-8.2c1.9-2 1.9-5.1 0-7.1z"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const beliefCards = [
   {
     icon: "home",
@@ -130,7 +149,13 @@ function MobileAboutHero() {
             More Than a Therapy Center
           </p>
           <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
-            We Built Ava&apos;s Hub Because Families Deserve More
+            We Built Ava&apos;s Hub Because{" "}
+            <span className="italic text-brand-purple-bright">
+              Families Deserve More
+              <span className="ml-3 text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </span>
           </h2>
           <p className="mt-5 text-lg font-extrabold leading-snug text-brand-purple-bright">
             You deserve support, connection, and a place where your child can
