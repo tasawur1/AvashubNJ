@@ -476,8 +476,8 @@ function MobileProgramHero() {
           <PlaceholderImage
             src={programsImages.programsHeroMobile}
             alt="Ava's Hub programs mobile hero banner"
-            width={1123}
-            height={1401}
+            width={1122}
+            height={1402}
             priority
             className="block h-auto w-full"
             sizes="100vw"

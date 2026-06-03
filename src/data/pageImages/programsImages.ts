@@ -10,7 +10,7 @@ export const programsImages = {
   teenProgramImage: "/images/home/teens-program.png",
   youngAdultProgramImage: "/images/home/young-adults-program.png",
   otServiceImage: "/images/home/after-school-2.png",
-  familySupportImage: "/images/home/after-school-3.png",
+  familySupportImage: "/images/Programs/mobile/benefits-for-parents.png",
   hero: "/images/Programs/hero-banner-programs.png",
   heroMobile: "/images/Programs/hero-banner-programs-mobile.png",
 } as const;
