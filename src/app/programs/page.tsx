@@ -578,9 +578,11 @@ function MobileProgramsPage() {
           {helpCards.map((card) => (
             <article
               key={card.title}
-              className="grid grid-cols-[6.25rem_1fr] items-center gap-4 rounded-3xl bg-brand-teal-light/75 p-5 shadow-card ring-1 ring-brand-teal/10"
+              className={`grid grid-cols-[6.25rem_1fr] items-center gap-4 rounded-3xl p-5 shadow-card ring-1 ${toneStyles[card.tone].card}`}
             >
-              <span className="flex h-24 w-24 items-center justify-center rounded-[1.4rem] bg-white/75 text-brand-teal shadow-sm">
+              <span
+                className={`flex h-24 w-24 items-center justify-center rounded-[1.4rem] shadow-sm ${toneStyles[card.tone].softIcon}`}
+              >
                 <Icon name={card.icon} size="2x" />
               </span>
               <div className="min-w-0">
