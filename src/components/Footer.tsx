@@ -59,9 +59,9 @@ export function Footer() {
                 Visit us
               </p>
               <p className="mt-2 pl-7">
-                280 S Harrison Street, 3rd Floor, Suite 301
+                280 S Harrison Street, Suite 311
                 <br />
-                East Orange, NJ 07018
+                East Orange, NJ
               </p>
             </address>
             <div className="mt-6 space-y-3 text-sm sm:text-base">

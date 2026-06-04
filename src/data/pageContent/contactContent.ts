@@ -30,14 +30,13 @@ export const contactCards: {
   {
     icon: "location",
     title: "Visit Us",
-    detail: "280 S Harrison St, East Orange, NJ 07018",
+    detail: "280 S Harrison Street, Suite 311, East Orange, NJ",
   },
 ];
 
 export const officeHours = [
-  { day: "Monday – Friday", hours: "9:00 AM – 6:00 PM" },
-  { day: "Saturday", hours: "By appointment" },
-  { day: "Sunday", hours: "Closed" },
+  { day: "Monday - Friday", hours: "8:00 AM - 8:00 PM" },
+  { day: "Saturday - Sunday", hours: "10:00 AM - 4:00 PM" },
 ];
 
 export const MAP_EMBED_SRC =

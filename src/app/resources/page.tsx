@@ -9,7 +9,6 @@ import {
   MobileSectionHeading,
   ResourceBottomCta,
   ResourceNewsletterCard,
-  TiltedHeartOutline,
 } from "@/components/page/ResourceMobileComponents";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
@@ -75,7 +74,7 @@ type FeatureItem = {
 type MobileResourceCategory = {
   title: string;
   description: string;
-  image: string;
+  icon: IconName;
   tone: Tone;
   href: string;
 };
@@ -217,21 +216,21 @@ const featureItems: FeatureItem[] = [
 const mobileResourceCategories: MobileResourceCategory[] = [
   {
     title: "Printable Worksheets",
-    image: resourcesImages.mobilePrintableWorksheets,
+    icon: "resources",
     tone: "purple",
     href: "#mobile-printables",
     description: "Download and print activities for skill-building at home.",
   },
   {
     title: "Daily Living Skills",
-    image: resourcesImages.mobileDailyLivingSkills,
+    icon: "home",
     tone: "teal",
     href: "#mobile-guides",
     description: "Resources to support independence in everyday routines.",
   },
   {
     title: "Social Emotional Learning",
-    image: resourcesImages.mobileSocialEmotionalLearning,
+    icon: "heart",
     tone: "gold",
     href: "#mobile-guides",
     description:
@@ -239,7 +238,7 @@ const mobileResourceCategories: MobileResourceCategory[] = [
   },
   {
     title: "Communication Supports",
-    image: resourcesImages.mobileCommunicationSupports,
+    icon: "communication",
     tone: "teal",
     href: "#mobile-links",
     description:
@@ -247,7 +246,7 @@ const mobileResourceCategories: MobileResourceCategory[] = [
   },
   {
     title: "Behavior Supports",
-    image: resourcesImages.mobileBehaviorSupports,
+    icon: "brain",
     tone: "purple",
     href: "#mobile-links",
     description:
@@ -255,7 +254,7 @@ const mobileResourceCategories: MobileResourceCategory[] = [
   },
   {
     title: "Parent & Caregiver Resources",
-    image: resourcesImages.mobileParentCaregiverResources,
+    icon: "family",
     tone: "teal",
     href: "#mobile-guides",
     description: "Support, training tools, and tips for families and caregivers.",
@@ -296,9 +295,9 @@ function MobileResourcesPage() {
     <div className="bg-[#fffaf4] md:hidden">
       <h1 className="sr-only">Ava's Hub Resources</h1>
 
-      <section className="px-6 pb-8 pt-5">
-        <div className="rounded-[2rem] bg-[#fffaf4]">
-          <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
+      <section className="pb-8">
+        <div className="bg-[#fffaf4]">
+          <div className="mx-auto w-full overflow-hidden rounded-b-[2rem] bg-brand-teal-light shadow-card">
             <PlaceholderImage
               src={resourcesImages.mobileHeroBanner}
               alt="Ava's Hub resources mobile hero banner"
@@ -310,44 +309,32 @@ function MobileResourcesPage() {
             />
           </div>
 
-          <div className="mt-7">
-            <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
-              Resources for Every Step
-            </p>
-            <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
-              Tools. Support. Growth.{" "}
-              <span className="text-brand-purple-bright/55">
-                <TiltedHeartOutline />
+          <div className="relative z-10 mx-6 -mt-12 rounded-[2rem] bg-[#fffaf4]/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+            <h2 className="text-[clamp(1.95rem,8vw,2.3rem)] font-extrabold leading-[1.08] tracking-tight text-brand-navy">
+              Tools and Resources for Everyday Success at Home.{" "}
+              <span className="text-brand-gold">
+                <Icon name="heart" size="sm" />
               </span>
             </h2>
             <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-              We&apos;re here to support your child&apos;s progress at home, in
-              the community, and beyond. Explore helpful tools, printable
-              worksheets, and trusted resources to make everyday learning and
-              life skills a little easier.
+              Adaptive equipment, visual supports, routines, and practical
+              resources to help your child build skills and confidence every
+              day.
             </p>
-          </div>
-
-          <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
-            <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
-            <p className="text-base font-extrabold leading-relaxed text-brand-navy">
-              You don&apos;t have to figure this out alone.
-            </p>
-          </div>
-
-          <div className="mt-6 space-y-3">
-            <CTAButton href="#mobile-printables" className="w-full">
+            <div className="mt-6 space-y-3">
+              <CTAButton href="#mobile-printables" className="w-full">
               <span className="inline-flex items-center gap-2">
                 <Icon name="resources" size="sm" />
                 View Printables
               </span>
-            </CTAButton>
-            <CTAButton href="#mobile-categories" variant="secondary" className="w-full">
+              </CTAButton>
+              <CTAButton href="#mobile-categories" variant="secondary" className="w-full">
               <span className="inline-flex items-center gap-2">
-                <Icon name="bookOpen" size="sm" />
+                <Icon name="arrowRight" size="sm" />
                 Explore Resources
               </span>
-            </CTAButton>
+              </CTAButton>
+            </div>
           </div>
         </div>
       </section>
@@ -361,14 +348,12 @@ function MobileResourcesPage() {
               href={card.href}
               className="grid grid-cols-[6.25rem_1fr_auto] items-center gap-4 rounded-[1.75rem] bg-white/95 p-3 shadow-card ring-1 ring-brand-teal/10"
             >
-              <div className="relative h-24 overflow-hidden rounded-[1.25rem] bg-brand-teal-light">
-                <PlaceholderImage
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover object-center"
-                  sizes="40vw"
-                />
+              <div className="flex h-24 items-center justify-center rounded-[1.25rem] bg-brand-lavender/60">
+                <span
+                  className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[card.tone].icon} shadow-sm`}
+                >
+                  <Icon name={card.icon} size="lg" />
+                </span>
               </div>
               <div>
                 <h3 className="text-base font-extrabold leading-tight text-brand-navy">

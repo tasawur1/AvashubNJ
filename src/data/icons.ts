@@ -2,6 +2,7 @@ import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowRight,
   faBookOpen,
+  faBrain,
   faBriefcase,
   faCalendarDays,
   faCheck,
@@ -45,6 +46,7 @@ export const icons = {
   shieldHeart: faShieldHeart,
   school: faSchool,
   bookOpen: faBookOpen,
+  brain: faBrain,
   ddd: faPeopleGroup,
   puzzlePiece: faPuzzlePiece,
   clock: faClock,

@@ -39,15 +39,6 @@ type SupportCard = {
   tone: Exclude<Tone, "pink">;
 };
 
-type PricingCard = {
-  icon: IconName;
-  title: string;
-  price: string;
-  meta: string;
-  description: string;
-  tone: Exclude<Tone, "pink">;
-};
-
 type FeatureItem = {
   icon: IconName;
   title: string;
@@ -126,44 +117,12 @@ const supportCards: SupportCard[] = [
   },
 ];
 
-const pricingCards: PricingCard[] = [
-  {
-    icon: "community",
-    title: "Individual Parent Coaching",
-    price: "$85 - $125",
-    meta: "per session (45-60 min)",
-    tone: "purple",
-    description:
-      "Personalized OT-based coaching focused on your goals, routines, and daily life strategies.",
-  },
-  {
-    icon: "family",
-    title: "Parent + Child Coaching",
-    price: "$95 - $135",
-    meta: "per session (45-60 min)",
-    tone: "teal",
-    description:
-      "Hands-on strategies and play skills to build connection and support your child's growth.",
-  },
-  {
-    icon: "heart",
-    title: "Parent Partnership Sessions",
-    price: "$100 - $150",
-    meta: "per session (45-60 min)",
-    tone: "gold",
-    description:
-      "OT-based sessions to help parents work together, reduce stress, and create consistency at home.",
-  },
-  {
-    icon: "confidence",
-    title: "Parent Reset Package (4 Sessions)",
-    price: "$320 - $450",
-    meta: "package",
-    tone: "purple",
-    description:
-      "Save when you invest in a series of sessions tailored to your family's needs.",
-  },
-];
+const insuranceOptions = [
+  "Major Insurance Plans",
+  "NJ FamilyCare / Medicaid",
+  "Private Pay Options",
+  "Superbills Available",
+] as const;
 
 const benefits = [
   "Reduce stress and overwhelm",
@@ -486,30 +445,31 @@ function MobileProgramHero() {
 
         <div className="mt-7">
           <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
-            Programs That Meet Your Child Where They Are
+            Our Programs
           </p>
           <h2 className="mt-5 text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
-            Real-Life Skills for{" "}
-            <span className="italic text-brand-purple-bright">
-              Every Stage
-              <span className="ml-3 text-brand-purple-bright/55">
-                <TiltedHeartOutline />
-              </span>
-            </span>{" "}
-            of Growth
+            Real Skills.
+            <br />
+            Real Growth.
+            <br />
+            Real Futures.{" "}
+            <span className="text-brand-gold">
+              <Icon name="heart" size="sm" />
+            </span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-            From early learning to teen independence and young adult life
-            skills, Ava&apos;s Hub helps children and families build confidence
-            through practical, relationship-based occupational therapy.
+            At Ava&apos;s Hub, we provide evidence-based occupational therapy
+            services that help children, teens, and young adults build
+            independence, confidence, participation, and meaningful life skills
+            through real-world experiences.
           </p>
         </div>
 
         <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
           <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
           <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
-            Because progress should show up at home, at school, and in real
-            life.
+            We help neurodiverse children and teens thrive at home, school, and
+            in their communities.
           </p>
         </div>
 
@@ -527,6 +487,45 @@ function MobileProgramHero() {
             </span>
           </CTAButton>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function InsuranceOptionsCard({ className = "" }: { className?: string }) {
+  return (
+    <section className={className} aria-labelledby="insurance-options-heading">
+      <div className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+        <div className="flex items-start gap-4">
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+            <Icon name="shieldHeart" size="lg" />
+          </span>
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
+              Insurance Based Model
+            </p>
+            <h2
+              id="insurance-options-heading"
+              className="mt-2 text-2xl font-extrabold leading-tight text-brand-navy"
+            >
+              Insurance & Payment Options
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+              We believe therapy should be accessible.
+            </p>
+          </div>
+        </div>
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          {insuranceOptions.map((option) => (
+            <li
+              key={option}
+              className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+            >
+              <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+              <span>{option}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -755,42 +754,7 @@ function MobileProgramsPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-10">
-        <h2 className="font-serif text-[1.9rem] font-semibold leading-tight text-brand-navy">
-          Sessions & Pricing
-        </h2>
-        <p className="mt-2 text-sm leading-relaxed text-brand-navy/70">
-          Private pay options designed to support your family&apos;s goals.
-        </p>
-        <div className="mt-6 space-y-4">
-          {pricingCards.map((card) => (
-            <article
-              key={card.title}
-              className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
-            >
-              <Icon name={card.icon} className={toneStyles[card.tone].text} size="lg" />
-              <h3 className="mt-4 text-lg font-extrabold text-brand-navy">
-                {card.title}
-              </h3>
-              <p className="mt-4 text-3xl font-extrabold text-brand-purple-deep">
-                {card.price}
-              </p>
-              <p className="mt-1 text-sm font-semibold text-brand-navy/70">
-                {card.meta}
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
-                {card.description}
-              </p>
-            </article>
-          ))}
-        </div>
-        <div className="mt-5 rounded-2xl bg-brand-gold/15 px-5 py-4 ring-1 ring-brand-gold/30">
-          <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
-            Package options and monthly programs may be available. Payment is
-            due at time of service for private pay sessions.
-          </p>
-        </div>
-      </section>
+      <InsuranceOptionsCard className="px-6 pb-10" />
 
       <section className="px-6 pb-10">
         <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
@@ -924,61 +888,10 @@ function DesktopProgramsPage() {
         </SectionContainer>
       </section>
 
-      <section
-        className={`bg-gradient-to-b from-brand-lavender/20 to-white ${pageSectionPad}`}
-        aria-labelledby="pricing-heading"
-      >
+      <section className={`bg-gradient-to-b from-brand-lavender/20 to-white ${pageSectionPad}`}>
         <SectionContainer>
-          <div className={cardShell}>
-            <div className={`${cardInnerPad} lg:px-10`}>
-              <div className={innerContentWrap}>
-                <SectionHeadingDecorated
-                  id="pricing-heading"
-                  title="Our Sessions & Pricing (Private Pay)"
-                  subtitle="Invest in yourself, your child, and your family."
-                  className="mb-8"
-                />
-
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {pricingCards.map((card) => (
-                    <article
-                      key={card.title}
-                      className="flex h-full flex-col rounded-3xl bg-white px-5 py-6 text-center shadow-sm ring-1 ring-brand-teal/10"
-                    >
-                      <span
-                        className={`mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-                      >
-                        <Icon name={card.icon} size="lg" />
-                      </span>
-                      <h3 className={`mt-4 text-base font-bold leading-snug ${toneStyles[card.tone].text}`}>
-                        {card.title}
-                      </h3>
-                      <p className="mt-5 text-3xl font-extrabold leading-none text-brand-navy">
-                        {card.price}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-brand-navy/80">
-                        {card.meta}
-                      </p>
-                      <p className="mt-5 flex-1 text-sm leading-relaxed text-brand-navy/80">
-                        {card.description}
-                      </p>
-                    </article>
-                  ))}
-                </div>
-
-                <div className="mt-7 rounded-2xl bg-brand-gold/15 px-5 py-4 ring-1 ring-brand-gold/30">
-                  <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-center sm:text-left">
-                    <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-gold text-brand-navy">
-                      <Icon name="circleCheck" size="sm" />
-                    </span>
-                    <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
-                      Payment is due at time of service for private pay sessions.
-                      Package options and monthly programs may be available.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className={innerContentWrap}>
+            <InsuranceOptionsCard />
           </div>
         </SectionContainer>
       </section>

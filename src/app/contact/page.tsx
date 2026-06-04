@@ -67,7 +67,7 @@ const contactItems: ContactItem[] = [
     icon: "phone",
     title: "Call Us",
     tone: "purple",
-    lines: ["(908) 758-4692", "Mon - Fri: 8:00 AM - 6:00 PM"],
+    lines: ["(908) 758-4692", "Monday - Friday: 8:00 AM - 8:00 PM"],
   },
   {
     icon: "email",
@@ -80,8 +80,8 @@ const contactItems: ContactItem[] = [
     title: "Visit Us",
     tone: "gold",
     lines: [
-      "280 S Harrison Street, 3rd Floor, Suite 301",
-      "East Orange, NJ 07018",
+      "280 S Harrison Street, Suite 311",
+      "East Orange, NJ",
       "Free parking available.",
     ],
   },
@@ -90,9 +90,8 @@ const contactItems: ContactItem[] = [
     title: "Office Hours",
     tone: "purple",
     lines: [
-      "Monday - Friday: 8:00 AM - 6:00 PM",
-      "Saturday: By Appointment",
-      "Sunday: Closed",
+      "Monday - Friday: 8:00 AM - 8:00 PM",
+      "Saturday - Sunday: 10:00 AM - 4:00 PM",
     ],
   },
 ];
@@ -349,9 +348,9 @@ export default function ContactPage() {
                 <div className="mt-5 rounded-2xl bg-brand-teal-light/45 px-5 py-4 text-center ring-1 ring-brand-teal/10">
                   <p className="font-bold text-brand-teal">Ava's Hub</p>
                   <p className="mt-1 text-sm leading-relaxed text-brand-navy/85">
-                    280 S Harrison Street, 3rd Floor, Suite 301
+                    280 S Harrison Street, Suite 311
                     <br />
-                    East Orange, NJ 07018
+                    East Orange, NJ
                   </p>
                 </div>
               </div>
