@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { Icon } from "@/components/Icon";
 import type { CalendarEvent } from "@/lib/fetchEvents";
 
 type EventsCalendarProps = {
@@ -144,9 +145,9 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
   }, [activeFilter, events, selectedDay, selectedMonth, selectedYear]);
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <div className="mb-6 flex flex-col items-start gap-3 sm:items-center">
-        <p className="text-left text-base font-bold text-brand-teal sm:text-center sm:text-lg">
+    <div className="mx-auto max-w-5xl rounded-[1.5rem] bg-[#fffaf4]/80 p-4 ring-1 ring-brand-teal/10 sm:bg-transparent sm:p-0 sm:ring-0">
+      <div className="mb-6 flex flex-col items-start gap-4 sm:items-center">
+        <p className="inline-flex items-center rounded-full bg-brand-teal-light/70 px-4 py-2 text-left text-sm font-extrabold text-brand-teal ring-1 ring-brand-teal/10 sm:text-center sm:text-lg">
           {monthLabel}
         </p>
         <div className="flex flex-wrap justify-start gap-2 sm:justify-center">
@@ -157,7 +158,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
             id="events-day"
             value={selectedDay}
             onChange={(event) => setSelectedDay(event.target.value)}
-            className="rounded-full border border-brand-teal/20 bg-white px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
+            className="rounded-full border border-brand-teal/15 bg-white/95 px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
           >
             <option value="all">All dates</option>
             {dayOptions.map((day) => (
@@ -177,7 +178,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
               setSelectedMonth(Number(event.target.value));
               setSelectedDay("all");
             }}
-            className="rounded-full border border-brand-teal/20 bg-white px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
+            className="rounded-full border border-brand-teal/15 bg-white/95 px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
           >
             {MONTHS.map((monthName, index) => (
               <option key={monthName} value={index}>
@@ -196,7 +197,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
               setSelectedYear(Number(event.target.value));
               setSelectedDay("all");
             }}
-            className="rounded-full border border-brand-teal/20 bg-white px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
+            className="rounded-full border border-brand-teal/15 bg-white/95 px-4 py-2 text-sm font-semibold text-brand-navy shadow-sm outline-none transition hover:bg-brand-teal-light/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
           >
             {yearOptions.map((year) => (
               <option key={year} value={year}>
@@ -220,7 +221,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                   `inline-flex cursor-pointer items-center rounded-full px-4 py-2.5 text-sm font-semibold transition focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-teal ` +
                   (selected
                     ? "bg-brand-teal text-white shadow-md"
-                    : "bg-white text-brand-navy ring-1 ring-brand-teal/15 hover:bg-brand-teal-light")
+                    : "bg-white/95 text-brand-navy ring-1 ring-brand-teal/15 hover:bg-brand-teal-light")
                 }
               >
                 <input
@@ -246,7 +247,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
             return (
               <article
                 key={`${event.date}-${event.title}-${event.time}`}
-                className="grid min-h-28 grid-cols-[4.25rem_1fr] overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-brand-teal/15"
+                className="grid min-h-28 grid-cols-[4.5rem_1fr] overflow-hidden rounded-[1.35rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10"
                 title={event.details || event.title}
                 aria-label={
                   event.details
@@ -263,7 +264,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                   </span>
                 </div>
 
-                <div className="flex min-w-0 flex-col justify-center bg-brand-teal-light/35 px-5 py-4">
+                <div className="flex min-w-0 flex-col justify-center bg-gradient-to-br from-brand-teal-light/45 to-brand-lavender/25 px-5 py-4">
                   <p className="text-xs font-bold uppercase tracking-normal text-brand-purple-bright">
                     {event.category}
                   </p>
@@ -282,13 +283,16 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
           })}
         </div>
       ) : (
-        <p className="rounded-lg bg-brand-teal-light/35 px-5 py-6 text-center text-sm font-semibold text-brand-navy/75 ring-1 ring-brand-teal/10">
+        <p className="rounded-[1.35rem] bg-brand-teal-light/35 px-5 py-6 text-center text-sm font-semibold text-brand-navy/75 ring-1 ring-brand-teal/10">
           Events will be updated soon. Stay tuned.
         </p>
       )}
 
-      <p className="mt-8 text-center text-sm font-semibold text-brand-purple-deep sm:text-base">
-        {"\uD83D\uDC9C"} Events are subject to change. Please check back often for the latest updates!
+      <p className="mt-8 flex items-center justify-center gap-2 text-center text-xs font-semibold leading-relaxed text-brand-purple-deep/85 sm:text-sm">
+        <Icon name="heart" className="text-brand-gold" size="sm" />
+        <span>
+          Events are subject to change. Please check back often for the latest updates.
+        </span>
       </p>
     </div>
   );

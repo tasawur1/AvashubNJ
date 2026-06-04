@@ -13,7 +13,6 @@ import {
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
 import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
-import type { IconName } from "@/data/icons";
 import { eventsImages } from "@/data/pageImages/eventsImages";
 import { fetchAllEvents } from "@/lib/fetchEvents";
 import {
@@ -23,12 +22,6 @@ import {
   innerContentWrap,
   pageSectionPad,
 } from "@/lib/pageSectionStyles";
-
-type MobileEventCategory = {
-  title: string;
-  icon: IconName;
-  tone: "purple" | "teal" | "gold";
-};
 
 export const metadata: Metadata = {
   title: "Events",
@@ -44,20 +37,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-const mobileEventCategories: MobileEventCategory[] = [
-  { title: "All Events", icon: "calendar", tone: "purple" },
-  { title: "Workshops & Training", icon: "training", tone: "teal" },
-  { title: "Family Events", icon: "family", tone: "gold" },
-  { title: "Community Outings", icon: "mapLocation", tone: "teal" },
-  { title: "Special Celebrations", icon: "partyHorn", tone: "purple" },
-];
-
-const mobileToneStyles = {
-  purple: "bg-brand-lavender text-brand-purple-bright",
-  teal: "bg-brand-teal-light text-brand-teal",
-  gold: "bg-brand-gold/25 text-brand-navy",
-} satisfies Record<MobileEventCategory["tone"], string>;
 
 function MobileEventsPage({ events }: { events: Awaited<ReturnType<typeof fetchAllEvents>> }) {
   return (
@@ -108,40 +87,14 @@ function MobileEventsPage({ events }: { events: Awaited<ReturnType<typeof fetchA
         </div>
       </section>
 
-      <section className="px-6 pb-10">
-        <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
-          Explore Events
-          <span className="ml-2 text-brand-purple-bright/55">
-            <TiltedHeartOutline />
-          </span>
-        </h2>
-        <div className="mt-6 space-y-4">
-          {mobileEventCategories.map((category) => (
-            <article
-              key={category.title}
-              className="rounded-[1.75rem] bg-white/95 p-6 text-center shadow-card ring-1 ring-brand-teal/10"
-            >
-              <span
-                className={`mx-auto flex h-20 w-20 items-center justify-center rounded-full ${mobileToneStyles[category.tone]}`}
-              >
-                <Icon name={category.icon} size="2x" />
-              </span>
-              <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
-                {category.title}
-              </h3>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section id="upcoming-events" className="px-6 pb-10" aria-labelledby="mobile-calendar-heading">
         <div className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
           <h2
             id="mobile-calendar-heading"
-            className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+            className="flex items-center gap-2 font-serif text-[1.65rem] font-semibold leading-tight text-brand-navy"
           >
-            Upcoming Calendar
-            <span className="ml-2 text-brand-purple-bright/55">
+            <span>Upcoming Calendar</span>
+            <span className="shrink-0 text-brand-purple-bright/55">
               <TiltedHeartOutline />
             </span>
           </h2>
@@ -199,29 +152,6 @@ function MobileEventsPage({ events }: { events: Awaited<ReturnType<typeof fetchA
             </div>
             <p className="mt-4 text-xs font-semibold text-brand-navy/60">
               We respect your privacy.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 pb-10">
-        <div className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10">
-          <div className="relative h-44 bg-brand-teal-light">
-            <PlaceholderImage
-              src={eventsImages.mobileFinalCta}
-              alt="Ava's Hub community event support"
-              fill
-              className="object-cover object-center"
-              sizes="100vw"
-            />
-          </div>
-          <div className="p-6">
-            <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
-              Every event is a chance to belong.
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
-              Join us for community moments that help children build confidence,
-              connection, and real-world participation.
             </p>
           </div>
         </div>

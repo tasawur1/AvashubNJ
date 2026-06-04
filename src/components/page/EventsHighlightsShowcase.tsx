@@ -41,12 +41,43 @@ const highlightCards = [
 ] as const;
 
 const valueItems = [
-  { icon: "puzzlePiece", label: "Build Skills" },
-  { icon: "community", label: "Make Friends" },
-  { icon: "calendar", label: "Create Memories" },
-  { icon: "heart", label: "Strengthen Families" },
-  { icon: "confidence", label: "Celebrate Abilities" },
+  {
+    icon: "puzzlePiece",
+    label: "Build Skills",
+    text: "Practice real-world routines through joyful community activities.",
+    tone: "teal",
+  },
+  {
+    icon: "community",
+    label: "Make Friends",
+    text: "Create space for peer connection, belonging, and confidence.",
+    tone: "purple",
+  },
+  {
+    icon: "calendar",
+    label: "Create Memories",
+    text: "Turn everyday participation into meaningful family moments.",
+    tone: "gold",
+  },
+  {
+    icon: "heart",
+    label: "Strengthen Families",
+    text: "Support shared experiences that help everyone feel included.",
+    tone: "purple",
+  },
+  {
+    icon: "confidence",
+    label: "Celebrate Abilities",
+    text: "Honor progress, participation, and every child's strengths.",
+    tone: "teal",
+  },
 ] as const;
+
+const valueToneStyles = {
+  purple: "bg-brand-lavender text-brand-purple-bright",
+  teal: "bg-brand-teal-light text-brand-teal",
+  gold: "bg-brand-gold/25 text-brand-navy",
+} as const;
 
 export function EventsHighlightsShowcase() {
   return (
@@ -90,29 +121,37 @@ export function EventsHighlightsShowcase() {
         ))}
       </div>
 
-      <div className="grid overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-brand-teal/15 lg:grid-cols-[1.25fr_3fr]">
-        <div className="flex items-center gap-4 bg-brand-purple-deep px-6 py-6 text-white">
-          <Icon name="heart" className="text-brand-gold" size="2x" />
-          <p className="text-base font-bold leading-snug sm:text-lg">
-            Every event is an opportunity to learn, grow, and belong.
+      <div>
+        <div className="px-1">
+          <h3 className="text-2xl font-extrabold leading-tight text-brand-navy">
+            Why Families Love Our Events
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+            Every activity is designed to support connection, confidence, and
+            real-life participation.
           </p>
         </div>
-        <div className="grid grid-cols-2 divide-brand-teal/15 sm:grid-cols-5 sm:divide-x">
-          {valueItems.map((item) => (
-            <div
-              key={item.label}
-              className="flex flex-col items-center justify-center gap-3 px-4 py-6 text-center"
-            >
-              <Icon
-                name={item.icon}
-                className="text-brand-teal"
-                size="2x"
-              />
-              <span className="text-sm font-semibold text-brand-navy">
-                {item.label}
-              </span>
-            </div>
-          ))}
+        <div className="-mx-6 mt-6 overflow-x-auto px-6 pb-2 sm:mx-0 sm:px-0">
+          <div className="flex min-w-max snap-x snap-mandatory gap-4 sm:grid sm:min-w-0 sm:grid-cols-2 lg:grid-cols-5">
+            {valueItems.map((item) => (
+              <article
+                key={item.label}
+                className="w-[72vw] max-w-[18rem] snap-start rounded-[1.75rem] bg-white/95 p-6 text-center shadow-card ring-1 ring-brand-teal/10 sm:w-auto sm:max-w-none"
+              >
+                <span
+                  className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${valueToneStyles[item.tone]}`}
+                >
+                  <Icon name={item.icon} size="lg" />
+                </span>
+                <h4 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
+                  {item.label}
+                </h4>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/70">
+                  {item.text}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </div>
