@@ -147,7 +147,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
   return (
     <div className="mx-auto max-w-5xl rounded-[1.5rem] bg-[#fffaf4]/80 p-4 ring-1 ring-brand-teal/10 sm:bg-transparent sm:p-0 sm:ring-0">
       <div className="mb-6 flex flex-col items-start gap-4 sm:items-center">
-        <p className="inline-flex items-center rounded-full bg-brand-teal-light/70 px-4 py-2 text-left text-sm font-extrabold text-brand-teal ring-1 ring-brand-teal/10 sm:text-center sm:text-lg">
+        <p className="inline-flex items-center rounded-full bg-brand-lavender px-4 py-2 text-left text-sm font-extrabold text-brand-purple-bright ring-1 ring-brand-purple-deep/10 sm:text-center sm:text-lg">
           {monthLabel}
         </p>
         <div className="flex flex-wrap justify-start gap-2 sm:justify-center">
@@ -220,7 +220,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                 className={
                   `inline-flex cursor-pointer items-center rounded-full px-4 py-2.5 text-sm font-semibold transition focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-teal ` +
                   (selected
-                    ? "bg-brand-teal text-white shadow-md"
+                    ? "bg-brand-purple-bright text-white shadow-md"
                     : "bg-white/95 text-brand-navy ring-1 ring-brand-teal/15 hover:bg-brand-teal-light")
                 }
               >
@@ -265,7 +265,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                 </div>
 
                 <div className="flex min-w-0 flex-col justify-center bg-gradient-to-br from-brand-teal-light/45 to-brand-lavender/25 px-5 py-4">
-                  <p className="text-xs font-bold uppercase tracking-normal text-brand-purple-bright">
+                  <p className="text-xs font-bold uppercase tracking-normal text-brand-teal">
                     {event.category}
                   </p>
                   <h3 className="mt-1 text-sm font-bold leading-snug text-brand-navy sm:text-base">
