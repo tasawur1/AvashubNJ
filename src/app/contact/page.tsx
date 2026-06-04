@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
+import { EmailSignupForm } from "@/components/page/EmailSignupForm";
+import {
+  ResourceBottomCta,
+  TiltedHeartOutline,
+} from "@/components/page/ResourceMobileComponents";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
 import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
 import { MAP_EMBED_SRC } from "@/data/pageContent/contactContent";
@@ -41,6 +46,13 @@ type ContactItem = {
 };
 
 type FeatureItem = {
+  icon: IconName;
+  title: string;
+  description: string;
+  tone: Tone;
+};
+
+type SupportPrompt = {
   icon: IconName;
   title: string;
   description: string;
@@ -124,12 +136,358 @@ const featureItems: FeatureItem[] = [
   },
 ];
 
+const supportPrompts: SupportPrompt[] = [
+  {
+    icon: "message",
+    title: "We Listen",
+    description: "We take time to understand your needs and goals.",
+    tone: "purple",
+  },
+  {
+    icon: "compass",
+    title: "We Guide",
+    description: "We'll help you find the right support for your loved one.",
+    tone: "teal",
+  },
+  {
+    icon: "handHeart",
+    title: "We Care",
+    description: "Your family's journey is our priority.",
+    tone: "gold",
+  },
+];
+
 const inputClass =
   "w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
+
+const mobileInputClass =
+  "w-full rounded-[1.1rem] border border-brand-teal/15 bg-white/95 px-5 py-4 text-sm font-medium text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
+
+function MobileContactForm() {
+  return (
+    <form className="space-y-4">
+      <div className="grid gap-4">
+        <input
+          name="firstName"
+          type="text"
+          autoComplete="given-name"
+          required
+          placeholder="First Name *"
+          className={mobileInputClass}
+          aria-label="First Name"
+        />
+        <input
+          name="lastName"
+          type="text"
+          autoComplete="family-name"
+          required
+          placeholder="Last Name *"
+          className={mobileInputClass}
+          aria-label="Last Name"
+        />
+      </div>
+      <input
+        name="email"
+        type="email"
+        autoComplete="email"
+        required
+        placeholder="Email Address *"
+        className={mobileInputClass}
+        aria-label="Email Address"
+      />
+      <input
+        name="phone"
+        type="tel"
+        autoComplete="tel"
+        required
+        placeholder="Phone Number *"
+        className={mobileInputClass}
+        aria-label="Phone Number"
+      />
+      <select
+        name="helpTopic"
+        required
+        defaultValue=""
+        className={mobileInputClass}
+        aria-label="How can we help you?"
+      >
+        <option value="" disabled>
+          How can we help you? *
+        </option>
+        <option value="schedule-tour">Schedule a tour</option>
+        <option value="programs">Learn about programs</option>
+        <option value="family-support">Family support</option>
+        <option value="resources">Resources</option>
+        <option value="other">Other</option>
+      </select>
+      <textarea
+        name="message"
+        rows={5}
+        required
+        placeholder="Message *"
+        className={`${mobileInputClass} resize-y`}
+        aria-label="Message"
+      />
+      <label className="flex gap-3 rounded-[1.1rem] bg-brand-teal-light/35 px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/80">
+        <input
+          type="checkbox"
+          name="consent"
+          required
+          className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-purple-bright"
+        />
+        <span>I consent to being contacted by Ava's Hub.</span>
+      </label>
+      <CTAButton type="submit" className="w-full !py-4">
+        <span className="inline-flex items-center gap-2">
+          Send Message
+          <Icon name="paperPlane" size="sm" />
+        </span>
+      </CTAButton>
+    </form>
+  );
+}
+
+function MobileContactPage() {
+  return (
+    <div className="bg-[#fffaf4] md:hidden">
+      <h1 className="sr-only">Contact Ava's Hub</h1>
+
+      <section className="pb-8">
+        <div className="bg-[#fffaf4]">
+          <div className="mx-auto w-full overflow-hidden rounded-b-[2rem] bg-brand-teal-light shadow-card">
+            <PlaceholderImage
+              src={contactImages.mobileHeroBanner}
+              alt="Ava's Hub contact mobile hero"
+              width={1182}
+              height={1331}
+              priority
+              className="block h-auto w-full"
+              sizes="100vw"
+            />
+          </div>
+
+          <div className="relative z-10 mx-6 -mt-12 rounded-[2rem] bg-[#fffaf4]/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+            <h2 className="text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
+              Let&apos;s Connect
+            </h2>
+            <p className="mt-3 text-xl font-extrabold leading-snug text-brand-purple-bright">
+              We&apos;re here for you and your family{" "}
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </p>
+            <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
+              Have a question, ready to get started, or want to learn more
+              about Ava&apos;s Hub?
+            </p>
+            <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
+              Our team is here to help you every step of the way.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-10">
+        <div className="space-y-4">
+          {supportPrompts.map((item) => (
+            <article
+              key={item.title}
+              className="grid grid-cols-[4.5rem_1fr] items-center gap-4 rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10"
+            >
+              <span
+                className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+              >
+                <Icon name={item.icon} size="lg" />
+              </span>
+              <div>
+                <h2 className="text-lg font-extrabold leading-tight text-brand-navy">
+                  {item.title}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
+                  {item.description}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 pb-10" aria-labelledby="mobile-contact-info-heading">
+        <h2
+          id="mobile-contact-info-heading"
+          className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+        >
+          Get in Touch
+          <span className="ml-2 text-brand-purple-bright/55">
+            <TiltedHeartOutline />
+          </span>
+        </h2>
+        <div className="mt-6 space-y-4">
+          {contactItems.map((item) => (
+            <article
+              key={item.title}
+              className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10"
+            >
+              <div className="flex gap-4">
+                <span
+                  className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                >
+                  <Icon name={item.icon} size="lg" />
+                </span>
+                <div>
+                  <h3 className={`text-lg font-extrabold ${toneStyles[item.tone].text}`}>
+                    {item.title}
+                  </h3>
+                  <div className="mt-2 space-y-1">
+                    {item.lines.map((line) => (
+                      <p key={line} className="text-sm leading-relaxed text-brand-navy/80">
+                        {line}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="px-6 pb-10" aria-labelledby="mobile-message-heading">
+        <div className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+          <h2
+            id="mobile-message-heading"
+            className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+          >
+            Send Us a Message
+            <span className="ml-2 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+            We&apos;d love to hear from you.
+          </p>
+          <div className="mt-6">
+            <MobileContactForm />
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-10" aria-labelledby="mobile-find-us-heading">
+        <div className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10">
+          <h2
+            id="mobile-find-us-heading"
+            className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+          >
+            Find Us
+            <span className="ml-2 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+            We&apos;re excited to welcome your family.
+          </p>
+          <div className="mt-6 overflow-hidden rounded-[1.4rem] ring-1 ring-brand-teal/10">
+            <div className="relative aspect-[4/3]">
+              <iframe
+                title="Ava's Hub location on Google Maps"
+                src={MAP_EMBED_SRC}
+                className="absolute inset-0 h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+          <div className="mt-5 rounded-[1.25rem] bg-brand-teal-light/45 px-5 py-4 text-center ring-1 ring-brand-teal/10">
+            <p className="font-bold text-brand-teal">Ava&apos;s Hub</p>
+            <p className="mt-1 text-sm leading-relaxed text-brand-navy/85">
+              280 S Harrison Street
+              <br />
+              Suite 311
+              <br />
+              East Orange NJ
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 pb-10" aria-labelledby="mobile-values-heading">
+        <h2
+          id="mobile-values-heading"
+          className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+        >
+          Support That Feels Personal
+          <span className="ml-2 text-brand-purple-bright/55">
+            <TiltedHeartOutline />
+          </span>
+        </h2>
+        <div className="-mx-6 mt-6 overflow-x-auto px-6 pb-2">
+          <div className="flex min-w-max snap-x snap-mandatory gap-4">
+            {featureItems.map((item) => (
+              <article
+                key={item.title}
+                className="w-[76vw] max-w-[19rem] snap-start rounded-[1.75rem] bg-white/95 p-6 text-center shadow-card ring-1 ring-brand-teal/10"
+              >
+                <span
+                  className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                >
+                  <Icon name={item.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/70">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="contact-newsletter" className="px-6 pb-10" aria-labelledby="contact-newsletter-heading">
+        <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+          <div className="relative h-40 bg-brand-teal-light">
+            <PlaceholderImage
+              src={contactImages.mobileNewsletter}
+              alt="Ava's Hub contact updates"
+              fill
+              className="object-cover object-center"
+              sizes="100vw"
+            />
+          </div>
+          <div className="p-6 text-center">
+            <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+              <Icon name="email" size="lg" />
+            </span>
+            <h2
+              id="contact-newsletter-heading"
+              className="mt-4 text-2xl font-extrabold text-brand-navy"
+            >
+              Stay Connected
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+              Get updates about programs, events, and resources.
+            </p>
+            <div className="mt-5">
+              <EmailSignupForm placeholder="Enter your email address" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ResourceBottomCta
+        title="Ready To Take The Next Step?"
+        text="We'd love to meet your family."
+      />
+    </div>
+  );
+}
 
 export default function ContactPage() {
   return (
     <main className="flex-1 bg-white">
+      <MobileContactPage />
+      <div className="hidden md:block">
       <h1 className="sr-only">Contact Ava's Hub</h1>
       <HeroBanner
         images={{
@@ -430,6 +788,7 @@ export default function ContactPage() {
           </div>
         </SectionContainer>
       </section>
+      </div>
     </main>
   );
 }
