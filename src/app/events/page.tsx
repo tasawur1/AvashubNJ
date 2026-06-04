@@ -61,9 +61,9 @@ function MobileEventsPage({ events }: { events: Awaited<ReturnType<typeof fetchA
             <h2 className="text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
               Events Calendar
             </h2>
-            <p className="mt-3 text-xl font-extrabold leading-snug text-brand-purple-bright">
-              Connection. Community. Celebration.{" "}
-              <span className="text-brand-purple-bright/55">
+            <p className="mt-3 flex flex-nowrap items-center gap-1.5 text-[clamp(0.92rem,4.35vw,1.08rem)] font-extrabold leading-snug text-brand-purple-bright">
+              <span className="min-w-0 shrink">Connection. Community. Celebration.</span>
+              <span className="shrink-0 text-[0.95em] text-brand-purple-bright/55">
                 <TiltedHeartOutline />
               </span>
             </p>

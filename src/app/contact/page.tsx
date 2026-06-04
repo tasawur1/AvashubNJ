@@ -287,21 +287,28 @@ function MobileContactPage() {
               {supportPrompts.map((item) => (
                 <article
                   key={item.title}
-                  className="grid w-full grid-cols-[3.5rem_1fr] items-center gap-4 rounded-[1.4rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10"
+                  className={`grid w-full grid-cols-[2.75rem_1fr] items-center gap-3 rounded-full px-4 py-3 shadow-sm ring-1 ${
+                    item.tone === "purple"
+                      ? "bg-brand-lavender text-brand-purple-deep ring-brand-purple-deep/10"
+                      : item.tone === "teal"
+                        ? "bg-brand-teal-light/80 text-brand-teal ring-brand-teal/10"
+                        : "bg-brand-gold/20 text-brand-navy ring-brand-gold/20"
+                  }`}
                 >
                   <span
-                    className={`flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/80 ${
+                      item.tone === "purple"
+                        ? "text-brand-purple-bright"
+                        : item.tone === "teal"
+                          ? "text-brand-teal"
+                          : "text-brand-navy"
+                    }`}
                   >
                     <Icon name={item.icon} size="sm" />
                   </span>
-                  <div>
-                    <h3 className="text-base font-extrabold leading-tight text-brand-navy">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-brand-navy/70">
-                      {item.description}
-                    </p>
-                  </div>
+                  <h3 className="text-sm font-extrabold leading-tight">
+                    {item.title}
+                  </h3>
                 </article>
               ))}
             </div>
