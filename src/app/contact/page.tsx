@@ -144,16 +144,16 @@ const supportPrompts: SupportPrompt[] = [
     tone: "purple",
   },
   {
-    icon: "compass",
-    title: "We Guide",
-    description: "We'll help you find the right support for your loved one.",
-    tone: "teal",
-  },
-  {
     icon: "handHeart",
     title: "We Care",
     description: "Your family's journey is our priority.",
     tone: "gold",
+  },
+  {
+    icon: "compass",
+    title: "We Guide",
+    description: "We'll help you find the right support for your loved one.",
+    tone: "teal",
   },
 ];
 
@@ -284,31 +284,19 @@ function MobileContactPage() {
               Our team is here to help you every step of the way.
             </p>
             <div className="mt-6 space-y-3">
-              {supportPrompts.map((item) => (
+              {supportPrompts.map((item, index) => (
                 <article
                   key={item.title}
-                  className={`grid w-full grid-cols-[2.75rem_1fr] items-center gap-3 rounded-full px-4 py-3 shadow-sm ring-1 ${
-                    item.tone === "purple"
-                      ? "bg-brand-lavender text-brand-purple-deep ring-brand-purple-deep/10"
-                      : item.tone === "teal"
-                        ? "bg-brand-teal-light/80 text-brand-teal ring-brand-teal/10"
-                        : "bg-brand-gold/20 text-brand-navy ring-brand-gold/20"
+                  className={`flex w-full items-center justify-center gap-3 rounded-full px-5 py-3.5 text-sm font-extrabold shadow-sm ring-2 ${
+                    index === 0
+                      ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
+                      : "bg-white/80 text-brand-purple-bright ring-brand-purple-bright/75"
                   }`}
                 >
-                  <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-full bg-white/80 ${
-                      item.tone === "purple"
-                        ? "text-brand-purple-bright"
-                        : item.tone === "teal"
-                          ? "text-brand-teal"
-                          : "text-brand-navy"
-                    }`}
-                  >
+                  <span className="inline-flex h-5 w-5 items-center justify-center">
                     <Icon name={item.icon} size="sm" />
                   </span>
-                  <h3 className="text-sm font-extrabold leading-tight">
-                    {item.title}
-                  </h3>
+                  <span>{item.title}</span>
                 </article>
               ))}
             </div>
@@ -391,7 +379,7 @@ function MobileContactPage() {
             We&apos;re excited to welcome your family.
           </p>
           <div className="mt-6 overflow-hidden rounded-[1.4rem] ring-1 ring-brand-teal/10">
-            <div className="relative aspect-[4/3]">
+            <div className="relative aspect-[4/5] min-h-[26rem]">
               <iframe
                 title="Ava's Hub location on Google Maps"
                 src={MAP_EMBED_SRC}
@@ -401,26 +389,18 @@ function MobileContactPage() {
               />
             </div>
           </div>
-          <div className="mt-5 rounded-[1.25rem] bg-brand-teal-light/45 px-5 py-4 text-center ring-1 ring-brand-teal/10">
-            <p className="font-bold text-brand-teal">Ava&apos;s Hub</p>
-            <p className="mt-1 text-sm leading-relaxed text-brand-navy/85">
-              280 S Harrison Street
-              <br />
-              Suite 311
-              <br />
-              East Orange NJ
-            </p>
-          </div>
         </div>
       </section>
 
       <section className="px-6 pb-10" aria-labelledby="mobile-values-heading">
         <h2
           id="mobile-values-heading"
-          className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+          className="flex flex-nowrap items-center gap-2 font-serif text-[clamp(1.35rem,6.2vw,1.65rem)] font-semibold leading-tight text-brand-navy"
         >
-          Support That Feels Personal
-          <span className="ml-2 text-brand-purple-bright/55">
+          <span className="min-w-0 shrink whitespace-nowrap">
+            Support That Feels Personal
+          </span>
+          <span className="shrink-0 text-[0.9em] text-brand-purple-bright/55">
             <TiltedHeartOutline />
           </span>
         </h2>
@@ -697,7 +677,7 @@ export default function ContactPage() {
                   Find Us
                 </h2>
                 <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-brand-teal/10">
-                  <div className="relative aspect-[16/9] min-h-[240px]">
+                  <div className="relative aspect-[16/10] min-h-[340px]">
                     <iframe
                       title="Ava's Hub location on Google Maps"
                       src={MAP_EMBED_SRC}
@@ -706,14 +686,6 @@ export default function ContactPage() {
                       referrerPolicy="no-referrer-when-downgrade"
                     />
                   </div>
-                </div>
-                <div className="mt-5 rounded-2xl bg-brand-teal-light/45 px-5 py-4 text-center ring-1 ring-brand-teal/10">
-                  <p className="font-bold text-brand-teal">Ava's Hub</p>
-                  <p className="mt-1 text-sm leading-relaxed text-brand-navy/85">
-                    280 S Harrison Street, Suite 311
-                    <br />
-                    East Orange, NJ
-                  </p>
                 </div>
               </div>
             </div>
