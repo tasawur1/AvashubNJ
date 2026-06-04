@@ -145,11 +145,11 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="mb-6 flex flex-col items-center gap-3">
-        <p className="text-center text-base font-bold text-brand-teal sm:text-lg">
+      <div className="mb-6 flex flex-col items-start gap-3 sm:items-center">
+        <p className="text-left text-base font-bold text-brand-teal sm:text-center sm:text-lg">
           {monthLabel}
         </p>
-        <div className="flex flex-wrap justify-center gap-2">
+        <div className="flex flex-wrap justify-start gap-2 sm:justify-center">
           <label className="sr-only" htmlFor="events-day">
             Select event date
           </label>
@@ -209,7 +209,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
 
       <fieldset className="mb-8">
         <legend className="sr-only">Filter events by category</legend>
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <div className="flex flex-wrap justify-start gap-2 sm:justify-center sm:gap-3">
           {FILTERS.map((filter) => {
             const selected = filter.label === activeFilter;
 

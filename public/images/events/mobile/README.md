@@ -2,15 +2,16 @@
 
 Use this folder for mobile-only Events page section images.
 
-Recommended filenames:
+Current filenames:
 
-- `hero-banner-mobile.png` - top mobile hero image
-- `calendar-empty-state.png` - empty month / stay tuned image, if used
-- `highlight-parent-training.png` - Upcoming Highlights card 1
-- `highlight-family-fun.png` - Upcoming Highlights card 2
-- `highlight-community-outings.png` - Upcoming Highlights card 3
-- `highlight-sensory-play.png` - Upcoming Highlights card 4
-- `events-benefits-strip.png` - bottom benefits strip image, if used
+- `hero-banner-events-mobile.png` - top mobile hero image
+- `community-event-card-1.png` - first community highlight card
+- `community-event-card-2.png` - second community highlight card
+- `community-event-card-3.png` - third community highlight card
+- `community-event-card-4.png` - fourth community highlight card
+- `community-event-card-5.png` - reserve community highlight card
+- `newsletter-events.png` - Stay Connected newsletter image
+- `final-cta-events.png` - final emotional CTA image
 
 ## How To Update
 

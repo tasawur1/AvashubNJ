@@ -1,40 +1,41 @@
 import { Icon } from "@/components/Icon";
+import { eventsImages } from "@/data/pageImages/eventsImages";
 
 const highlightCards = [
   {
-    image: "/images/events/column-1.png",
+    image: eventsImages.mobileEventCard1,
     title: "Parent Training Series",
     subtitle: "Every Month",
     description:
       "Practical tools and strategies to support your child and your family.",
-    buttonLabel: "Register Today",
+    buttonLabel: "Learn More",
     tone: "purple",
   },
   {
-    image: "/images/events/column-2.png",
+    image: eventsImages.mobileEventCard2,
     title: "Family Fun Saturdays",
     subtitle: "May 3 & 17",
     description:
       "Join us for fun, connection, and community every first and third Saturday.",
-    buttonLabel: "Bring the Whole Family",
+    buttonLabel: "Learn More",
     tone: "teal",
   },
   {
-    image: "/images/events/column-3.png",
+    image: eventsImages.mobileEventCard3,
     title: "Community Outings",
     subtitle: "May 10 & 24",
     description:
       "Getting out, exploring, and building real-world skills together.",
-    buttonLabel: "Let's Explore",
+    buttonLabel: "Learn More",
     tone: "teal",
   },
   {
-    image: "/images/events/column-4.png",
+    image: eventsImages.mobileEventCard4,
     title: "Sensory Play Day",
     subtitle: "May 1",
     description:
       "A morning of sensory exploration, play, and connection for all ages.",
-    buttonLabel: "Come Play With Us",
+    buttonLabel: "Learn More",
     tone: "purple",
   },
 ] as const;
@@ -54,7 +55,7 @@ export function EventsHighlightsShowcase() {
         {highlightCards.map((card) => (
           <article
             key={card.title}
-            className="overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-brand-teal/15"
+            className="overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-brand-teal/15"
           >
             <div
               className="aspect-[4/3] bg-brand-teal-light bg-cover bg-center"
@@ -89,7 +90,7 @@ export function EventsHighlightsShowcase() {
         ))}
       </div>
 
-      <div className="grid overflow-hidden rounded-lg bg-white shadow-sm ring-1 ring-brand-teal/15 lg:grid-cols-[1.25fr_3fr]">
+      <div className="grid overflow-hidden rounded-[1.75rem] bg-white shadow-card ring-1 ring-brand-teal/15 lg:grid-cols-[1.25fr_3fr]">
         <div className="flex items-center gap-4 bg-brand-purple-deep px-6 py-6 text-white">
           <Icon name="heart" className="text-brand-gold" size="2x" />
           <p className="text-base font-bold leading-snug sm:text-lg">

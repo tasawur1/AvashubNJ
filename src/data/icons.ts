@@ -4,6 +4,7 @@ import {
   faBookOpen,
   faBrain,
   faBriefcase,
+  faChampagneGlasses,
   faCalendarDays,
   faCheck,
   faChild,
@@ -17,6 +18,7 @@ import {
   faHandshake,
   faHouse,
   faLocationDot,
+  faMapLocationDot,
   faPeopleGroup,
   faPersonWalking,
   faPhone,
@@ -56,6 +58,8 @@ export const icons = {
   communication: faComments,
   support: faHandshake,
   training: faGraduationCap,
+  mapLocation: faMapLocationDot,
+  partyHorn: faChampagneGlasses,
   contact: faEnvelope,
 } satisfies Record<string, IconDefinition>;
 
