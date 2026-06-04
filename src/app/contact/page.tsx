@@ -283,32 +283,29 @@ function MobileContactPage() {
             <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
               Our team is here to help you every step of the way.
             </p>
+            <div className="mt-6 space-y-3">
+              {supportPrompts.map((item) => (
+                <article
+                  key={item.title}
+                  className="grid w-full grid-cols-[3.5rem_1fr] items-center gap-4 rounded-[1.4rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10"
+                >
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                  >
+                    <Icon name={item.icon} size="sm" />
+                  </span>
+                  <div>
+                    <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1 text-xs leading-relaxed text-brand-navy/70">
+                      {item.description}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      <section className="px-6 pb-10">
-        <div className="space-y-4">
-          {supportPrompts.map((item) => (
-            <article
-              key={item.title}
-              className="grid grid-cols-[4.5rem_1fr] items-center gap-4 rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10"
-            >
-              <span
-                className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
-              >
-                <Icon name={item.icon} size="lg" />
-              </span>
-              <div>
-                <h2 className="text-lg font-extrabold leading-tight text-brand-navy">
-                  {item.title}
-                </h2>
-                <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
-                  {item.description}
-                </p>
-              </div>
-            </article>
-          ))}
         </div>
       </section>
 
@@ -356,10 +353,10 @@ function MobileContactPage() {
         <div className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
           <h2
             id="mobile-message-heading"
-            className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
+            className="flex flex-nowrap items-center gap-2 font-serif text-[clamp(1.45rem,7vw,1.75rem)] font-semibold leading-tight text-brand-navy"
           >
-            Send Us a Message
-            <span className="ml-2 text-brand-purple-bright/55">
+            <span className="min-w-0 shrink">Send Us a Message</span>
+            <span className="shrink-0 text-[0.9em] text-brand-purple-bright/55">
               <TiltedHeartOutline />
             </span>
           </h2>
