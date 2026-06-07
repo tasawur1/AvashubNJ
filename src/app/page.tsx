@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { BottomBannerSection } from "@/components/BottomBannerSection";
 import { CTAButton } from "@/components/CTAButton";
-import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
-import { ProgramCard } from "@/components/ProgramCard";
 import { SectionContainer } from "@/components/SectionContainer";
-import { SectionHeading } from "@/components/SectionHeading";
-import { WeAcceptSection } from "@/components/WeAcceptSection";
 import { heroBannerImages } from "@/data/heroBannerImages";
 import { siteImages } from "@/data/images";
 import { programCards } from "@/data/programs";
@@ -108,9 +103,229 @@ function TiltedHeartOutline({ className = "" }: { className?: string }) {
   );
 }
 
+function DesktopHomePage() {
+  return (
+    <div className="hidden bg-[#fffaf4] lg:block">
+      {/*
+        HOME PAGE DESKTOP MEMORY:
+        Desktop grows from the mobile homepage instead of using a separate
+        legacy layout. Preserve mobile content, warm spacing, rounded cards,
+        emotional language, and app-like card styling; only expand and reflow.
+      */}
+      <section className="min-h-[calc(100vh-5rem)] py-10 xl:py-14">
+        <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
+          <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
+            <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+              More Than Therapy
+            </p>
+            <h2 className="mt-6 max-w-xl text-[clamp(2.75rem,4.2vw,4.65rem)] font-extrabold leading-[1.02] tracking-tight text-brand-navy">
+              A Place Where Your Child Can{" "}
+              <span className="italic text-brand-purple-bright">
+                Truly Belong
+              </span>
+              <span className="ml-3 whitespace-nowrap text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+            <p className="mt-6 max-w-lg text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-brand-navy/85">
+              At Ava&apos;s Hub, we help children and teens build confidence,
+              independence, friendships, and real-life skills through
+              meaningful, relationship-based occupational therapy.
+            </p>
+
+            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+              <Icon
+                name="heart"
+                className="mt-1 shrink-0 text-brand-purple-bright"
+                size="2x"
+              />
+              <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
+                Because families deserve more than worksheets, waiting rooms,
+                and one-size-fits-all therapy.
+              </p>
+            </div>
+
+            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
+              <CTAButton href="/contact" className="min-w-[15rem]">
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule a Consultation
+                </span>
+              </CTAButton>
+              <CTAButton
+                href="#programs-desktop"
+                variant="secondary"
+                className="min-w-[13rem]"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="resources" size="sm" />
+                  See How We Help
+                </span>
+              </CTAButton>
+            </div>
+            <a
+              href="/contact"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-brand-navy underline underline-offset-4"
+            >
+              <Icon name="community" size="sm" />
+              Join the Waitlist
+            </a>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -left-8 top-10 h-52 w-52 rounded-full bg-brand-lavender/45 blur-3xl" />
+            <div className="absolute -bottom-10 right-8 h-56 w-56 rounded-full bg-brand-gold/20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-teal/10 xl:rounded-[7rem_3rem_7rem_3rem]">
+              <PlaceholderImage
+                src={heroBannerImages.heroBannerMobile}
+                alt="Ava's Hub child and caregiver occupational therapy"
+                width={1021}
+                height={1540}
+                priority
+                className="h-[min(78vh,50rem)] w-full object-cover object-[50%_36%]"
+                sizes="(min-width: 1280px) 54vw, 50vw"
+              />
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-10">
+        <SectionContainer>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {valueCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-3xl bg-white/90 p-6 text-center shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon
+                  name={card.icon}
+                  className="text-brand-purple-bright"
+                  size="2x"
+                />
+                <h3 className="mt-4 text-base font-extrabold leading-snug text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                  {card.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="rounded-[2rem] bg-gradient-to-br from-[#0f5758] to-[#063f46] p-10 text-white shadow-card">
+            <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+              <div className="max-w-3xl">
+                <h2 className="text-[clamp(2rem,2.8vw,3rem)] font-extrabold leading-tight">
+                  Therapy should fit your child, not the other way around.
+                </h2>
+                <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">
+                  We meet your child where they are and help them grow in ways
+                  that matter most.
+                </p>
+              </div>
+              <Icon name="independence" className="text-brand-gold" size="4x" />
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section id="programs-desktop" className="pb-14">
+        <SectionContainer>
+          <h2 className="font-serif text-[clamp(2.1rem,3.2vw,3.4rem)] font-semibold leading-tight tracking-tight text-brand-navy">
+            Programs for Every Stage
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {mobilePrograms.map((program) => (
+              <article
+                key={program.title}
+                className="grid min-h-full grid-rows-[11rem_auto_auto] overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+              >
+                <div className="relative bg-brand-teal-light">
+                  <PlaceholderImage
+                    src={siteImages[program.imageKey]}
+                    alt={`${program.title} program`}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1280px) 25vw, 50vw"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-extrabold leading-tight text-brand-purple-bright">
+                    {program.title}
+                    <span className="ml-2 text-base font-bold text-brand-navy/50">
+                      {program.ageRange}
+                    </span>
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-navy/85">
+                    {program.description}
+                  </p>
+                </div>
+                <div className="flex items-end justify-end px-6 pb-6">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                    <Icon name="arrowRight" size="sm" />
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-16">
+        <SectionContainer>
+          <div className="grid gap-5 xl:grid-cols-[1fr_0.85fr]">
+            <div className="rounded-[2rem] bg-brand-lavender/70 p-8 shadow-card ring-1 ring-brand-purple-deep/10">
+              <TiltedHeartOutline className="text-[3rem] text-brand-purple-bright/55" />
+              <p className="mt-5 text-2xl font-extrabold leading-relaxed text-brand-navy">
+                Every child is unique.
+                <br />
+                Every stage is important.
+              </p>
+              <p className="mt-3 text-2xl font-extrabold text-brand-purple-bright">
+                We&apos;re here for every step of the way.
+              </p>
+            </div>
+
+            <div className="rounded-[2rem] bg-brand-purple-bright p-8 text-white shadow-card">
+              <div className="flex h-full items-center justify-between gap-8">
+                <div>
+                  <h2 className="text-2xl font-extrabold leading-tight">
+                    Ready to Get Started?
+                  </h2>
+                  <p className="mt-2 text-base text-white/90">
+                    We&apos;d love to meet your family.
+                  </p>
+                </div>
+                <CTAButton
+                  href="/contact"
+                  variant="secondary"
+                  className="shrink-0 !border-white !bg-white !px-6 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+                >
+                  <span className="inline-flex items-center justify-center gap-2">
+                    <Icon name="calendar" size="sm" />
+                    Schedule Consultation
+                  </span>
+                </CTAButton>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
-    <main className="flex-1 bg-[#fffaf4] md:bg-white">
+    <main className="flex-1 bg-[#fffaf4]">
       <h1 className="sr-only">
         Ava&apos;s Hub | Real-Life Skills and Independence for Kids, Teens, and
         Young Adults
@@ -121,7 +336,7 @@ export default function HomePage() {
         support for children, teens, and young adults in East Orange, NJ.
       </p>
 
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <section className="px-6 pb-8 pt-5">
           <div className="rounded-[2rem] bg-[#fffaf4]">
             <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
@@ -311,27 +526,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      <div className="hidden md:block">
-        <HeroBanner showCtas />
-
-        <section
-          id="programs"
-          className="bg-gradient-to-b from-white via-brand-lavender/40 to-white py-14 sm:py-16 lg:py-20"
-        >
-          <SectionContainer>
-            <SectionHeading title="Programs for Every Stage of Life" />
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 sm:gap-7 lg:grid-cols-4 lg:gap-7 xl:gap-8">
-              {programCards.map((program) => (
-                <ProgramCard key={program.title} program={program} />
-              ))}
-            </div>
-          </SectionContainer>
-        </section>
-
-        <WeAcceptSection />
-
-        <BottomBannerSection />
-      </div>
+      <DesktopHomePage />
     </main>
   );
 }
