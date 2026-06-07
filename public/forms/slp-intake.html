@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ava's Hub — Speech-Language Questionnaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#F27120;--teal:#1A9E8F;--green:#1E7A45;
+  --dark:#141414;--mid:#3A3A3A;--muted:#777;--border:#E2E2E0;
+  --bg:#F6F6F4;--white:#fff;--lo:#FEF3EB;--lt:#E6F6F4;--lg:#F2F2F0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);font-size:14px;line-height:1.6;min-height:100vh;}
+.site-header{background:var(--dark);position:sticky;top:0;z-index:50;}
+.stripe{height:3px;background:linear-gradient(90deg,var(--orange),var(--teal),var(--green));}
+.header-inner{max-width:720px;margin:0 auto;padding:14px 20px 12px;display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--orange);}
+.logo-sub{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:1px;}
+.header-right{text-align:right;}
+.header-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;}
+.header-sub{font-size:10px;color:rgba(255,255,255,.35);}
+.prog-wrap{background:#0F0F0F;padding:8px 20px;}
+.prog-inner{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px;}
+.prog-bg{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--green));border-radius:2px;transition:width .4s ease;width:0%;}
+.prog-txt{font-size:10px;color:rgba(255,255,255,.3);font-family:'Syne',sans-serif;white-space:nowrap;}
+.disclaimer{max-width:720px;margin:14px auto 0;padding:0 16px;}
+.disclaimer-box{background:linear-gradient(135deg,#2A1A0A,#1A0A0A);border:1px solid rgba(242,113,32,.25);border-radius:10px;padding:12px 16px;display:flex;gap:10px;align-items:flex-start;}
+.disclaimer-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+.disclaimer-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.6;}
+.disclaimer-text strong{color:var(--orange);font-weight:600;}
+.card-wrap{max-width:720px;margin:14px auto 50px;padding:0 16px;}
+.card{background:white;border-radius:14px;box-shadow:0 2px 24px rgba(0,0,0,.07);overflow:hidden;}
+.section-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--border);}
+.sec-badge{display:inline-flex;align-items:center;gap:5px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:8px;margin-bottom:8px;background:var(--lt);color:var(--teal);}
+.sec-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--dark);}
+.sec-desc{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.5;}
+.form-body{padding:20px 22px;}
+.field{margin-bottom:18px;}
+.field-label{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:6px;display:block;line-height:1.4;}
+.text-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);transition:border-color .15s;}
+.text-input:focus{outline:none;border-color:var(--teal);}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--dark);resize:vertical;min-height:72px;}
+.textarea:focus{outline:none;border-color:var(--teal);}
+.scale-q{background:var(--lg);border-radius:10px;padding:13px 15px;margin-bottom:12px;border-left:3px solid var(--teal);}
+.scale-q-text{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:10px;line-height:1.5;}
+.scale-opts{display:flex;gap:5px;flex-wrap:wrap;}
+.scale-opt{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
+.scale-opt input{display:none;}
+.scale-chip{min-width:52px;padding:6px 8px;border:2px solid var(--border);border-radius:7px;font-size:11.5px;font-weight:600;color:var(--muted);text-align:center;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.scale-chip-lbl{font-size:9.5px;color:var(--muted);text-align:center;max-width:58px;line-height:1.3;}
+.scale-opt input:checked + .scale-chip{border-color:var(--teal);background:var(--teal);color:white;}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.fc{padding:6px 12px;border:1.5px solid var(--border);border-radius:16px;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.fc input{display:none;}
+.fc:has(input:checked){border-color:var(--teal);background:var(--lt);color:var(--teal);}
+.divider{height:1px;background:var(--border);margin:20px 0;}
+.sub-head{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.sub-head::after{content:'';flex:1;height:1px;background:var(--lt);}
+.check-group{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.check-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:border-color .15s;}
+.check-item input{width:14px;height:14px;accent-color:var(--teal);flex-shrink:0;margin-top:1px;cursor:pointer;}
+.check-item span{font-size:13px;color:var(--mid);line-height:1.4;}
+.check-item:has(input:checked){border-color:var(--teal);background:var(--lt);}
+.nav-row{display:flex;gap:10px;justify-content:flex-end;padding:14px 22px;border-top:1px solid var(--border);}
+.btn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;padding:10px 22px;border-radius:9px;border:none;cursor:pointer;transition:all .15s;}
+.btn-next{background:var(--teal);color:white;}
+.btn-back{background:white;border:1.5px solid var(--border);color:var(--muted);}
+.btn-submit{background:linear-gradient(135deg,var(--teal),var(--green));color:white;padding:12px 28px;}
+.step{display:none;}
+.step.active{display:block;}
+.result-wrap{max-width:720px;margin:14px auto 60px;padding:0 16px;display:none;}
+.result-card{background:white;border-radius:14px;box-shadow:0 2px 24px rgba(0,0,0,.07);overflow:hidden;}
+.result-hdr{padding:24px;background:linear-gradient(135deg,#0A2A24,#0A1A14);}
+.result-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--orange);margin-bottom:4px;}
+.result-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:white;margin-bottom:5px;}
+.result-sub{font-size:11px;color:rgba(255,255,255,.35);line-height:1.5;}
+.result-disclaimer{background:rgba(242,113,32,.12);border:1px solid rgba(242,113,32,.3);border-radius:8px;padding:10px 14px;margin-top:14px;}
+.result-disclaimer p{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.6;}
+.result-disclaimer strong{color:var(--orange);}
+.result-body{padding:24px;}
+.result-text{font-size:13.5px;color:var(--mid);line-height:1.9;white-space:pre-wrap;}
+.loading-state{text-align:center;padding:50px 24px;}
+.loading-spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-family:'Syne',sans-serif;font-size:13px;color:var(--muted);}
+.loading-sub{font-size:11.5px;color:var(--muted);margin-top:6px;}
+.result-actions{display:flex;gap:8px;padding:14px 24px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.rbtn{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;padding:9px 18px;border-radius:8px;border:none;cursor:pointer;}
+.rbtn-print{background:var(--teal);color:white;}
+.rbtn-restart{background:var(--lg);border:1.5px solid var(--border);color:var(--mid);}
+.result-footer{background:var(--dark);text-align:center;padding:14px 20px;color:rgba(255,255,255,.25);font-size:10.5px;line-height:1.7;}
+@media(max-width:500px){.row2{grid-template-columns:1fr;}.scale-chip{min-width:44px;font-size:10.5px;}}
+@media print{.site-header,.prog-wrap,.disclaimer,.nav-row,.result-actions{display:none!important;}.result-wrap{padding:0;margin:0;}.result-card{box-shadow:none;border-radius:0;}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="stripe"></div>
+  <div class="header-inner">
+    <div><div class="logo">Ava's Hub</div><div class="logo-sub">East Orange, NJ · hello@avashubnj.com</div></div>
+    <div class="header-right"><div class="header-title">🗣️ Speech-Language Questionnaire</div><div class="header-sub">Not an evaluation · For informational purposes only</div></div>
+  </div>
+</header>
+<div class="prog-wrap"><div class="prog-inner"><div class="prog-bg"><div class="prog-fill" id="prog-fill"></div></div><div class="prog-txt" id="prog-txt">Step 1 of 3</div></div></div>
+<div class="disclaimer"><div class="disclaimer-box"><div class="disclaimer-icon">⚠️</div><div class="disclaimer-text"><strong>This is not a clinical evaluation.</strong> This questionnaire is for informational purposes only and is designed to help our team understand your child's communication needs before you come in. It does not replace a formal evaluation conducted by a licensed Speech-Language Pathologist. <strong>Evaluations are scheduled and completed in-office at Ava's Hub by your licensed SLP.</strong> Results are not diagnostic and should not be used for clinical, legal, or educational purposes.</div></div></div>
+
+<div class="card-wrap"><div class="card" id="form-card">
+
+<!-- STEP 1: BASICS -->
+<div class="step active" id="step-1">
+  <div class="section-hdr"><div class="sec-badge">Step 1 of 3 — Your Child</div><div class="sec-title">Let's start with the basics</div><div class="sec-desc">Tell us a little about your child and what brings you to Ava's Hub.</div></div>
+  <div class="form-body">
+    <div class="row2">
+      <div class="field"><label class="field-label">Child's first name</label><input class="text-input" id="child-name" type="text" placeholder="First name only"></div>
+      <div class="field"><label class="field-label">Child's age</label><input class="text-input" id="child-age" type="text" placeholder="e.g. 4"></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label class="field-label">Your name</label><input class="text-input" id="parent-name" type="text" placeholder="Your first name"></div>
+      <div class="field"><label class="field-label">Your email</label><input class="text-input" id="parent-email" type="email" placeholder="email@example.com"></div>
+    </div>
+    <div class="field"><label class="field-label">Diagnosis or area of concern <span style="font-weight:400;color:var(--muted)">(optional)</span></label><input class="text-input" id="child-dx" type="text" placeholder="e.g. autism, Down syndrome, developmental delay, no diagnosis yet"></div>
+    <div class="field"><label class="field-label">How does your child primarily communicate right now?</label>
+      <div class="chip-row">
+        <label class="fc"><input type="radio" name="comm-mode" value="verbal-sentences"><span>Full sentences</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="verbal-words"><span>Single words / phrases</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="emerging"><span>Emerging — a few words or sounds</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="nonverbal"><span>Nonverbal / pre-verbal</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="aac"><span>AAC device or app</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="pecs"><span>PECS / picture exchange</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="signs"><span>Signs / gestures</span></label>
+        <label class="fc"><input type="radio" name="comm-mode" value="mixed"><span>Mixed / combination</span></label>
+      </div>
+    </div>
+    <div class="field"><label class="field-label">What brings you to Ava's Hub? What are you hoping for?</label><textarea class="textarea" id="main-concern" placeholder="Tell us in your own words — there are no wrong answers..."></textarea></div>
+  </div>
+  <div class="nav-row"><button class="btn btn-next" onclick="goNext(1)">Continue →</button></div>
+</div>
+
+<!-- STEP 2: COMMUNICATION PROFILE -->
+<div class="step" id="step-2">
+  <div class="section-hdr"><div class="sec-badge">Step 2 of 3 — Communication Profile</div><div class="sec-title">How your child communicates right now</div><div class="sec-desc">For each item, choose the response that best describes what you typically observe.</div></div>
+  <div class="form-body">
+    <div class="sub-head">Expressive Language — What Your Child Says</div>
+    <div class="scale-q"><div class="scale-q-text">Expressing basic wants and needs (hungry, tired, help, stop)</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-express-needs" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Very hard / rarely</div></label><label class="scale-opt"><input type="radio" name="slp-express-needs" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Usually hard</div></label><label class="scale-opt"><input type="radio" name="slp-express-needs" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Sometimes</div></label><label class="scale-opt"><input type="radio" name="slp-express-needs" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Usually OK</div></label><label class="scale-opt"><input type="radio" name="slp-express-needs" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Easy / consistent</div></label></div></div>
+    <div class="scale-q"><div class="scale-q-text">Putting words together into longer sentences</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-sentences" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Not yet</div></label><label class="scale-opt"><input type="radio" name="slp-sentences" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">2–3 words</div></label><label class="scale-opt"><input type="radio" name="slp-sentences" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Short phrases</div></label><label class="scale-opt"><input type="radio" name="slp-sentences" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Sentences with gaps</div></label><label class="scale-opt"><input type="radio" name="slp-sentences" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Full sentences</div></label></div></div>
+    <div class="scale-q"><div class="scale-q-text">Starting conversations or interactions on their own</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-initiate" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Rarely / never</div></label><label class="scale-opt"><input type="radio" name="slp-initiate" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Occasionally</div></label><label class="scale-opt"><input type="radio" name="slp-initiate" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Sometimes</div></label><label class="scale-opt"><input type="radio" name="slp-initiate" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Often</div></label><label class="scale-opt"><input type="radio" name="slp-initiate" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Consistently</div></label></div></div>
+    <div class="divider"></div>
+    <div class="sub-head">Receptive Language — What Your Child Understands</div>
+    <div class="scale-q"><div class="scale-q-text">Following simple 1-step directions ("Come here," "Sit down")</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-1step" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Rarely</div></label><label class="scale-opt"><input type="radio" name="slp-1step" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Sometimes</div></label><label class="scale-opt"><input type="radio" name="slp-1step" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Usually with cues</div></label><label class="scale-opt"><input type="radio" name="slp-1step" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Usually</div></label><label class="scale-opt"><input type="radio" name="slp-1step" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Consistently</div></label></div></div>
+    <div class="scale-q"><div class="scale-q-text">Following 2-step or multi-step directions</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-2step" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Not yet</div></label><label class="scale-opt"><input type="radio" name="slp-2step" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Rarely</div></label><label class="scale-opt"><input type="radio" name="slp-2step" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Sometimes</div></label><label class="scale-opt"><input type="radio" name="slp-2step" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Often</div></label><label class="scale-opt"><input type="radio" name="slp-2step" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Consistently</div></label></div></div>
+    <div class="scale-q"><div class="scale-q-text">Understanding who/what/where/why/when questions</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-questions" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Very hard</div></label><label class="scale-opt"><input type="radio" name="slp-questions" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Who/what only</div></label><label class="scale-opt"><input type="radio" name="slp-questions" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Most simple Qs</div></label><label class="scale-opt"><input type="radio" name="slp-questions" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Usually</div></label><label class="scale-opt"><input type="radio" name="slp-questions" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">All types</div></label></div></div>
+    <div class="divider"></div>
+    <div class="sub-head">Speech Clarity</div>
+    <div class="scale-q"><div class="scale-q-text">How well does a familiar person understand your child's speech?</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-intel-familiar" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Rarely</div></label><label class="scale-opt"><input type="radio" name="slp-intel-familiar" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">~25%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-familiar" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">~50%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-familiar" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">~75%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-familiar" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Mostly clear</div></label></div></div>
+    <div class="scale-q"><div class="scale-q-text">How well does an unfamiliar person (teacher, stranger) understand your child?</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-intel-unfamiliar" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Rarely</div></label><label class="scale-opt"><input type="radio" name="slp-intel-unfamiliar" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">~25%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-unfamiliar" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">~50%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-unfamiliar" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">~75%</div></label><label class="scale-opt"><input type="radio" name="slp-intel-unfamiliar" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Mostly clear</div></label></div></div>
+    <div class="divider"></div>
+    <div class="sub-head">Social Communication</div>
+    <div class="scale-q"><div class="scale-q-text">Back-and-forth conversation — taking turns, staying on topic</div><div class="scale-opts"><label class="scale-opt"><input type="radio" name="slp-pragmatic" value="1"><div class="scale-chip">1</div><div class="scale-chip-lbl">Very hard</div></label><label class="scale-opt"><input type="radio" name="slp-pragmatic" value="2"><div class="scale-chip">2</div><div class="scale-chip-lbl">Usually hard</div></label><label class="scale-opt"><input type="radio" name="slp-pragmatic" value="3"><div class="scale-chip">3</div><div class="scale-chip-lbl">Sometimes OK</div></label><label class="scale-opt"><input type="radio" name="slp-pragmatic" value="4"><div class="scale-chip">4</div><div class="scale-chip-lbl">Usually OK</div></label><label class="scale-opt"><input type="radio" name="slp-pragmatic" value="5"><div class="scale-chip">5</div><div class="scale-chip-lbl">Handles well</div></label></div></div>
+    <div class="divider"></div>
+    <div class="sub-head">Feeding Concerns</div>
+    <div class="field"><label class="field-label">Are feeding or swallowing concerns part of why you're reaching out?</label>
+      <div class="chip-row">
+        <label class="fc"><input type="radio" name="slp-feeding-yn" value="yes"><span>Yes — feeding is a concern</span></label>
+        <label class="fc"><input type="radio" name="slp-feeding-yn" value="no"><span>No — not a concern</span></label>
+        <label class="fc"><input type="radio" name="slp-feeding-yn" value="maybe"><span>Possibly</span></label>
+      </div>
+    </div>
+    <div class="field"><label class="field-label">Feeding concerns (check all that apply)</label>
+      <div class="chip-row">
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="picky"><span>Extreme picky eating</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="textures"><span>Texture aversions</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="gagging"><span>Gagging / vomiting</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="chewing"><span>Difficulty chewing</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="swallowing"><span>Difficulty swallowing</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="tube"><span>Tube-fed</span></label>
+        <label class="fc"><input type="checkbox" name="slp-feeding" value="none"><span>None</span></label>
+      </div>
+    </div>
+  </div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goBack(2)">← Back</button><button class="btn btn-next" onclick="goNext(2)">Continue →</button></div>
+</div>
+
+<!-- STEP 3: CONCERNS + GOALS -->
+<div class="step" id="step-3">
+  <div class="section-hdr"><div class="sec-badge">Step 3 of 3 — Concerns & Goals</div><div class="sec-title">What's most challenging & what matters most</div><div class="sec-desc">Your answers here drive the personalized recommendations we generate.</div></div>
+  <div class="form-body">
+    <div class="sub-head">Communication Challenges (check all that apply)</div>
+    <div class="check-group">
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="not-talking"><span>My child is not talking yet or has very few words for their age</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="hard-to-understand"><span>People outside the family struggle to understand my child</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="lost-words"><span>My child had words and then lost them</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="stuttering"><span>Stuttering, repetitions, or fluency difficulties</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="voice"><span>Voice concerns — hoarseness, too loud, too soft</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="aac-needed"><span>My child may benefit from AAC (device, app, PECS)</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="frustration"><span>My child gets very frustrated when they can't communicate</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="social-comm"><span>Difficulty with social communication — friendships, conversations</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="reading-lang"><span>Language delays affecting reading or learning at school</span></label>
+      <label class="check-item"><input type="checkbox" name="slp-concerns" value="bilingual"><span>Bilingual / multilingual family — questions about development</span></label>
+    </div>
+    <div class="divider"></div>
+    <div class="field"><label class="field-label">Where is communication most impacting your child? (check all)</label>
+      <div class="chip-row">
+        <label class="fc"><input type="checkbox" name="slp-impact" value="school"><span>School / learning</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="friendships"><span>Friendships / play</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="home"><span>Home & family</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="community"><span>Community outings</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="safety"><span>Safety concerns</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="emotional"><span>Emotional regulation</span></label>
+        <label class="fc"><input type="checkbox" name="slp-impact" value="independence"><span>Independence</span></label>
+      </div>
+    </div>
+    <div class="field"><label class="field-label">Previous speech-language services?</label>
+      <div class="chip-row">
+        <label class="fc"><input type="radio" name="slp-prev" value="yes-school"><span>Yes — school-based</span></label>
+        <label class="fc"><input type="radio" name="slp-prev" value="yes-private"><span>Yes — private SLP</span></label>
+        <label class="fc"><input type="radio" name="slp-prev" value="yes-ei"><span>Yes — early intervention</span></label>
+        <label class="fc"><input type="radio" name="slp-prev" value="no"><span>No — first time</span></label>
+        <label class="fc"><input type="radio" name="slp-prev" value="unsure"><span>Not sure</span></label>
+      </div>
+    </div>
+    <div class="field"><label class="field-label">What is your single most important goal for speech therapy at Ava's Hub?</label><textarea class="textarea" id="slp-top-goal" placeholder="e.g. I want her to be able to ask for what she needs. / I want him to be understood by his teacher..."></textarea></div>
+    <div class="field"><label class="field-label">Anything else you want our team to know?</label><textarea class="textarea" id="slp-anything" placeholder="Any additional context — family history, school reports, previous evaluations..."></textarea></div>
+  </div>
+  <div class="nav-row"><button class="btn btn-back" onclick="goBack(3)">← Back</button><button class="btn btn-submit" onclick="submitForm()">✨ Generate My Results</button></div>
+</div>
+</div></div><!-- end card/card-wrap -->
+
+<!-- RESULT -->
+<div class="result-wrap" id="result-wrap">
+  <div class="result-card">
+    <div class="result-hdr">
+      <div class="result-logo">Ava's Hub · East Orange, NJ</div>
+      <div class="result-title" id="result-title">Speech-Language Results</div>
+      <div class="result-sub">Tony & Ava LLC DBA Ava's Hub · hello@avashubnj.com · www.avashubnj.com</div>
+      <div class="result-disclaimer"><p><strong>⚠️ Important:</strong> These results are <strong>not a clinical evaluation, diagnosis, or recommendation for treatment.</strong> A formal in-office evaluation by Ava's Hub's licensed SLP is required before any therapy plan can be developed. Please contact us to schedule.</p></div>
+    </div>
+    <div id="result-content"><div class="loading-state"><div class="loading-spinner"></div><div class="loading-text">Reviewing your responses...</div><div class="loading-sub" id="loading-sub">Building your personalized summary</div></div></div>
+    <div class="result-actions" id="result-actions" style="display:none;">
+      <button class="rbtn rbtn-print" onclick="window.print()">🖨 Print Results</button>
+      <button class="rbtn rbtn-restart" onclick="restartForm()">↩ Start Over</button>
+    </div>
+    <div class="result-footer">Tony & Ava LLC DBA Ava's Hub · 280 S Harrison St, Suite 311, East Orange NJ 07018 · hello@avashubnj.com · www.avashubnj.com<br><em>This questionnaire is for informational purposes only. It does not constitute a clinical evaluation, diagnosis, or plan of care.</em></div>
+  </div>
+</div>
+
+<script>
+// ── ANALYTICS MODULE ──────────────────────────────────
+const AVA_ANALYTICS={formId:'slp_screener',gaMeasurementId:'G-XXXXXXXXXX',sessionStart:Date.now(),currentStep:1,totalSteps:3,submitted:false,init(formId,totalSteps){this.formId=formId;this.totalSteps=totalSteps;this.sessionStart=Date.now();this._incrementVisit();this._recordEvent('visit',{step:0});window.addEventListener('beforeunload',()=>{if(!this.submitted)this._recordAbandon();});},stepReached(step){this.currentStep=step;this._recordEvent('step_reached',{step});this._updateStepStats(step);this._ga('step_reached',{step_number:step,form_id:this.formId});},formCompleted(){this.submitted=true;const duration=Math.round((Date.now()-this.sessionStart)/1000);this._recordEvent('completed',{step:this.totalSteps,duration});this._incrementCompletion();this._ga('form_completed',{form_id:this.formId,duration_seconds:duration});},_recordAbandon(){const duration=Math.round((Date.now()-this.sessionStart)/1000);this._recordEvent('abandoned',{step:this.currentStep,duration});this._incrementAbandon(this.currentStep);this._ga('form_abandoned',{form_id:this.formId,abandoned_at_step:this.currentStep,duration_seconds:duration});},_key(suffix){return`ava_${this.formId}_${suffix}`;},_incrementVisit(){const k=this._key('visits');localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1).toString());const today=new Date().toISOString().slice(0,10);const dk=this._key('daily_'+today);localStorage.setItem(dk,(parseInt(localStorage.getItem(dk)||'0')+1).toString());},_incrementCompletion(){const k=this._key('completions');localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1).toString());},_incrementAbandon(step){const k=this._key('abandon_step_'+step);localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1).toString());},_updateStepStats(step){const k=this._key('step_'+step+'_reaches');localStorage.setItem(k,(parseInt(localStorage.getItem(k)||'0')+1).toString());},_recordEvent(type,data){const events=JSON.parse(localStorage.getItem(this._key('events'))||'[]');events.push({type,data,ts:new Date().toISOString()});if(events.length>200)events.splice(0,events.length-200);localStorage.setItem(this._key('events'),JSON.stringify(events));},_ga(eventName,params){if(typeof gtag==='function'){gtag('event',eventName,{...params,send_to:this.gaMeasurementId});}},getStats(){const visits=parseInt(localStorage.getItem(this._key('visits'))||'0');const completions=parseInt(localStorage.getItem(this._key('completions'))||'0');const stepReaches={};for(let s=1;s<=this.totalSteps;s++){stepReaches[s]=parseInt(localStorage.getItem(this._key('step_'+s+'_reaches'))||'0');}const abandonByStep={};for(let s=1;s<=this.totalSteps;s++){abandonByStep[s]=parseInt(localStorage.getItem(this._key('abandon_step_'+s))||'0');}const daily={};for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const dk=d.toISOString().slice(0,10);daily[dk]=parseInt(localStorage.getItem(this._key('daily_'+dk))||'0');}return{visits,completions,completionRate:visits?Math.round((completions/visits)*100):0,stepReaches,abandonByStep,daily};}};
+
+AVA_ANALYTICS.init('slp_screener', 3);
+
+const TOTAL=3;
+function goNext(step){
+  if(step===1&&!document.getElementById('child-name').value.trim()){alert("Please enter your child's name.");return;}
+  document.getElementById('step-'+step).classList.remove('active');
+  document.getElementById('step-'+(step+1)).classList.add('active');
+  setProgress(step+1);
+  AVA_ANALYTICS.stepReached(step+1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goBack(step){
+  document.getElementById('step-'+step).classList.remove('active');
+  document.getElementById('step-'+(step-1)).classList.add('active');
+  setProgress(step-1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function setProgress(step){document.getElementById('prog-fill').style.width=(((step-1)/(TOTAL-1))*100)+'%';document.getElementById('prog-txt').textContent='Step '+step+' of '+TOTAL;}
+function gr(name){const e=document.querySelector('input[name="'+name+'"]:checked');return e?e.value:'Not answered';}
+function gc(name){return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(e=>e.value);}
+
+async function submitForm(){
+  const childName=document.getElementById('child-name').value;
+  const parentName=document.getElementById('parent-name').value;
+  const childAge=document.getElementById('child-age').value;
+  const dx=document.getElementById('child-dx').value;
+  const mainConcern=document.getElementById('main-concern').value;
+  document.getElementById('form-card').style.display='none';
+  document.getElementById('result-wrap').style.display='block';
+  document.getElementById('prog-fill').style.width='100%';
+  document.getElementById('prog-txt').textContent='Complete!';
+  document.getElementById('result-title').textContent='Speech-Language Results — '+childName;
+  window.scrollTo({top:0,behavior:'smooth'});
+  AVA_ANALYTICS.formCompleted();
+
+  const subs=['Reading communication profile...','Analyzing expressive language...','Reviewing receptive language...','Building your personalized SLP summary...'];
+  let si=0;
+  const iv=setInterval(()=>{si=(si+1)%subs.length;const e=document.getElementById('loading-sub');if(e)e.textContent=subs[si];},1800);
+
+  const prompt=`You are a warm, knowledgeable pediatric therapy coordinator at Ava's Hub in East Orange, NJ. You are NOT an SLP. Clearly state this is NOT a clinical evaluation. Invite the family to schedule a formal in-office evaluation with Ava's Hub's licensed SLP.
+
+CHILD: ${childName}, age ${childAge} | PARENT: ${parentName} | DIAGNOSIS: ${dx||'Not specified'}
+MAIN CONCERN: "${mainConcern||'Not provided'}"
+Primary communication mode: ${gr('comm-mode')}
+Expressive — needs: ${gr('slp-express-needs')}/5 | sentences: ${gr('slp-sentences')}/5 | initiating: ${gr('slp-initiate')}/5
+Receptive — 1-step: ${gr('slp-1step')}/5 | 2-step: ${gr('slp-2step')}/5 | questions: ${gr('slp-questions')}/5
+Intelligibility — familiar: ${gr('slp-intel-familiar')}/5 | unfamiliar: ${gr('slp-intel-unfamiliar')}/5
+Social/pragmatic: ${gr('slp-pragmatic')}/5 | Feeding concern: ${gr('slp-feeding-yn')} | Feeding: ${gc('slp-feeding').join(', ')||'none'}
+Concerns: ${gc('slp-concerns').join(', ')||'none'} | Impact: ${gc('slp-impact').join(', ')||'none'}
+Previous services: ${gr('slp-prev')} | Top goal: "${document.getElementById('slp-top-goal').value||'Not provided'}"
+Additional notes: "${document.getElementById('slp-anything').value||'none'}"
+
+Write a warm personalized results summary with these exact section headers:
+📋 ABOUT THIS QUESTIONNAIRE
+🗣️ WHAT WE NOTICED — ${childName.toUpperCase()}'S COMMUNICATION PROFILE
+🌟 ${childName.toUpperCase()}'S STRENGTHS
+⚡ AREAS WHERE SPEECH THERAPY AT AVA'S HUB CAN HELP
+✨ HOW AVA'S HUB'S SPEECH-LANGUAGE PROGRAM WORKS
+🎯 WHAT ${childName.toUpperCase()}'S PROGRAM MIGHT FOCUS ON
+📞 YOUR NEXT STEP
+
+Guidelines: Lead with strengths always. Be specific to their responses. Reference AAC/feeding if flagged. Mention play-based therapy for young children, caregiver coaching, social skills/SLP collaboration. Next step = schedule in-office evaluation at hello@avashubnj.com. Plain text only, no ** markdown, ~600-700 words, warm and parent-friendly.`;
+
+  try{
+    const res=await fetch('/api/intake/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,formId:'slp',system:"You are a warm family-friendly pediatric therapy coordinator at Ava's Hub. You are NOT a licensed SLP. Always disclaim this is not a clinical evaluation. Plain text only, no ** markdown."})});
+    clearInterval(iv);
+    const result=await res.json();
+    if(result.result){document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(result.result)}</div></div>`;}
+    else{showFallback(childName,parentName);}
+  }catch(e){clearInterval(iv);showFallback(childName,parentName);}
+  document.getElementById('result-actions').style.display='flex';
+}
+
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function showFallback(name,parent){document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">Thank you, ${parent}, for sharing about ${name}.\n\nOur team at Ava's Hub will be in touch to discuss ${name}'s speech-language needs. Remember — this questionnaire is informational only. A formal in-office evaluation with our licensed SLP is the important next step.\n\nhello@avashubnj.com · www.avashubnj.com\n280 S Harrison St, Suite 311, East Orange NJ 07018\n\nWarm regards,\nThe Ava's Hub Team</div></div>`;}
+function restartForm(){document.getElementById('result-wrap').style.display='none';document.getElementById('form-card').style.display='block';document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(e=>e.checked=false);document.querySelectorAll('input[type=text],input[type=email],textarea').forEach(e=>e.value='');['1','2','3'].forEach(s=>{document.getElementById('step-'+s).classList.remove('active');});document.getElementById('step-1').classList.add('active');setProgress(1);window.scrollTo({top:0,behavior:'smooth'});}
+setProgress(1);
+</script>
+</body>
+</html>
