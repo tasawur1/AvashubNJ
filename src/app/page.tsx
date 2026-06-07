@@ -229,7 +229,7 @@ function DesktopHomePage() {
         Reuse detailed page-specific cards/accordions and support sections
         when they strengthen desktop depth without changing mobile.
       */}
-      <section className="min-h-[calc(100vh-5rem)] py-10 xl:py-14">
+      <section className="min-h-[calc(100vh-5rem)] py-9 xl:py-12">
         <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
           <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
             <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
@@ -351,7 +351,7 @@ function DesktopHomePage() {
         </SectionContainer>
       </section>
 
-      <section id="programs-desktop" className="pb-14">
+      <section id="programs-desktop" className="pb-12">
         <SectionContainer>
           <h2 className="font-serif text-[clamp(2.1rem,3.2vw,3.4rem)] font-semibold leading-tight tracking-tight text-brand-navy">
             Programs for Every Stage
@@ -440,7 +440,7 @@ function DesktopHomePage() {
         </SectionContainer>
       </section>
 
-      <section className="pb-14">
+      <section className="pb-12">
         <SectionContainer>
           <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
             Resources & Support for Families
@@ -475,7 +475,7 @@ function DesktopHomePage() {
         </SectionContainer>
       </section>
 
-      <section className="pb-16">
+      <section className="pb-14">
         <SectionContainer>
           <div className="grid gap-5 xl:grid-cols-[1fr_0.85fr]">
             <div className="rounded-[2rem] bg-brand-lavender/70 p-8 shadow-card ring-1 ring-brand-purple-deep/10">

@@ -280,8 +280,7 @@ function MobileContactPage() {
               Our team is here to help you every step of the way.
             </p>
             <p className="mt-5 text-sm italic leading-relaxed text-brand-navy/70">
-              Select the appropriate intake form below to begin your care
-              inquiry.
+              Intake forms for each service will be available here soon.
             </p>
             <div className="mt-6 space-y-3">
               {supportPrompts.map((item, index) => (
@@ -311,7 +310,7 @@ function MobileContactPage() {
                       index === 0 ? "text-white/80" : "text-brand-purple-bright/70"
                     }`}
                   >
-                    Intake form
+                    Coming soon
                   </span>
                 </button>
               ))}

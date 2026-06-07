@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { AboutMissionApproachSection } from "@/components/about/AboutMissionApproachSection";
-import { AboutProblemSection } from "@/components/about/AboutProblemSection";
-import { AboutWhySection } from "@/components/about/AboutWhySection";
 import { CTAButton } from "@/components/CTAButton";
-import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { SectionContainer } from "@/components/SectionContainer";
 import { siteImages } from "@/data/images";
 
 export const metadata: Metadata = {
@@ -224,7 +221,7 @@ function FinalMobileCta() {
 
 function MobileAboutPage() {
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <MobileAboutHero />
 
       <section id="about-story-mobile" className="px-6 pb-10">
@@ -425,9 +422,340 @@ function MobileAboutPage() {
   );
 }
 
+function DesktopAboutPage() {
+  return (
+    <div className="hidden bg-[#fffaf4] lg:block">
+      <section className="py-10 xl:py-12">
+        <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
+          <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
+            <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+              More Than a Therapy Center
+            </p>
+            <h2 className="mt-6 max-w-xl text-[clamp(2.55rem,3.8vw,4.25rem)] font-extrabold leading-[1.03] tracking-tight text-brand-navy">
+              We Built Ava&apos;s Hub Because{" "}
+              <span className="italic text-brand-purple-bright">
+                Families Deserve More
+                <span className="ml-3 text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
+                </span>
+              </span>
+            </h2>
+            <p className="mt-6 max-w-lg text-xl font-extrabold leading-snug text-brand-purple-bright">
+              You deserve support, connection, and a place where your child can
+              truly belong.
+            </p>
+            <p className="mt-5 max-w-xl text-[clamp(1rem,1.1vw,1.125rem)] leading-relaxed text-brand-navy/85">
+              Too many families leave traditional therapy feeling alone, rushed,
+              and unsure how to carry progress into real life. Ava&apos;s Hub was
+              created for something warmer: practical support, relationship-based
+              care, and a community that understands the whole journey.
+            </p>
+
+            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+              <Icon
+                name="heart"
+                className="mt-1 shrink-0 text-brand-purple-bright"
+                size="2x"
+              />
+              <p className="text-lg font-extrabold leading-relaxed text-brand-navy">
+                Because therapy should feel human.
+              </p>
+            </div>
+
+            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
+              <CTAButton href="/contact" className="min-w-[14rem]">
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule Consultation
+                </span>
+              </CTAButton>
+              <CTAButton
+                href="#about-story-desktop"
+                variant="secondary"
+                className="min-w-[12rem]"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="resources" size="sm" />
+                  See Our Story
+                </span>
+              </CTAButton>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -left-8 top-10 h-52 w-52 rounded-full bg-brand-lavender/45 blur-3xl" />
+            <div className="absolute -bottom-10 right-8 h-56 w-56 rounded-full bg-brand-gold/20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-teal/10 xl:rounded-[7rem_3rem_7rem_3rem]">
+              <PlaceholderImage
+                src={siteImages.aboutMobileHero}
+                alt={ABOUT_HERO_ALT}
+                width={1023}
+                height={1537}
+                priority
+                className="h-[min(76vh,48rem)] w-full object-cover object-[50%_34%]"
+                sizes="(min-width: 1280px) 54vw, 50vw"
+              />
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section id="about-story-desktop" className="pb-12">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0f5758] to-[#063f46] text-white shadow-card">
+            <div className="grid items-stretch lg:grid-cols-[0.44fr_0.56fr]">
+              <div className="relative min-h-[24rem] bg-brand-teal-light">
+                <PlaceholderImage
+                  src={siteImages.aboutMobileBuiltFromRealLife}
+                  alt="Ava's Hub family support story"
+                  fill
+                  className="object-cover object-center"
+                  sizes="44vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 xl:p-10">
+                <p className="text-xs font-extrabold uppercase tracking-normal text-brand-gold">
+                  Why Ava&apos;s Hub Exists
+                </p>
+                <h2 className="mt-3 text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight">
+                  Built From Real Life
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90 xl:text-lg">
+                  Ava&apos;s Hub grew from both a parent&apos;s heart and an OT
+                  perspective. We saw the gaps: families needing more guidance,
+                  children needing practice beyond worksheets, and parents
+                  needing a community instead of isolation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+            What We Believe
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/75">
+            Calm, practical care that helps families feel seen.
+          </p>
+          <div className="mt-7 grid gap-5 lg:grid-cols-5">
+            {beliefCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon
+                  name={card.icon}
+                  className="text-brand-purple-bright"
+                  size="2x"
+                />
+                <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                  {card.text}
+                </p>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
+            <div className="grid items-stretch lg:grid-cols-[0.48fr_0.52fr]">
+              <div className="relative min-h-[25rem] bg-brand-teal-light">
+                <PlaceholderImage
+                  src={siteImages.aboutMobileFounderStory}
+                  alt="Founder story at Ava's Hub"
+                  fill
+                  className="object-cover object-center"
+                  sizes="48vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 xl:p-10">
+                <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+                  Meet the Heart Behind Ava&apos;s Hub
+                </p>
+                <h2 className="mt-3 text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+                  Founder Story
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-brand-navy/85 xl:text-lg">
+                  Ava&apos;s Hub was shaped by someone who understands the
+                  special needs journey from the inside: the burnout, the
+                  confusing systems, the long waits, and the ache of wanting
+                  more for your child.
+                </p>
+                <p className="mt-4 text-xl font-extrabold text-brand-purple-bright">
+                  You&apos;re not alone.
+                </p>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+            Our Approach
+          </h2>
+          <div className="mt-7 grid gap-5 lg:grid-cols-2 xl:grid-cols-5">
+            {approachCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon
+                  name={card.icon}
+                  className="text-brand-purple-bright"
+                  size="xl"
+                />
+                <h3 className="mt-4 text-lg font-extrabold text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
+                  {card.text}
+                </p>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+            Who We Serve
+          </h2>
+          <div className="mt-7 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {serveCards.map((card) => (
+              <article
+                key={card.title}
+                className="overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+              >
+                <div className="relative h-44 bg-brand-teal-light">
+                  <PlaceholderImage
+                    src={card.image}
+                    alt={`${card.title} support at Ava's Hub`}
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1280px) 25vw, 50vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-xl font-extrabold leading-tight text-brand-purple-bright">
+                      {card.title}
+                    </h3>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                      <Icon name="arrowRight" size="sm" />
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-navy/85">
+                    {card.text}
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+            What Makes Us Different
+          </h2>
+          <div className="mt-7 grid gap-5 lg:grid-cols-3">
+            {differenceCards.map(([traditional, avasHub]) => (
+              <article
+                key={traditional}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <p className="text-sm font-bold text-brand-navy/45">
+                  {traditional}
+                </p>
+                <div className="my-4 h-px bg-brand-purple-deep/10" />
+                <p className="flex items-center gap-3 text-xl font-extrabold text-brand-navy">
+                  <Icon
+                    name="heart"
+                    className="text-brand-purple-bright"
+                    size="sm"
+                  />
+                  {avasHub}
+                </p>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
+            <div className="grid items-stretch lg:grid-cols-[0.42fr_0.58fr]">
+              <div className="relative min-h-[22rem] bg-brand-teal-light">
+                <PlaceholderImage
+                  src={siteImages.aboutMobileCommunityBelonging}
+                  alt="Community and belonging at Ava's Hub"
+                  fill
+                  className="object-cover object-center"
+                  sizes="42vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 xl:p-10">
+                <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+                  You Were Never Meant To Do This Alone
+                </h2>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-brand-navy/85 xl:text-lg">
+                  Families need more than appointments. They need people,
+                  places, encouragement, and belonging. Ava&apos;s Hub is here
+                  to help your family feel supported in the everyday moments
+                  that matter most.
+                </p>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-16">
+        <SectionContainer>
+          <div className="rounded-[2rem] bg-brand-purple-bright p-8 text-white shadow-card">
+            <div className="flex items-center justify-between gap-8">
+              <div>
+                <h2 className="text-2xl font-extrabold leading-tight">
+                  Ready to Get Started?
+                </h2>
+                <p className="mt-2 text-base text-white/90">
+                  We&apos;d love to meet your family.
+                </p>
+              </div>
+              <CTAButton
+                href="/contact"
+                variant="secondary"
+                className="shrink-0 !border-white !bg-white !px-6 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+              >
+                <span className="inline-flex items-center justify-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule Consultation
+                </span>
+              </CTAButton>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+    </div>
+  );
+}
+
 export default function AboutPage() {
   return (
-    <main className="flex-1 bg-[#fffaf4] md:bg-white">
+    <main className="flex-1 bg-[#fffaf4]">
       <h1 className="sr-only">Ava&apos;s Hub About Us</h1>
       <p className="sr-only">
         Ava&apos;s Hub provides occupational therapy-based life skills, social
@@ -437,20 +765,7 @@ export default function AboutPage() {
 
       <MobileAboutPage />
 
-      <div className="hidden md:block">
-        <HeroBanner
-          images={{
-            desktop: siteImages.aboutHeroBanner,
-            mobile: siteImages.aboutHeroBannerMobile,
-          }}
-          alt={ABOUT_HERO_ALT}
-          showCtas={false}
-        />
-
-        <AboutProblemSection />
-        <AboutMissionApproachSection />
-        <AboutWhySection />
-      </div>
+      <DesktopAboutPage />
     </main>
   );
 }
