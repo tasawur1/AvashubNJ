@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import { ClosingCtaBanner } from "@/components/page/ClosingCtaBanner";
 import { CTAButton } from "@/components/CTAButton";
-import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
 import {
@@ -9,17 +9,9 @@ import {
 } from "@/components/page/ResourceMobileComponents";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
 import { MAP_EMBED_SRC } from "@/data/pageContent/contactContent";
 import { contactImages } from "@/data/pageImages/contactImages";
 import type { IconName } from "@/data/icons";
-import {
-  cardInnerPad,
-  cardShell,
-  cardShellSoft,
-  innerContentWrap,
-  pageSectionPad,
-} from "@/lib/pageSectionStyles";
 
 export const metadata: Metadata = {
   title:
@@ -52,9 +44,10 @@ type FeatureItem = {
   tone: Tone;
 };
 
-type SupportPrompt = {
+type SupportCard = {
   icon: IconName;
   title: string;
+  description: string;
   tone: Tone;
 };
 
@@ -78,31 +71,27 @@ const contactItems: ContactItem[] = [
     icon: "phone",
     title: "Call Us",
     tone: "purple",
-    lines: ["(908) 758-4692", "Monday - Friday: 8:00 AM - 8:00 PM"],
+    lines: ["(908) 758-4692"],
   },
   {
     icon: "email",
     title: "Email Us",
     tone: "teal",
-    lines: ["info@avashub.com", "We typically respond within 24 hours."],
+    lines: ["info@avashub.com"],
   },
   {
     icon: "location",
     title: "Visit Us",
     tone: "gold",
-    lines: [
-      "280 S Harrison Street, Suite 311",
-      "East Orange, NJ",
-      "Free parking available.",
-    ],
+    lines: ["280 S Harrison Street", "Suite 311", "East Orange NJ"],
   },
   {
     icon: "clock",
     title: "Office Hours",
     tone: "purple",
     lines: [
-      "Monday - Friday: 8:00 AM - 8:00 PM",
-      "Saturday - Sunday: 10:00 AM - 4:00 PM",
+      "Monday–Friday: 8:00 AM – 8:00 PM",
+      "Saturday–Sunday: 10:00 AM – 4:00 PM",
     ],
   },
 ];
@@ -117,47 +106,50 @@ const featureItems: FeatureItem[] = [
   {
     icon: "shieldHeart",
     title: "Evidence-Based Care",
-    description: "Our programs and therapies are rooted in best practices.",
+    description:
+      "Our programs are rooted in best practices and real-life participation.",
     tone: "teal",
   },
   {
     icon: "heart",
     title: "Compassionate Team",
-    description: "We treat your family like our family.",
+    description: "We treat your family like family.",
     tone: "gold",
   },
   {
     icon: "home",
     title: "Community Focused",
-    description:
-      "Proudly serving families in East Orange and surrounding areas.",
+    description: "Supporting families inside and outside the therapy room.",
     tone: "teal",
   },
 ];
 
-const supportPrompts: SupportPrompt[] = [
+const supportCards: SupportCard[] = [
   {
-    icon: "handHeart",
-    title: "Occupational Therapy",
+    icon: "communication",
+    title: "We Listen",
+    description: "We take time to understand your needs and goals.",
     tone: "purple",
   },
   {
-    icon: "communication",
-    title: "Speech Therapy",
-    tone: "gold",
+    icon: "compass",
+    title: "We Guide",
+    description: "We’ll help you find the right support for your loved one.",
+    tone: "teal",
   },
   {
-    icon: "independence",
-    title: "Physical Therapy",
-    tone: "teal",
+    icon: "handHeart",
+    title: "We Care",
+    description: "Your family’s journey is our priority.",
+    tone: "gold",
   },
 ];
 
-const inputClass =
-  "w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
-
 const mobileInputClass =
   "w-full rounded-[1.1rem] border border-brand-teal/15 bg-white/95 px-5 py-4 text-sm font-medium text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
+
+const desktopInputClass =
+  "w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
 
 function MobileContactForm() {
   return (
@@ -231,7 +223,7 @@ function MobileContactForm() {
           required
           className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-purple-bright"
         />
-        <span>I consent to being contacted by Ava's Hub.</span>
+        <span>I consent to being contacted by Ava&apos;s Hub.</span>
       </label>
       <CTAButton type="submit" className="w-full !py-4">
         <span className="inline-flex items-center gap-2">
@@ -243,10 +235,126 @@ function MobileContactForm() {
   );
 }
 
+function DesktopContactForm() {
+  return (
+    <form className="space-y-5">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="desktop-first-name" className="sr-only">
+            First Name
+          </label>
+          <input
+            id="desktop-first-name"
+            name="firstName"
+            type="text"
+            autoComplete="given-name"
+            required
+            placeholder="First Name *"
+            className={desktopInputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="desktop-last-name" className="sr-only">
+            Last Name
+          </label>
+          <input
+            id="desktop-last-name"
+            name="lastName"
+            type="text"
+            autoComplete="family-name"
+            required
+            placeholder="Last Name *"
+            className={desktopInputClass}
+          />
+        </div>
+      </div>
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="desktop-email" className="sr-only">
+            Email Address
+          </label>
+          <input
+            id="desktop-email"
+            name="email"
+            type="email"
+            autoComplete="email"
+            required
+            placeholder="Email Address *"
+            className={desktopInputClass}
+          />
+        </div>
+        <div>
+          <label htmlFor="desktop-phone" className="sr-only">
+            Phone Number
+          </label>
+          <input
+            id="desktop-phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            required
+            placeholder="Phone Number *"
+            className={desktopInputClass}
+          />
+        </div>
+      </div>
+      <div>
+        <label htmlFor="desktop-help-topic" className="sr-only">
+          How can we help you?
+        </label>
+        <select
+          id="desktop-help-topic"
+          name="helpTopic"
+          required
+          defaultValue=""
+          className={desktopInputClass}
+        >
+          <option value="" disabled>
+            How can we help you? *
+          </option>
+          <option value="schedule-tour">Schedule a tour</option>
+          <option value="programs">Learn about programs</option>
+          <option value="family-support">Family support</option>
+          <option value="resources">Resources</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label htmlFor="desktop-message" className="sr-only">
+          Message
+        </label>
+        <textarea
+          id="desktop-message"
+          name="message"
+          rows={5}
+          required
+          placeholder="Message *"
+          className={`${desktopInputClass} resize-y`}
+        />
+      </div>
+      <label className="flex gap-3 text-sm font-medium text-brand-navy/80">
+        <input
+          type="checkbox"
+          name="consent"
+          required
+          className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-teal"
+        />
+        <span>I consent to being contacted by Ava&apos;s Hub.</span>
+      </label>
+      <CTAButton type="submit" className="w-full">
+        <span className="inline-flex items-center gap-2">
+          Send Message
+          <Icon name="paperPlane" size="sm" />
+        </span>
+      </CTAButton>
+    </form>
+  );
+}
+
 function MobileContactPage() {
   return (
-    <div className="bg-[#fffaf4] md:hidden">
-      <h1 className="sr-only">Contact Ava's Hub</h1>
+    <div className="bg-[#fffaf4] lg:hidden">
+      <h1 className="sr-only">Contact Ava&apos;s Hub</h1>
 
       <section className="pb-8">
         <div className="bg-[#fffaf4]">
@@ -266,60 +374,49 @@ function MobileContactPage() {
             <h2 className="text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
               Let&apos;s Connect
             </h2>
-            <p className="mt-3 text-xl font-extrabold leading-snug text-brand-purple-bright">
-              We&apos;re here for you and your family{" "}
-              <span className="text-brand-purple-bright/55">
+            <p className="mt-3 flex flex-nowrap items-center gap-1.5 text-[clamp(0.92rem,4.35vw,1.08rem)] font-extrabold leading-snug text-brand-purple-bright">
+              <span className="min-w-0 shrink">
+                We&apos;re here for you and your family
+              </span>
+              <span className="shrink-0 text-[0.95em] text-brand-purple-bright/55">
                 <TiltedHeartOutline />
               </span>
             </p>
             <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-              Have a question, ready to get started, or want to learn more
-              about Ava&apos;s Hub?
+              Have a question, ready to get started, or want to learn more about
+              Ava&apos;s Hub? Our team is here to help you every step of the way.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
-              Our team is here to help you every step of the way.
-            </p>
-            <p className="mt-5 text-sm italic leading-relaxed text-brand-navy/70">
-              Intake forms for each service will be available here soon.
-            </p>
+
             <div className="mt-6 space-y-3">
-              {supportPrompts.map((item, index) => (
-                <button
-                  type="button"
-                  key={item.title}
-                  className={`grid min-h-11 w-full grid-cols-[2.35rem_minmax(0,1fr)_auto] items-center gap-2 rounded-full py-2.5 pl-1.5 pr-4 text-[0.72rem] font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold min-[380px]:grid-cols-[2.6rem_minmax(0,1fr)_auto] min-[380px]:text-[0.78rem] ${
-                    index === 0
-                      ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
-                      : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
-                  }`}
+              {supportCards.map((card) => (
+                <div
+                  key={card.title}
+                  className="flex items-start gap-4 rounded-[1.4rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10"
                 >
                   <span
-                    className={`flex h-8 w-8 items-center justify-center rounded-full min-[380px]:h-9 min-[380px]:w-9 ${
-                      index === 0
-                        ? "bg-white/95 text-brand-purple-bright"
-                        : "bg-brand-purple-bright text-white"
-                    }`}
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
                   >
-                    <Icon name={item.icon} size="sm" />
+                    <Icon name={card.icon} size="sm" />
                   </span>
-                  <span className="min-w-0 flex-1 whitespace-nowrap text-left">
-                    {item.title}
-                  </span>
-                  <span
-                    className={`shrink-0 whitespace-nowrap text-[0.58rem] font-semibold italic min-[380px]:text-[0.64rem] ${
-                      index === 0 ? "text-white/80" : "text-brand-purple-bright/70"
-                    }`}
-                  >
-                    Coming soon
-                  </span>
-                </button>
+                  <div>
+                    <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+                      {card.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-brand-navy/75">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="px-6 pb-10" aria-labelledby="mobile-contact-info-heading">
+      <section
+        className="px-6 pb-10"
+        aria-labelledby="mobile-contact-info-heading"
+      >
         <h2
           id="mobile-contact-info-heading"
           className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy"
@@ -342,12 +439,17 @@ function MobileContactPage() {
                   <Icon name={item.icon} size="lg" />
                 </span>
                 <div>
-                  <h3 className={`text-lg font-extrabold ${toneStyles[item.tone].text}`}>
+                  <h3
+                    className={`text-lg font-extrabold ${toneStyles[item.tone].text}`}
+                  >
                     {item.title}
                   </h3>
                   <div className="mt-2 space-y-1">
                     {item.lines.map((line) => (
-                      <p key={line} className="text-sm leading-relaxed text-brand-navy/80">
+                      <p
+                        key={line}
+                        className="text-sm leading-relaxed text-brand-navy/80"
+                      >
                         {line}
                       </p>
                     ))}
@@ -359,7 +461,10 @@ function MobileContactPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-10" aria-labelledby="mobile-message-heading">
+      <section
+        className="px-6 pb-10"
+        aria-labelledby="mobile-message-heading"
+      >
         <div className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
           <h2
             id="mobile-message-heading"
@@ -443,7 +548,11 @@ function MobileContactPage() {
         </div>
       </section>
 
-      <section id="contact-newsletter" className="px-6 pb-10" aria-labelledby="contact-newsletter-heading">
+      <section
+        id="contact-newsletter"
+        className="px-6 pb-10"
+        aria-labelledby="contact-newsletter-heading"
+      >
         <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
           <div className="relative h-40 bg-brand-teal-light">
             <PlaceholderImage
@@ -470,6 +579,9 @@ function MobileContactPage() {
             <div className="mt-5">
               <EmailSignupForm placeholder="Enter your email address" />
             </div>
+            <p className="mt-4 text-xs font-semibold text-brand-navy/60">
+              We respect your privacy.
+            </p>
           </div>
         </div>
       </section>
@@ -482,304 +594,287 @@ function MobileContactPage() {
   );
 }
 
-export default function ContactPage() {
+function DesktopContactPage() {
   return (
-    <main className="flex-1 bg-white">
-      <MobileContactPage />
-      <div className="hidden md:block">
-      <h1 className="sr-only">Contact Ava's Hub</h1>
-      <HeroBanner
-        images={{
-          desktop: contactImages.contactHeroBanner,
-          mobile: contactImages.contactHeroBannerMobile,
-        }}
-        alt="Ava's Hub contact hero banner"
-        showCtas={false}
-      />
+    <div className="hidden bg-[#fffaf4] lg:block">
+      <h1 className="sr-only">Contact Ava&apos;s Hub</h1>
 
       <section
-        className={`bg-white ${pageSectionPad}`}
-        aria-labelledby="contact-heading"
+        className="py-9 xl:py-12"
+        aria-labelledby="desktop-contact-hero-heading"
       >
-        <SectionContainer>
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10">
-            <div className={cardShell}>
-              <div className={cardInnerPad}>
-                <SectionHeadingDecorated
-                  id="contact-heading"
-                  title="Get in Touch"
-                  className="mb-8"
-                />
-                <div className="space-y-6">
-                  {contactItems.map((item, index) => (
-                    <div
-                      key={item.title}
-                      className={
-                        `flex gap-4 pb-6 ` +
-                        (index === contactItems.length - 1
-                          ? "pb-0"
-                          : "border-b border-brand-teal/10")
-                      }
-                    >
-                      <span
-                        className={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
-                      >
-                        <Icon name={item.icon} size="lg" />
-                      </span>
-                      <div>
-                        <h2 className={`text-lg font-bold ${toneStyles[item.tone].text}`}>
-                          {item.title}
-                        </h2>
-                        <div className="mt-2 space-y-1">
-                          {item.lines.map((line) => (
-                            <p
-                              key={line}
-                              className="text-sm leading-relaxed text-brand-navy/85"
-                            >
-                              {line}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+        <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
+          <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
+            <p className="inline-flex rounded-full bg-brand-lavender px-4 py-2 text-sm font-extrabold uppercase tracking-normal text-brand-purple-bright">
+              Get In Touch
+            </p>
+            <h2
+              id="desktop-contact-hero-heading"
+              className="mt-5 text-[clamp(3rem,4.7vw,5.6rem)] font-extrabold leading-[0.96] tracking-tight text-brand-navy"
+            >
+              Let&apos;s Connect
+            </h2>
+            <p className="mt-4 flex flex-nowrap items-center gap-2 text-[clamp(1.35rem,1.9vw,2rem)] font-extrabold leading-tight text-brand-purple-bright">
+              <span>We&apos;re here for you and your family</span>
+              <span className="shrink-0 text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-brand-navy/82">
+              Have a question, ready to get started, or want to learn more about
+              Ava&apos;s Hub? Our team is here to help you every step of the way.
+            </p>
 
-            <div className={cardShell}>
-              <div className={cardInnerPad}>
-                <SectionHeadingDecorated
-                  id="message-heading"
-                  title="Send Us a Message"
-                  subtitle="We'd love to hear from you!"
-                  className="mb-8"
-                />
-                <form className="space-y-5">
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="first-name" className="sr-only">
-                        First Name
-                      </label>
-                      <input
-                        id="first-name"
-                        name="firstName"
-                        type="text"
-                        autoComplete="given-name"
-                        required
-                        placeholder="First Name *"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="last-name" className="sr-only">
-                        Last Name
-                      </label>
-                      <input
-                        id="last-name"
-                        name="lastName"
-                        type="text"
-                        autoComplete="family-name"
-                        required
-                        placeholder="Last Name *"
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label htmlFor="email" className="sr-only">
-                        Email Address
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        placeholder="Email Address *"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="phone" className="sr-only">
-                        Phone Number
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        required
-                        placeholder="Phone Number *"
-                        className={inputClass}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="help-topic" className="sr-only">
-                      How can we help you?
-                    </label>
-                    <select
-                      id="help-topic"
-                      name="helpTopic"
-                      required
-                      defaultValue=""
-                      className={inputClass}
-                    >
-                      <option value="" disabled>
-                        How can we help you? *
-                      </option>
-                      <option value="schedule-tour">Schedule a tour</option>
-                      <option value="programs">Learn about programs</option>
-                      <option value="family-support">Family support</option>
-                      <option value="resources">Resources</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="sr-only">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      required
-                      placeholder="Message *"
-                      className={`${inputClass} resize-y`}
-                    />
-                  </div>
-
-                  <label className="flex gap-3 text-sm font-medium text-brand-navy/80">
-                    <input
-                      type="checkbox"
-                      name="consent"
-                      required
-                      className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-deep focus:ring-brand-teal"
-                    />
-                    <span>I consent to being contacted by Ava's Hub.</span>
-                  </label>
-
-                  <CTAButton type="submit" className="w-full">
-                    <span className="inline-flex items-center gap-2">
-                      Send Message
-                      <Icon name="email" size="sm" />
-                    </span>
-                  </CTAButton>
-                </form>
-              </div>
-            </div>
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section
-        className={`bg-gradient-to-b from-brand-lavender/25 to-white ${pageSectionPad}`}
-        aria-labelledby="find-us-heading"
-      >
-        <SectionContainer>
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
-            <div className={cardShell}>
-              <div className={cardInnerPad}>
-                <h2
-                  id="find-us-heading"
-                  className="text-center text-2xl font-bold text-brand-teal sm:text-[1.75rem]"
-                >
-                  Find Us
-                </h2>
-                <div className="mt-6 overflow-hidden rounded-2xl ring-1 ring-brand-teal/10">
-                  <div className="relative aspect-[16/10] min-h-[340px]">
-                    <iframe
-                      title="Ava's Hub location on Google Maps"
-                      src={MAP_EMBED_SRC}
-                      className="absolute inset-0 h-full w-full border-0"
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <aside className={`${cardShellSoft} overflow-hidden`}>
-              <div className="grid h-full gap-6 p-6 sm:p-7 lg:grid-cols-[1fr_auto] lg:items-center lg:p-8">
-                <div>
-                  <h2 className="text-2xl font-bold text-brand-purple-deep">
-                    Ready to Take the Next Step?
-                  </h2>
-                  <p className="mt-4 text-sm leading-relaxed text-brand-navy/85 sm:text-base">
-                    Schedule a tour, ask questions, or learn more about our
-                    programs. We can't wait to meet you!
-                  </p>
-                  <CTAButton href="/contact" className="mt-6 w-full sm:w-auto">
-                    <span className="inline-flex items-center gap-2">
-                      <Icon name="calendar" size="sm" />
-                      Schedule a Tour
-                    </span>
-                  </CTAButton>
-                </div>
-                <Icon
-                  name="family"
-                  className="hidden text-brand-purple-deep lg:block"
-                  size="2x"
-                />
-              </div>
-            </aside>
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className={`bg-white ${pageSectionPad}`} aria-label="Contact support features">
-        <SectionContainer>
-          <div className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-brand-teal/10">
-            <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-4">
-              {featureItems.map((item, index) => (
+            <div className="mt-7 space-y-3">
+              {supportCards.map((card) => (
                 <div
-                  key={item.title}
-                  className={
-                    `flex gap-4 px-5 py-6 text-left sm:flex-col sm:items-center sm:text-center lg:min-h-40 lg:justify-center ` +
-                    (index === 0 ? "" : "lg:border-l lg:border-brand-teal/15")
-                  }
+                  key={card.title}
+                  className="flex items-start gap-4 rounded-[1.65rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-teal/10"
                 >
-                  <Icon
-                    name={item.icon}
-                    size="2x"
-                    className={toneStyles[item.tone].text}
-                  />
+                  <span
+                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
+                  >
+                    <Icon name={card.icon} size="lg" />
+                  </span>
                   <div>
-                    <h3 className="text-sm font-bold text-brand-teal">
-                      {item.title}
+                    <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                      {card.title}
                     </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-brand-navy/80 sm:text-sm">
-                      {item.description}
+                    <p className="mt-1.5 text-sm leading-relaxed text-brand-navy/75">
+                      {card.description}
                     </p>
                   </div>
                 </div>
               ))}
             </div>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <CTAButton href="tel:+19087584692" className="min-w-[12rem]">
+                Call Us Now
+              </CTAButton>
+              <CTAButton
+                href="#desktop-message-form"
+                variant="secondary"
+                className="min-w-[12rem]"
+              >
+                Send a Message
+              </CTAButton>
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-purple-deep/10 xl:rounded-[7rem_3rem_7rem_3rem]">
+            <PlaceholderImage
+              src={contactImages.mobileHeroBanner}
+              alt="Ava's Hub team ready to connect with your family"
+              width={1182}
+              height={1331}
+              priority
+              className="h-[min(76vh,48rem)] w-full object-cover object-[50%_32%]"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+            />
           </div>
         </SectionContainer>
       </section>
 
-      <section className="pb-10 sm:pb-12 lg:pb-14" aria-label="Contact encouragement">
+      <section
+        className="py-12 xl:py-14"
+        aria-labelledby="desktop-contact-info-heading"
+      >
         <SectionContainer>
-          <div className="rounded-3xl bg-gradient-to-r from-brand-purple-deep to-brand-purple-bright px-6 py-6 text-center text-white shadow-card sm:px-8 lg:px-12">
-            <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 sm:flex-row">
-              <Icon name="heart" className="text-brand-gold" size="2x" />
-              <p className="text-base font-bold leading-relaxed sm:text-lg">
-                You don't have to do this alone. We're here every step of the
-                way. Together, we build skills. Together, we build independence.
-                Together, we build futures.
+          <div className="mb-8 text-center">
+            <h2
+              id="desktop-contact-info-heading"
+              className="inline-flex items-center justify-center gap-3 font-serif text-[clamp(2.25rem,3vw,3.5rem)] font-semibold leading-tight text-brand-navy"
+            >
+              <span>Get in Touch</span>
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {contactItems.map((item) => (
+              <article
+                key={item.title}
+                className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-teal/10"
+              >
+                <span
+                  className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                >
+                  <Icon name={item.icon} size="lg" />
+                </span>
+                <h3
+                  className={`mt-4 text-lg font-extrabold ${toneStyles[item.tone].text}`}
+                >
+                  {item.title}
+                </h3>
+                <div className="mt-2 space-y-1">
+                  {item.lines.map((line) => (
+                    <p
+                      key={line}
+                      className="text-sm leading-relaxed text-brand-navy/80"
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section
+        id="desktop-message-form"
+        className="py-12 xl:py-14"
+        aria-label="Message and location"
+      >
+        <SectionContainer>
+          <div className="grid gap-8 xl:grid-cols-[0.58fr_0.42fr] xl:gap-10">
+            <div className="rounded-[2.25rem] bg-white/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10">
+              <h2
+                id="desktop-message-heading"
+                className="flex flex-nowrap items-center gap-3 font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy"
+              >
+                <span className="min-w-0 shrink">Send Us a Message</span>
+                <span className="shrink-0 text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
+                </span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                We&apos;d love to hear from you.
+              </p>
+              <div className="mt-6">
+                <DesktopContactForm />
+              </div>
+            </div>
+
+            <div className="rounded-[2.25rem] bg-white/95 p-8 shadow-card ring-1 ring-brand-teal/10 xl:p-10">
+              <h2
+                id="desktop-find-us-heading"
+                className="inline-flex items-center gap-3 font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy"
+              >
+                Find Us
+                <span className="text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
+                </span>
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                We&apos;re excited to welcome your family.
+              </p>
+              <p className="mt-2 text-sm font-semibold text-brand-navy/80">
+                280 S Harrison Street, Suite 311, East Orange NJ
+              </p>
+              <div className="mt-6 overflow-hidden rounded-[1.5rem] ring-1 ring-brand-teal/10">
+                <div className="relative aspect-[3/4] min-h-[22rem]">
+                  <iframe
+                    title="Ava's Hub location on Google Maps"
+                    src={MAP_EMBED_SRC}
+                    className="absolute inset-0 h-full w-full border-0"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section
+        className="py-12 xl:py-14"
+        aria-labelledby="desktop-values-heading"
+      >
+        <SectionContainer>
+          <div className="mb-8 text-center">
+            <h2
+              id="desktop-values-heading"
+              className="inline-flex items-center justify-center gap-3 font-serif text-[clamp(2.15rem,2.8vw,3.25rem)] font-semibold leading-tight text-brand-navy"
+            >
+              <span>Support That Feels Personal</span>
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {featureItems.map((item) => (
+              <article
+                key={item.title}
+                className="rounded-[1.75rem] bg-white/95 p-8 text-center shadow-card ring-1 ring-brand-teal/10"
+              >
+                <span
+                  className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}
+                >
+                  <Icon name={item.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/70">
+                  {item.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section
+        id="contact-newsletter-desktop"
+        className="py-12 xl:py-14"
+        aria-labelledby="desktop-contact-newsletter-heading"
+      >
+        <SectionContainer>
+          <div className="grid overflow-hidden rounded-[2.25rem] bg-brand-lavender/40 shadow-card ring-1 ring-brand-purple-deep/10 xl:grid-cols-[0.46fr_0.54fr]">
+            <div className="relative min-h-[24rem] bg-brand-teal-light">
+              <PlaceholderImage
+                src={contactImages.mobileNewsletter}
+                alt="Ava's Hub contact updates"
+                fill
+                className="object-cover object-center"
+                sizes="45vw"
+              />
+            </div>
+            <div className="flex flex-col justify-center p-8 text-center xl:p-12">
+              <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+                <Icon name="email" size="lg" />
+              </span>
+              <h2
+                id="desktop-contact-newsletter-heading"
+                className="mt-5 text-3xl font-extrabold text-brand-navy"
+              >
+                Stay Connected
+              </h2>
+              <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-brand-navy/80">
+                Get updates about programs, events, and resources.
+              </p>
+              <div className="mx-auto mt-6 w-full max-w-xl">
+                <EmailSignupForm placeholder="Enter your email address" />
+              </div>
+              <p className="mt-4 text-xs font-semibold text-brand-navy/60">
+                We respect your privacy.
               </p>
             </div>
           </div>
         </SectionContainer>
       </section>
-      </div>
+
+      <ClosingCtaBanner
+        heading="Ready To Take The Next Step?"
+        description="We'd love to meet your family."
+        buttonLabel="Schedule Consultation"
+        buttonHref="#desktop-message-form"
+      />
+    </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <main className="flex-1 bg-[#fffaf4]">
+      <MobileContactPage />
+      <DesktopContactPage />
     </main>
   );
 }

@@ -349,9 +349,9 @@ function DesktopEventsPage({
       </section>
 
       <ClosingCtaBanner
-        heading="Join Our Community"
-        description="Ask about upcoming events or how your child can participate."
-        buttonLabel="Contact Us"
+        heading="Ready to Join the Community?"
+        description="We'd love to welcome your family."
+        buttonLabel="Schedule Consultation"
         buttonHref="/contact"
       />
     </div>
