@@ -641,31 +641,24 @@ function DesktopFamiliesPage() {
               <TiltedHeartOutline />
             </span>
           </h2>
-          <div className="mx-auto mt-8 max-w-3xl">
-            {journeySteps.map((step, index) => (
-              <div
+          <div className="mt-8 grid gap-5 lg:grid-cols-5">
+            {journeySteps.map((step) => (
+              <article
                 key={step.title}
-                className={`relative ${index < journeySteps.length - 1 ? "pb-10" : ""}`}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10"
               >
-                <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
-                  <div className="grid grid-cols-[4.5rem_1fr] items-center gap-5">
-                    <span
-                      className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
-                    >
-                      <Icon name={step.icon} size="lg" />
-                    </span>
-                    <div>
-                      <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
-                        {step.title}
-                      </h3>
-                      <p className="mt-2 text-base leading-relaxed text-brand-navy/75">
-                        {step.description}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-                {index < journeySteps.length - 1 ? <JourneyArrow /> : null}
-              </div>
+                <span
+                  className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
+                >
+                  <Icon name={step.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
+                  {step.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                  {step.description}
+                </p>
+              </article>
             ))}
           </div>
         </SectionContainer>
