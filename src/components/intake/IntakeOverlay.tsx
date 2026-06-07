@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 export type IntakeFormId = "ot" | "slp" | "pt";
 
@@ -64,11 +65,11 @@ export function IntakeOverlay({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen || !formId) return null;
+  if (!isOpen || !formId || typeof document === "undefined") return null;
 
   const iframeSrc = `${formPath}?formId=${formId}`;
 
-  return (
+  const overlay = (
     <>
       <style>{`
         @keyframes intakeSlideUp {
@@ -84,9 +85,9 @@ export function IntakeOverlay({
         role="dialog"
         aria-modal="true"
         aria-label={`${label} Intake Form`}
-        className="intake-slide-up fixed inset-0 z-[9999] flex flex-col bg-[#faf6f2]"
+        className="intake-slide-up fixed inset-0 z-[99999] flex flex-col bg-[#faf6f2]"
       >
-        {/* Header bar */}
+        {/* Top header bar */}
         <div className="flex shrink-0 items-center justify-between border-b border-brand-teal/15 bg-white/95 px-4 py-3 shadow-sm">
           <div className="flex items-center gap-2.5">
             <span
@@ -122,13 +123,38 @@ export function IntakeOverlay({
         </div>
 
         {/* Form iframe — full remaining height */}
-        <iframe
-          src={iframeSrc}
-          title={`${label} Intake Form`}
-          className="min-h-0 flex-1 border-0 bg-[#faf6f2]"
-          allow="clipboard-write"
-        />
+        <div className="relative min-h-0 flex-1">
+          <iframe
+            src={iframeSrc}
+            title={`${label} Intake Form`}
+            className="h-full w-full border-0 bg-[#faf6f2]"
+            allow="clipboard-write"
+          />
+
+          {/* Floating back arrow — left edge, thumb-friendly position */}
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Go back to contact page"
+            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-lg backdrop-blur-sm transition hover:bg-white hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
       </div>
     </>
   );
+
+  return createPortal(overlay, document.body);
 }
