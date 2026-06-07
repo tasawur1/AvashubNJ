@@ -279,12 +279,16 @@ function MobileContactPage() {
             <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
               Our team is here to help you every step of the way.
             </p>
+            <p className="mt-5 text-sm italic leading-relaxed text-brand-navy/70">
+              Select the appropriate intake form below to begin your care
+              inquiry.
+            </p>
             <div className="mt-6 space-y-3">
               {supportPrompts.map((item, index) => (
                 <button
                   type="button"
                   key={item.title}
-                  className={`relative flex min-h-12 w-full items-center justify-center rounded-full py-3 pl-16 pr-5 text-sm font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold ${
+                  className={`relative flex min-h-12 w-full items-center justify-between gap-3 rounded-full py-3 pl-16 pr-5 text-sm font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold ${
                     index === 0
                       ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
                       : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
@@ -299,7 +303,14 @@ function MobileContactPage() {
                   >
                     <Icon name={item.icon} size="sm" />
                   </span>
-                  <span>{item.title}</span>
+                  <span className="min-w-0 text-left">{item.title}</span>
+                  <span
+                    className={`shrink-0 text-[0.68rem] italic ${
+                      index === 0 ? "text-white/80" : "text-brand-purple-bright/70"
+                    }`}
+                  >
+                    Intake form
+                  </span>
                 </button>
               ))}
             </div>
