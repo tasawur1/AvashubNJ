@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import { CTAButton } from "@/components/CTAButton";
-import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
 import type { IconName } from "@/data/icons";
 import { programsImages } from "@/data/pageImages/programsImages";
-import {
-  cardInnerPad,
-  cardShell,
-  cardShellSoft,
-  innerContentWrap,
-  pageSectionPad,
-} from "@/lib/pageSectionStyles";
 
 export const metadata: Metadata = {
   title: "Ava's Hub Programs | Pediatric OT, Life Skills & Family Support",
@@ -526,7 +517,7 @@ function MobileFinalCta() {
 
 function MobileProgramsPage() {
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <MobileProgramHero />
 
       <section className="px-6 pb-10">
@@ -794,147 +785,334 @@ function MobileProgramsPage() {
 
 function DesktopProgramsPage() {
   return (
-    <div className="hidden md:block">
-      <HeroBanner
-        images={{
-          desktop: programsImages.programsHeroBanner,
-          mobile: programsImages.programsHeroBannerMobile,
-        }}
-        alt="Ava's Hub programs hero banner"
-        showCtas={false}
-      />
+    <div className="hidden bg-[#fffaf4] lg:block">
+      <section className="py-9 xl:py-12">
+        <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
+          <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
+            <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+              Our Programs
+            </p>
+            <h2 className="mt-6 max-w-xl text-[clamp(2.6rem,4vw,4.35rem)] font-extrabold leading-[1.03] tracking-tight text-brand-navy">
+              Real Skills.
+              <br />
+              Real Growth.
+              <br />
+              Real Futures.{" "}
+              <span className="text-brand-gold">
+                <Icon name="heart" size="sm" />
+              </span>
+            </h2>
+            <p className="mt-6 max-w-xl text-[clamp(1rem,1.1vw,1.125rem)] leading-relaxed text-brand-navy/85">
+              At Ava&apos;s Hub, we provide evidence-based occupational therapy
+              services that help children, teens, and young adults build
+              independence, confidence, participation, and meaningful life skills
+              through real-world experiences.
+            </p>
 
-      <section className={`bg-white ${pageSectionPad}`} aria-labelledby="support-heading">
+            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+              <Icon
+                name="heart"
+                className="mt-1 shrink-0 text-brand-purple-bright"
+                size="2x"
+              />
+              <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
+                We help neurodiverse children and teens thrive at home, school,
+                and in their communities.
+              </p>
+            </div>
+
+            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
+              <CTAButton href="/contact" className="min-w-[14rem]">
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule Consultation
+                </span>
+              </CTAButton>
+              <CTAButton
+                href="#program-list-desktop"
+                variant="secondary"
+                className="min-w-[13rem]"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="resources" size="sm" />
+                  Explore Programs
+                </span>
+              </CTAButton>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -left-8 top-10 h-52 w-52 rounded-full bg-brand-lavender/45 blur-3xl" />
+            <div className="absolute -bottom-10 right-8 h-56 w-56 rounded-full bg-brand-gold/20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-teal/10 xl:rounded-[7rem_3rem_7rem_3rem]">
+              <PlaceholderImage
+                src={programsImages.programsHeroMobile}
+                alt="Ava's Hub programs mobile hero banner"
+                width={1122}
+                height={1402}
+                priority
+                className="h-[min(76vh,48rem)] w-full object-cover object-[50%_36%]"
+                sizes="(min-width: 1280px) 54vw, 50vw"
+              />
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
         <SectionContainer>
-          <SectionHeadingDecorated
-            id="support-heading"
-            title="How We Support You"
-            className="mb-8 sm:mb-10"
-          />
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {supportCards.map((card) => (
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            How Can We Help?
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+            Find support for what matters most right now.
+          </p>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {helpCards.map((card) => (
               <article
                 key={card.title}
-                className="flex h-full flex-col rounded-3xl bg-white px-6 py-7 text-center shadow-card ring-1 ring-brand-teal/10"
+                className={`rounded-[1.75rem] p-6 shadow-card ring-1 ${toneStyles[card.tone].card}`}
               >
                 <span
-                  className={`mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full shadow-sm ${toneStyles[card.tone].icon}`}
+                  className={`flex h-16 w-16 items-center justify-center rounded-[1.2rem] shadow-sm ${toneStyles[card.tone].softIcon}`}
                 >
-                  <Icon name={card.icon} size="lg" />
+                  <Icon name={card.icon} size="xl" />
                 </span>
-                <h2 className={`mt-5 text-lg font-bold leading-snug ${toneStyles[card.tone].text}`}>
+                <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
                   {card.title}
-                  <span className="block text-base">{card.eyebrow}</span>
-                </h2>
-                <div className="mt-6 flex-1">
-                  <CheckList items={card.bullets} />
+                </h3>
+                <div className="mt-3 grid grid-cols-[1fr_2.25rem] items-center gap-4">
+                  <p className="text-sm leading-relaxed text-brand-navy/75">
+                    {card.intro}
+                  </p>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                    <Icon name="arrowRight" size="sm" />
+                  </span>
                 </div>
-                <p
-                  className={`mt-7 rounded-full px-4 py-2 text-sm font-bold ${toneStyles[card.tone].pill}`}
-                >
-                  {card.tagline}
-                </p>
               </article>
             ))}
           </div>
-
-          <div className="mt-8 rounded-3xl bg-brand-lavender/60 px-6 py-5 ring-1 ring-brand-purple-deep/10 sm:px-8">
-            <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
-              <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-purple-deep text-white">
-                <Icon name="shieldHeart" size="lg" />
-              </span>
-              <p className="text-sm leading-relaxed text-brand-navy/85 sm:text-base">
-                This is not therapy or couples counseling. Our sessions are OT-based
-                and focus on practical strategies, daily life skills, and building
-                strong, healthy family systems.
-              </p>
-            </div>
-          </div>
         </SectionContainer>
       </section>
 
-      <section className={`bg-gradient-to-b from-brand-lavender/20 to-white ${pageSectionPad}`}>
+      <section id="program-list-desktop" className="pb-12">
         <SectionContainer>
-          <div className={innerContentWrap}>
-            <InsuranceOptionsCard />
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className={pageSectionPad} aria-labelledby="benefits-heading">
-        <SectionContainer>
-          <div className="grid gap-6 lg:grid-cols-[1.35fr_0.9fr]">
-            <div className={`${cardShellSoft} p-6 sm:p-7 lg:p-8`}>
-              <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-purple-deep text-white">
-                  <Icon name="heart" size="lg" />
-                </span>
-                <div className="min-w-0">
-                  <h2 id="benefits-heading" className="text-2xl font-bold text-brand-purple-deep">
-                    Benefits for Parents
-                  </h2>
-                  <ul className="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                    {benefits.map((benefit) => (
-                      <li
-                        key={benefit}
-                        className="flex gap-3 text-sm leading-relaxed text-brand-navy/85"
-                      >
-                        <Icon name="check" className="mt-1 text-brand-teal" size="sm" />
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <aside className={`${cardShell} p-6 sm:p-7 lg:p-8`}>
-              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal text-white">
-                <Icon name="calendar" size="lg" />
-              </span>
-              <h2 className="mt-5 text-2xl font-bold text-brand-purple-deep">
-                Ready to Get Started?
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-brand-navy/85 sm:text-base">
-                You deserve support, tools, and a community that understands.
-                Let&apos;s build a plan that works for you and your family.
-              </p>
-              <CTAButton href="/contact" className="mt-6 w-full sm:w-auto">
-                Request a Session
-              </CTAButton>
-            </aside>
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className={`bg-white ${pageSectionPad}`} aria-label="Program features">
-        <SectionContainer>
-          <div className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-brand-teal/10">
-            <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-5">
-              {featureItems.map((item, index) => (
-                <div
-                  key={item.title}
-                  className={
-                    `flex gap-4 px-5 py-6 text-left sm:flex-col sm:items-center sm:text-center lg:min-h-40 lg:justify-center ` +
-                    (index === 0 ? "" : "lg:border-l lg:border-brand-teal/15")
-                  }
-                >
-                  <Icon
-                    name={item.icon}
-                    size="2x"
-                    className={toneStyles[item.tone].text}
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            Programs for Every Stage of Life
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+            Support that grows with your child.
+          </p>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {mobilePrograms.map((program) => (
+              <article
+                key={program.title}
+                className="overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+              >
+                <div className="relative h-48 bg-brand-teal-light xl:h-52">
+                  <PlaceholderImage
+                    src={program.image}
+                    alt={`${program.title} at Ava's Hub`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(min-width: 1280px) 25vw, 50vw"
                   />
-                  <div>
-                    <h3 className="text-sm font-bold text-brand-teal">
-                      {item.title}
-                    </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-brand-navy/80 sm:text-sm">
-                      {item.description}
-                    </p>
-                  </div>
                 </div>
-              ))}
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                        {program.title}
+                      </h3>
+                      <p className="mt-1 text-sm font-bold text-brand-purple-bright">
+                        {program.age}
+                      </p>
+                    </div>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                      <Icon name="arrowRight" size="sm" />
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
+                    {program.description}
+                  </p>
+
+                  <details className="mt-4 rounded-2xl bg-brand-lavender/45 p-4">
+                    <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
+                      What we work on
+                    </summary>
+                    <ul className="mt-3 space-y-2">
+                      {program.workOn.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-2 text-xs leading-relaxed text-brand-navy/80"
+                        >
+                          <Icon
+                            name="check"
+                            className="mt-0.5 shrink-0 text-brand-teal"
+                            size="sm"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+
+                  <details className="mt-3 rounded-2xl bg-brand-teal-light/70 p-4">
+                    <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
+                      Good fit for
+                    </summary>
+                    <ul className="mt-3 space-y-2">
+                      {program.goodFit.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-2 text-xs leading-relaxed text-brand-navy/80"
+                        >
+                          <Icon
+                            name="heart"
+                            className="mt-0.5 shrink-0 text-brand-purple-bright"
+                            size="sm"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                </div>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            Our Services
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+            Evidence-based care. Personalized for your child.
+          </p>
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
+            {serviceCards.map((service) => (
+              <article
+                key={service.title}
+                className={`rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ${
+                  service.featured ? "ring-brand-teal/20" : "ring-brand-purple-deep/10"
+                }`}
+              >
+                <span
+                  className={`flex h-16 w-16 items-center justify-center rounded-full ${
+                    service.featured
+                      ? "bg-brand-teal text-white"
+                      : "bg-brand-lavender text-brand-purple-bright"
+                  }`}
+                >
+                  <Icon name={service.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-xl font-extrabold text-brand-navy">
+                  {service.title}
+                </h3>
+                <span
+                  className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${service.badgeClass}`}
+                >
+                  {service.badge}
+                </span>
+                <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
+                  {service.description}
+                </p>
+                <ul className="mt-4 space-y-2">
+                  {service.skills.map((skill) => (
+                    <li key={skill} className="flex gap-2 text-sm text-brand-navy/80">
+                      <Icon name="check" className="mt-0.5 text-brand-teal" size="sm" />
+                      <span>{skill}</span>
+                    </li>
+                  ))}
+                </ul>
+                <CTAButton
+                  href="/contact"
+                  variant={service.featured ? "primary" : "secondary"}
+                  className="mt-5 w-full !py-2.5"
+                >
+                  Learn More
+                </CTAButton>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <InsuranceOptionsCard />
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            Resources & Support for Families
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+            Tools, education, and community, just for you.
+          </p>
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
+            {resourceCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+                  <Icon name={card.icon} size="lg" />
+                </span>
+                <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
+                  {card.title}
+                </h3>
+                <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
+                  {card.text}
+                </p>
+                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
+                  <Icon name="arrowRight" size="sm" />
+                </span>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-14">
+        <SectionContainer>
+          <div className="rounded-[2rem] bg-brand-purple-bright p-8 text-white shadow-card">
+            <div className="flex items-center justify-between gap-8">
+              <div>
+                <h2 className="text-2xl font-extrabold leading-tight">
+                  Ready to Get Started?
+                </h2>
+                <p className="mt-2 text-base text-white/90">
+                  We&apos;d love to meet your family.
+                </p>
+              </div>
+              <CTAButton
+                href="/contact"
+                variant="secondary"
+                className="shrink-0 !border-white !bg-white !px-6 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+              >
+                <span className="inline-flex items-center justify-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule Consultation
+                </span>
+              </CTAButton>
             </div>
           </div>
         </SectionContainer>
@@ -945,7 +1123,7 @@ function DesktopProgramsPage() {
 
 export default function ProgramsPage() {
   return (
-    <main className="flex-1 bg-[#fffaf4] md:bg-white">
+    <main className="flex-1 bg-[#fffaf4]">
       <h1 className="sr-only">Ava&apos;s Hub Programs</h1>
       <MobileProgramsPage />
       <DesktopProgramsPage />
