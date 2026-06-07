@@ -359,52 +359,52 @@ function DesktopHomePage() {
               <TiltedHeartOutline />
             </span>
           </h2>
-          <div className="mt-8 grid gap-7 lg:grid-cols-2">
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
             {desktopProgramCards.map((program) => (
               <article
                 key={program.title}
-                className="overflow-hidden rounded-[2rem] bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+                className="overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
               >
-                <div className="relative h-72 bg-brand-teal-light xl:h-80">
+                <div className="relative h-48 bg-brand-teal-light xl:h-52">
                   <PlaceholderImage
                     src={program.image}
                     alt={`${program.title} at Ava's Hub`}
                     fill
                     className={`object-cover ${program.imagePosition}`}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    sizes="(min-width: 1280px) 25vw, 50vw"
                   />
                 </div>
-                <div className="p-7 xl:p-8">
-                  <div className="flex items-start justify-between gap-5">
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="text-2xl font-extrabold leading-tight text-brand-navy">
+                      <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
                         {program.title}
                       </h3>
-                      <p className="mt-1 text-base font-bold text-brand-purple-bright">
+                      <p className="mt-1 text-sm font-bold text-brand-purple-bright">
                         {program.age}
                       </p>
                     </div>
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
                       <Icon name="arrowRight" size="sm" />
                     </span>
                   </div>
-                  <p className="mt-5 text-base leading-relaxed text-brand-navy/80">
+                  <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                     {program.description}
                   </p>
 
-                  <details className="mt-6 rounded-2xl bg-brand-lavender/45 p-5">
+                  <details className="mt-4 rounded-2xl bg-brand-lavender/45 p-4">
                     <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
                       What we work on
                     </summary>
-                    <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <ul className="mt-3 space-y-2">
                       {program.workOn.map((item) => (
                         <li
                           key={item}
-                          className="flex gap-2 text-sm leading-relaxed text-brand-navy/80"
+                          className="flex gap-2 text-xs leading-relaxed text-brand-navy/80"
                         >
                           <Icon
                             name="check"
-                            className="mt-1 shrink-0 text-brand-teal"
+                            className="mt-0.5 shrink-0 text-brand-teal"
                             size="sm"
                           />
                           <span>{item}</span>
@@ -413,19 +413,19 @@ function DesktopHomePage() {
                     </ul>
                   </details>
 
-                  <details className="mt-4 rounded-2xl bg-brand-teal-light/70 p-5">
+                  <details className="mt-3 rounded-2xl bg-brand-teal-light/70 p-4">
                     <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
                       Good fit for
                     </summary>
-                    <ul className="mt-4 space-y-2">
+                    <ul className="mt-3 space-y-2">
                       {program.goodFit.map((item) => (
                         <li
                           key={item}
-                          className="flex gap-2 text-sm leading-relaxed text-brand-navy/80"
+                          className="flex gap-2 text-xs leading-relaxed text-brand-navy/80"
                         >
                           <Icon
                             name="heart"
-                            className="mt-1 shrink-0 text-brand-purple-bright"
+                            className="mt-0.5 shrink-0 text-brand-purple-bright"
                             size="sm"
                           />
                           <span>{item}</span>
@@ -442,66 +442,35 @@ function DesktopHomePage() {
 
       <section className="pb-14">
         <SectionContainer>
-          <div className="grid gap-8 xl:grid-cols-[0.95fr_1fr] xl:items-stretch">
-            <div>
-              <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
-                Resources & Support for Families
-                <span className="ml-3 text-brand-purple-bright/55">
-                  <TiltedHeartOutline />
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            Resources & Support for Families
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+            Tools, education, and community, just for you.
+          </p>
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
+            {desktopResourceCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+                  <Icon name={card.icon} size="lg" />
                 </span>
-              </h2>
-              <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
-                Tools, education, and community, just for you.
-              </p>
-              <div className="mt-8 grid gap-5 sm:grid-cols-3 xl:grid-cols-1">
-                {desktopResourceCards.map((card) => (
-                  <article
-                    key={card.title}
-                    className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
-                  >
-                    <div className="flex gap-5">
-                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
-                        <Icon name={card.icon} size="lg" />
-                      </span>
-                      <div>
-                        <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
-                          {card.title}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
-                          {card.text}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-
-            <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
-              <div className="relative h-80 bg-brand-teal-light xl:h-full xl:min-h-[35rem]">
-                <PlaceholderImage
-                  src={programsImages.familySupportImage}
-                  alt="Family support at Ava's Hub"
-                  fill
-                  className="object-cover object-center"
-                  sizes="(min-width: 1280px) 50vw, 100vw"
-                />
-              </div>
-              <div className="p-8">
-                <h3 className="text-2xl font-extrabold leading-tight text-brand-navy">
-                  You don&apos;t have to figure this out alone.
+                <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
+                  {card.title}
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-brand-navy/80">
-                  We support your child, your family, and your future.
+                <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
+                  {card.text}
                 </p>
-                <CTAButton href="/contact" className="mt-6 !px-6">
-                  <span className="inline-flex items-center gap-2">
-                    Let&apos;s Connect
-                    <TiltedHeartOutline />
-                  </span>
-                </CTAButton>
-              </div>
-            </div>
+                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
+                  <Icon name="arrowRight" size="sm" />
+                </span>
+              </article>
+            ))}
           </div>
         </SectionContainer>
       </section>
