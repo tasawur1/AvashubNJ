@@ -621,63 +621,61 @@ export default function ResourcesPage() {
 
         <section className="pb-12">
           <SectionContainer>
-            <div className="grid gap-6 xl:grid-cols-[0.62fr_0.38fr]">
-              <div
-                id="desktop-guides"
-                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
-              >
-                <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
-                  Featured Guides & Downloads
-                </h2>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
-                  In-depth guides to help you feel informed and empowered.
-                </p>
-                <div className="mt-6 grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
-                  {guides.slice(0, 3).map((guide) => (
-                    <MobileDownloadCard
-                      key={guide.slug}
-                      title={guide.title}
-                      description={guide.description}
-                      image={mobileGuideImages[guide.slug] ?? guide.image}
-                      href={guide.pdf}
-                      category={guide.category}
-                      buttonLabel="Download Guide"
-                    />
-                  ))}
-                </div>
-                <CTAButton href="/guides" className="mt-6">
-                  View All Guides
-                </CTAButton>
+            <div
+              id="desktop-guides"
+              className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
+            >
+              <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
+                Featured Guides & Downloads
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
+                In-depth guides to help you feel informed and empowered.
+              </p>
+              <div className="mt-6 grid gap-5 lg:grid-cols-3">
+                {guides.slice(0, 3).map((guide) => (
+                  <MobileDownloadCard
+                    key={guide.slug}
+                    title={guide.title}
+                    description={guide.description}
+                    image={mobileGuideImages[guide.slug] ?? guide.image}
+                    href={guide.pdf}
+                    category={guide.category}
+                    buttonLabel="Download Guide"
+                  />
+                ))}
               </div>
+              <CTAButton href="/guides" className="mt-6">
+                View All Guides
+              </CTAButton>
+            </div>
 
-              <div
-                id="desktop-printables"
-                className="rounded-[1.75rem] bg-brand-lavender/45 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
-              >
-                <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
-                  Printable Worksheets & Tools
-                </h2>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
-                  Download, print, and use at home for practice and carryover.
-                </p>
-                <div className="mt-6 space-y-4">
-                  {printables.slice(0, 3).map((printable) => (
-                    <MobileDownloadCard
-                      key={printable.slug}
-                      title={printable.title}
-                      description={printable.description}
-                      image={mobilePrintableImages[printable.slug] ?? printable.image}
-                      href={printable.pdf}
-                      category={printable.category}
-                      fileSize={printable.fileSize}
-                      buttonLabel="Download"
-                    />
-                  ))}
-                </div>
-                <CTAButton href="/printables" className="mt-6">
-                  View All Printables
-                </CTAButton>
+            <div
+              id="desktop-printables"
+              className="mt-6 rounded-[1.75rem] bg-brand-lavender/45 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
+            >
+              <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
+                Printable Worksheets & Tools
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
+                Download, print, and use at home for practice and carryover.
+              </p>
+              <div className="mt-6 grid gap-5 lg:grid-cols-3">
+                {printables.slice(0, 3).map((printable) => (
+                  <MobileDownloadCard
+                    key={printable.slug}
+                    title={printable.title}
+                    description={printable.description}
+                    image={mobilePrintableImages[printable.slug] ?? printable.image}
+                    href={printable.pdf}
+                    category={printable.category}
+                    fileSize={printable.fileSize}
+                    buttonLabel="Download"
+                  />
+                ))}
               </div>
+              <CTAButton href="/printables" className="mt-6">
+                View All Printables
+              </CTAButton>
             </div>
           </SectionContainer>
         </section>
