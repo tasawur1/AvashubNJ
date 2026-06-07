@@ -5,6 +5,7 @@ import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
 import { heroBannerImages } from "@/data/heroBannerImages";
 import { siteImages } from "@/data/images";
+import { programsImages } from "@/data/pageImages/programsImages";
 import { programCards } from "@/data/programs";
 
 export const metadata: Metadata = {
@@ -84,6 +85,120 @@ const mobilePrograms = [
   },
 ];
 
+const desktopProgramCards = [
+  {
+    image: programsImages.kidsProgramImage,
+    imagePosition: "object-[50%_38%]",
+    title: "Kids Program",
+    age: "Ages 3-7",
+    description:
+      "Play-based occupational therapy support that helps young children build the foundation for confidence, curiosity, regulation, and everyday independence.",
+    workOn: [
+      "Fine motor skills",
+      "Sensory processing",
+      "Developmental play",
+      "Motor planning",
+      "Self-care routines",
+      "Early social participation",
+      "Pre-writing readiness",
+    ],
+    goodFit: [
+      "Children who avoid tasks",
+      "Children who struggle with transitions",
+      "Children needing help with play, routines, or regulation",
+    ],
+  },
+  {
+    image: programsImages.schoolAgeProgramImage,
+    imagePosition: "object-[50%_34%]",
+    title: "School-Age Program",
+    age: "Ages 8-13",
+    description:
+      "Practical support for school-aged children who need help with confidence, organization, handwriting, emotional regulation, and participation at school and home.",
+    workOn: [
+      "Executive functioning",
+      "Handwriting and fine motor skills",
+      "Daily routines",
+      "Attention and task completion",
+      "Social participation",
+      "Movement and coordination",
+      "Emotional regulation",
+      "ADL independence",
+    ],
+    goodFit: [
+      "Children who struggle with homework routines",
+      "Children with messy handwriting",
+      "Children who need support with organization, confidence, or independence",
+    ],
+  },
+  {
+    image: programsImages.teenProgramImage,
+    imagePosition: "object-[50%_32%]",
+    title: "Teen Life Skills Program",
+    age: "Ages 14-18",
+    description:
+      "Real-world therapy and coaching that helps teens build independence, confidence, self-advocacy, and daily life skills before adulthood.",
+    workOn: [
+      "Self-care and hygiene routines",
+      "Executive functioning",
+      "Time management",
+      "Meal prep and kitchen safety",
+      "Community participation",
+      "Emotional regulation",
+      "Social confidence",
+      "Self-advocacy",
+      "Transition planning",
+    ],
+    goodFit: [
+      "Teens preparing for high school independence",
+      "Teens needing life skills beyond worksheets",
+      "Teens who need confidence, structure, and real-world practice",
+    ],
+  },
+  {
+    image: programsImages.youngAdultProgramImage,
+    imagePosition: "object-[50%_34%]",
+    title: "Young Adult Life Readiness",
+    age: "Ages 19-21+",
+    description:
+      "Functional, community-based skill-building for young adults preparing for work, independence, social participation, and meaningful daily routines.",
+    workOn: [
+      "Vocational readiness",
+      "Work habits",
+      "Community participation",
+      "Independent living skills",
+      "Money and time management",
+      "Meal planning",
+      "Household routines",
+      "Social communication",
+      "Daily structure",
+    ],
+    goodFit: [
+      "Young adults transitioning out of school",
+      "Young adults needing real-life practice",
+      "Young adults building confidence for work and community life",
+    ],
+  },
+] as const;
+
+const desktopResourceCards = [
+  {
+    icon: "bookOpen",
+    title: "Parent Guides & Resources",
+    text: "Practical tools, visual schedules, and downloads.",
+  },
+  {
+    icon: "training",
+    title: "Workshops & Events",
+    text: "Parent education, support groups, and more.",
+  },
+  {
+    icon: "calendar",
+    title: "Community Calendar",
+    text: "Events, meetups, and social opportunities.",
+  },
+] as const;
+
 function TiltedHeartOutline({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -111,6 +226,8 @@ function DesktopHomePage() {
         Desktop grows from the mobile homepage instead of using a separate
         legacy layout. Preserve mobile content, warm spacing, rounded cards,
         emotional language, and app-like card styling; only expand and reflow.
+        Reuse detailed page-specific cards/accordions and support sections
+        when they strengthen desktop depth without changing mobile.
       */}
       <section className="min-h-[calc(100vh-5rem)] py-10 xl:py-14">
         <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
@@ -242,39 +359,149 @@ function DesktopHomePage() {
               <TiltedHeartOutline />
             </span>
           </h2>
-          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
-            {mobilePrograms.map((program) => (
+          <div className="mt-8 grid gap-7 lg:grid-cols-2">
+            {desktopProgramCards.map((program) => (
               <article
                 key={program.title}
-                className="grid min-h-full grid-rows-[11rem_auto_auto] overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+                className="overflow-hidden rounded-[2rem] bg-white/90 shadow-card ring-1 ring-brand-teal/10"
               >
-                <div className="relative bg-brand-teal-light">
+                <div className="relative h-72 bg-brand-teal-light xl:h-80">
                   <PlaceholderImage
-                    src={siteImages[program.imageKey]}
-                    alt={`${program.title} program`}
+                    src={program.image}
+                    alt={`${program.title} at Ava's Hub`}
                     fill
-                    className="object-cover"
-                    sizes="(min-width: 1280px) 25vw, 50vw"
+                    className={`object-cover ${program.imagePosition}`}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-extrabold leading-tight text-brand-purple-bright">
-                    {program.title}
-                    <span className="ml-2 text-base font-bold text-brand-navy/50">
-                      {program.ageRange}
+                <div className="p-7 xl:p-8">
+                  <div className="flex items-start justify-between gap-5">
+                    <div>
+                      <h3 className="text-2xl font-extrabold leading-tight text-brand-navy">
+                        {program.title}
+                      </h3>
+                      <p className="mt-1 text-base font-bold text-brand-purple-bright">
+                        {program.age}
+                      </p>
+                    </div>
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
+                      <Icon name="arrowRight" size="sm" />
                     </span>
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-brand-navy/85">
+                  </div>
+                  <p className="mt-5 text-base leading-relaxed text-brand-navy/80">
                     {program.description}
                   </p>
-                </div>
-                <div className="flex items-end justify-end px-6 pb-6">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                    <Icon name="arrowRight" size="sm" />
-                  </span>
+
+                  <details className="mt-6 rounded-2xl bg-brand-lavender/45 p-5">
+                    <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
+                      What we work on
+                    </summary>
+                    <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                      {program.workOn.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-2 text-sm leading-relaxed text-brand-navy/80"
+                        >
+                          <Icon
+                            name="check"
+                            className="mt-1 shrink-0 text-brand-teal"
+                            size="sm"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+
+                  <details className="mt-4 rounded-2xl bg-brand-teal-light/70 p-5">
+                    <summary className="cursor-pointer text-sm font-extrabold text-brand-navy">
+                      Good fit for
+                    </summary>
+                    <ul className="mt-4 space-y-2">
+                      {program.goodFit.map((item) => (
+                        <li
+                          key={item}
+                          className="flex gap-2 text-sm leading-relaxed text-brand-navy/80"
+                        >
+                          <Icon
+                            name="heart"
+                            className="mt-1 shrink-0 text-brand-purple-bright"
+                            size="sm"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
                 </div>
               </article>
             ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-14">
+        <SectionContainer>
+          <div className="grid gap-8 xl:grid-cols-[0.95fr_1fr] xl:items-stretch">
+            <div>
+              <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+                Resources & Support for Families
+                <span className="ml-3 text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
+                </span>
+              </h2>
+              <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+                Tools, education, and community, just for you.
+              </p>
+              <div className="mt-8 grid gap-5 sm:grid-cols-3 xl:grid-cols-1">
+                {desktopResourceCards.map((card) => (
+                  <article
+                    key={card.title}
+                    className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+                  >
+                    <div className="flex gap-5">
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+                        <Icon name={card.icon} size="lg" />
+                      </span>
+                      <div>
+                        <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
+                          {card.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
+                          {card.text}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
+              <div className="relative h-80 bg-brand-teal-light xl:h-full xl:min-h-[35rem]">
+                <PlaceholderImage
+                  src={programsImages.familySupportImage}
+                  alt="Family support at Ava's Hub"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(min-width: 1280px) 50vw, 100vw"
+                />
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-extrabold leading-tight text-brand-navy">
+                  You don&apos;t have to figure this out alone.
+                </h3>
+                <p className="mt-3 text-base leading-relaxed text-brand-navy/80">
+                  We support your child, your family, and your future.
+                </p>
+                <CTAButton href="/contact" className="mt-6 !px-6">
+                  <span className="inline-flex items-center gap-2">
+                    Let&apos;s Connect
+                    <TiltedHeartOutline />
+                  </span>
+                </CTAButton>
+              </div>
+            </div>
           </div>
         </SectionContainer>
       </section>
