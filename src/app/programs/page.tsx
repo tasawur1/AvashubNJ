@@ -296,82 +296,48 @@ const serviceCards = [
     badge: "Now Accepting Clients",
     badgeClass: "bg-brand-gold/25 text-brand-navy",
     description:
-      "Helping children and teens build skills for independence and everyday life.",
+      "Helping children and teens build independence, confidence, and everyday life skills through meaningful activities.",
     skills: [
-      "Executive functioning",
-      "Emotional regulation",
-      "Handwriting & fine motor skills",
-      "Sensory processing",
-      "Self-care & daily routines",
-      "Community participation",
+      "Fine Motor Skills",
+      "Handwriting & School Skills",
+      "Sensory Processing Support",
+      "Executive Functioning",
+      "Daily Living Skills (ADLs)",
+      "Social Participation",
     ],
     featured: true,
   },
   {
-    icon: "heart",
-    title: "Social & Emotional Builders",
-    badge: "Weekly Skill Group",
+    icon: "communication",
+    title: "Speech Therapy",
+    badge: "Coming Soon",
     badgeClass: "bg-brand-lavender text-brand-purple-deep",
     description:
-      "A playful, structured program that builds fine motor skills, sensory exploration, social readiness, emotional regulation, and school prep.",
-    schedule: "Once a week for 60-75 minutes",
+      "Supporting communication, language development, social interaction, and confidence through meaningful participation.",
     skills: [
-      "Fine motor skills",
-      "Sensory exploration",
-      "Social readiness",
-      "Emotional regulation",
-      "School preparation",
+      "Expressive & Receptive Language",
+      "Social Communication Skills",
+      "Articulation Support",
+      "AAC & Communication Tools",
+      "Feeding & Oral Motor Support",
+      "Functional Communication",
     ],
     featured: false,
   },
   {
-    icon: "resources",
-    title: "Executive Function Club",
-    badge: "After-School Support",
+    icon: "independence",
+    title: "Physical Therapy",
+    badge: "Coming Soon",
     badgeClass: "bg-brand-teal-light text-brand-teal",
     description:
-      "After-School Hub offers a supportive space where kids build regulation, cooperative play, motor skills, flexible thinking, and problem-solving.",
-    schedule: "Once a week for 60-75 minutes",
+      "Helping children build strength, coordination, movement confidence, and participation in everyday activities.",
     skills: [
-      "Emotional regulation",
-      "Cooperative play",
-      "Motor skills",
-      "Flexible thinking",
-      "Problem-solving",
-    ],
-    featured: false,
-  },
-  {
-    icon: "home",
-    title: "Life Skills & Vocational Crew",
-    badge: "Real-Life Practice",
-    badgeClass: "bg-brand-gold/25 text-brand-navy",
-    description:
-      "A welcoming space where preteens and teens practice independence, flexibility, planning, and social communication through real-life activities.",
-    schedule: "Creative challenges and collaborative problem solving",
-    skills: [
-      "Independence",
-      "Planning",
-      "Social communication",
-      "Flexible thinking",
-      "Collaborative problem-solving",
-    ],
-    featured: false,
-  },
-  {
-    icon: "vocational",
-    title: "Vocational Sensory Product Lab",
-    badge: "Ages 15-21",
-    badgeClass: "bg-brand-purple-bright text-white",
-    description:
-      "A hands-on vocational program where young adults create sensory products like slime, kinetic sand, and fidget items.",
-    schedule: "Mixing, packaging, safety, and teamwork skills",
-    skills: [
-      "Product creation",
-      "Work habits",
-      "Safety awareness",
-      "Packaging",
-      "Teamwork",
+      "Gross Motor Skills",
+      "Balance & Coordination",
+      "Strength & Endurance",
+      "Mobility & Movement",
+      "Posture & Body Awareness",
+      "Functional Participation",
     ],
     featured: false,
   },
@@ -725,7 +691,7 @@ function MobileProgramsPage() {
                   <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                     {service.description}
                   </p>
-                  {"schedule" in service ? (
+                  {"schedule" in service && typeof service.schedule === "string" ? (
                     <p className="mt-3 rounded-2xl bg-brand-lavender/45 px-4 py-3 text-xs font-bold leading-relaxed text-brand-navy/75">
                       {service.schedule}
                     </p>
