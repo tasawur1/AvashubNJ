@@ -55,7 +55,6 @@ type FeatureItem = {
 type SupportPrompt = {
   icon: IconName;
   title: string;
-  description: string;
   tone: Tone;
 };
 
@@ -138,21 +137,18 @@ const featureItems: FeatureItem[] = [
 
 const supportPrompts: SupportPrompt[] = [
   {
-    icon: "message",
-    title: "We Listen",
-    description: "We take time to understand your needs and goals.",
+    icon: "handHeart",
+    title: "Occupational Therapy",
     tone: "purple",
   },
   {
-    icon: "handHeart",
-    title: "We Care",
-    description: "Your family's journey is our priority.",
+    icon: "communication",
+    title: "Speech Therapy",
     tone: "gold",
   },
   {
-    icon: "compass",
-    title: "We Guide",
-    description: "We'll help you find the right support for your loved one.",
+    icon: "independence",
+    title: "Physical Therapy",
     tone: "teal",
   },
 ];
@@ -285,19 +281,26 @@ function MobileContactPage() {
             </p>
             <div className="mt-6 space-y-3">
               {supportPrompts.map((item, index) => (
-                <article
+                <button
+                  type="button"
                   key={item.title}
-                  className={`flex w-full items-center justify-center gap-3 rounded-full px-5 py-3.5 text-sm font-extrabold shadow-sm ring-2 ${
+                  className={`relative flex min-h-12 w-full items-center justify-center rounded-full py-3 pl-16 pr-5 text-sm font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold ${
                     index === 0
                       ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
-                      : "bg-white/80 text-brand-purple-bright ring-brand-purple-bright/75"
+                      : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
                   }`}
                 >
-                  <span className="inline-flex h-5 w-5 items-center justify-center">
+                  <span
+                    className={`absolute left-1.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full ${
+                      index === 0
+                        ? "bg-white/95 text-brand-purple-bright"
+                        : "bg-brand-purple-bright text-white"
+                    }`}
+                  >
                     <Icon name={item.icon} size="sm" />
                   </span>
                   <span>{item.title}</span>
-                </article>
+                </button>
               ))}
             </div>
           </div>
