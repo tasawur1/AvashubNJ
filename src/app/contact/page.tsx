@@ -288,14 +288,14 @@ function MobileContactPage() {
                 <button
                   type="button"
                   key={item.title}
-                  className={`relative flex min-h-11 w-full items-center justify-between gap-2 rounded-full py-2.5 pl-13 pr-4 text-[0.72rem] font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold min-[380px]:text-[0.78rem] ${
+                  className={`grid min-h-11 w-full grid-cols-[2.35rem_minmax(0,1fr)_auto] items-center gap-2 rounded-full py-2.5 pl-1.5 pr-4 text-[0.72rem] font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold min-[380px]:grid-cols-[2.6rem_minmax(0,1fr)_auto] min-[380px]:text-[0.78rem] ${
                     index === 0
                       ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
                       : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
                   }`}
                 >
                   <span
-                    className={`absolute left-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full min-[380px]:h-9 min-[380px]:w-9 ${
+                    className={`flex h-8 w-8 items-center justify-center rounded-full min-[380px]:h-9 min-[380px]:w-9 ${
                       index === 0
                         ? "bg-white/95 text-brand-purple-bright"
                         : "bg-brand-purple-bright text-white"
