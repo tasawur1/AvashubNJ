@@ -288,14 +288,14 @@ function MobileContactPage() {
                 <button
                   type="button"
                   key={item.title}
-                  className={`relative flex min-h-12 w-full items-center justify-between gap-3 rounded-full py-3 pl-16 pr-5 text-sm font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold ${
+                  className={`relative flex min-h-11 w-full items-center justify-between gap-2 rounded-full py-2.5 pl-13 pr-4 text-[0.72rem] font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold min-[380px]:text-[0.78rem] ${
                     index === 0
                       ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
                       : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
                   }`}
                 >
                   <span
-                    className={`absolute left-1.5 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full ${
+                    className={`absolute left-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full min-[380px]:h-9 min-[380px]:w-9 ${
                       index === 0
                         ? "bg-white/95 text-brand-purple-bright"
                         : "bg-brand-purple-bright text-white"
@@ -303,9 +303,11 @@ function MobileContactPage() {
                   >
                     <Icon name={item.icon} size="sm" />
                   </span>
-                  <span className="min-w-0 text-left">{item.title}</span>
+                  <span className="min-w-0 flex-1 whitespace-nowrap text-left">
+                    {item.title}
+                  </span>
                   <span
-                    className={`shrink-0 text-[0.68rem] italic ${
+                    className={`shrink-0 whitespace-nowrap text-[0.58rem] font-semibold italic min-[380px]:text-[0.64rem] ${
                       index === 0 ? "text-white/80" : "text-brand-purple-bright/70"
                     }`}
                   >
