@@ -6,22 +6,27 @@ import type { CalendarEvent } from "@/lib/fetchEvents";
 
 type EventsCalendarProps = {
   events: CalendarEvent[];
+  variant?: "mobile" | "desktop";
 };
 
-const FILTERS = [
+const MOBILE_FILTERS = [
   {
+    key: "all",
     label: "All",
     categories: null,
   },
   {
+    key: "social",
     label: "Social Groups",
     categories: ["Social Groups", "Social", "Teen Social"],
   },
   {
+    key: "family",
     label: "Family Events",
     categories: ["Family Events", "Family"],
   },
   {
+    key: "seasonal",
     label: "Seasonal Celebrations",
     categories: [
       "Seasonal Celebrations",
@@ -32,6 +37,7 @@ const FILTERS = [
     ],
   },
   {
+    key: "workshops",
     label: "Workshops",
     categories: [
       "Workshops",
@@ -39,6 +45,46 @@ const FILTERS = [
       "Parent Training",
       "Life Skills",
       "Teen Life Skills",
+    ],
+  },
+] as const;
+
+const DESKTOP_FILTERS = [
+  {
+    key: "all",
+    label: "All Events",
+    categories: null,
+  },
+  {
+    key: "workshops",
+    label: "Workshops",
+    categories: [
+      "Workshops",
+      "Workshop",
+      "Parent Training",
+      "Life Skills",
+      "Teen Life Skills",
+    ],
+  },
+  {
+    key: "family",
+    label: "Family Events",
+    categories: ["Family Events", "Family"],
+  },
+  {
+    key: "community",
+    label: "Community Outings",
+    categories: ["Community", "Community Outings"],
+  },
+  {
+    key: "celebrations",
+    label: "Special Celebrations",
+    categories: [
+      "Seasonal Celebrations",
+      "Seasonal",
+      "Holiday",
+      "Special Event",
+      "Celebration",
     ],
   },
 ] as const;
@@ -104,14 +150,15 @@ function getDayOptions(year: number, month: number) {
  * Renders the current month from local CSV event data.
  * To update calendar events, edit public/events/events-calendar.csv. No code changes needed.
  */
-export function EventsCalendar({ events }: EventsCalendarProps) {
+export function EventsCalendar({ events, variant = "mobile" }: EventsCalendarProps) {
   const now = new Date();
   const initialYear = Math.max(now.getFullYear(), MIN_YEAR);
   const initialMonth = now.getMonth();
   const [selectedYear, setSelectedYear] = useState(initialYear);
   const [selectedMonth, setSelectedMonth] = useState(initialMonth);
   const [selectedDay, setSelectedDay] = useState("all");
-  const [activeFilter, setActiveFilter] = useState<string>(FILTERS[0].label);
+  const filters = variant === "desktop" ? DESKTOP_FILTERS : MOBILE_FILTERS;
+  const [activeFilter, setActiveFilter] = useState<string>("all");
   const monthLabel = `${MONTHS[selectedMonth]} ${selectedYear}`;
   const yearOptions = useMemo(() => getYearOptions(events), [events]);
   const dayOptions = useMemo(
@@ -120,7 +167,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
   );
 
   const filteredEvents = useMemo(() => {
-    const selected = FILTERS.find((filter) => filter.label === activeFilter);
+    const selected = filters.find((filter) => filter.key === activeFilter);
     const selectedCategories: readonly string[] | null =
       selected?.categories ?? null;
     const monthValue = String(selectedMonth + 1).padStart(2, "0");
@@ -142,15 +189,15 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
       (a, b) =>
         a.date.localeCompare(b.date) || a.time.localeCompare(b.time),
     );
-  }, [activeFilter, events, selectedDay, selectedMonth, selectedYear]);
+  }, [activeFilter, events, filters, selectedDay, selectedMonth, selectedYear]);
 
   return (
-    <div className="mx-auto max-w-5xl rounded-[1.5rem] bg-[#fffaf4]/80 p-4 ring-1 ring-brand-teal/10 sm:bg-transparent sm:p-0 sm:ring-0">
-      <div className="mb-6 flex flex-col items-start gap-4 sm:items-center">
+    <div className="mx-auto max-w-6xl rounded-[1.5rem] bg-[#fffaf4]/80 p-4 ring-1 ring-brand-teal/10 sm:bg-transparent sm:p-0 sm:ring-0">
+      <div className="mb-6 flex flex-col items-start gap-4 sm:items-center lg:mb-7 lg:items-stretch">
         <p className="inline-flex items-center rounded-full bg-brand-lavender px-4 py-2 text-left text-sm font-extrabold text-brand-purple-bright ring-1 ring-brand-purple-deep/10 sm:text-center sm:text-lg">
           {monthLabel}
         </p>
-        <div className="flex flex-wrap justify-start gap-2 sm:justify-center">
+        <div className="flex flex-wrap justify-start gap-2 sm:justify-center lg:justify-start">
           <label className="sr-only" htmlFor="events-day">
             Select event date
           </label>
@@ -208,15 +255,15 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
         </div>
       </div>
 
-      <fieldset className="mb-8">
+      <fieldset className="mb-8 lg:mb-9">
         <legend className="sr-only">Filter events by category</legend>
-        <div className="flex flex-wrap justify-start gap-2 sm:justify-center sm:gap-3">
-          {FILTERS.map((filter) => {
-            const selected = filter.label === activeFilter;
+        <div className="flex flex-wrap justify-start gap-2 sm:justify-center sm:gap-3 lg:justify-start">
+          {filters.map((filter) => {
+            const selected = filter.key === activeFilter;
 
             return (
               <label
-                key={filter.label}
+                key={filter.key}
                 className={
                   `inline-flex cursor-pointer items-center rounded-full px-4 py-2.5 text-sm font-semibold transition focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand-teal ` +
                   (selected
@@ -227,9 +274,9 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                 <input
                   type="radio"
                   name="event-category"
-                  value={filter.label}
+                  value={filter.key}
                   checked={selected}
-                  onChange={() => setActiveFilter(filter.label)}
+                  onChange={() => setActiveFilter(filter.key)}
                   className="sr-only"
                 />
                 {filter.label}
@@ -240,14 +287,14 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
       </fieldset>
 
       {filteredEvents.length > 0 ? (
-        <div className="grid gap-4 lg:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2 xl:gap-5">
           {filteredEvents.map((event) => {
             const badge = formatDateBadge(event.date);
 
             return (
               <article
                 key={`${event.date}-${event.title}-${event.time}`}
-                className="grid min-h-28 grid-cols-[4.5rem_1fr] overflow-hidden rounded-[1.35rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10"
+                className="grid min-h-28 grid-cols-[4.5rem_1fr] overflow-hidden rounded-[1.35rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10 lg:grid-cols-[5rem_1fr]"
                 title={event.details || event.title}
                 aria-label={
                   event.details
@@ -264,7 +311,7 @@ export function EventsCalendar({ events }: EventsCalendarProps) {
                   </span>
                 </div>
 
-                <div className="flex min-w-0 flex-col justify-center bg-gradient-to-br from-brand-teal-light/45 to-brand-lavender/25 px-5 py-4">
+                <div className="flex min-w-0 flex-col justify-center bg-gradient-to-br from-brand-teal-light/45 to-brand-lavender/25 px-5 py-4 lg:px-6 lg:py-5">
                   <p className="text-xs font-bold uppercase tracking-normal text-brand-teal">
                     {event.category}
                   </p>
