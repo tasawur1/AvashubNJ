@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
 import { CTAButton } from "@/components/CTAButton";
-import { HeroBanner } from "@/components/HeroBanner";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import { SectionHeadingDecorated } from "@/components/SectionHeadingDecorated";
 import type { IconName } from "@/data/icons";
 import { familiesImages } from "@/data/pageImages/familiesImages";
-import {
-  cardInnerPad,
-  cardShell,
-  cardShellSoft,
-  innerContentWrap,
-  pageSectionPad,
-} from "@/lib/pageSectionStyles";
 
 export const metadata: Metadata = {
   title: "For Families | Ava's Hub Family Support & Parent Resources",
@@ -390,7 +381,7 @@ function MobileFamiliesHero() {
 
 function MobileFamiliesPage() {
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <MobileFamiliesHero />
 
       <section id="family-support-mobile" className="px-6 pb-10">
@@ -535,154 +526,228 @@ function MobileFamiliesPage() {
 
 function DesktopFamiliesPage() {
   return (
-    <div className="hidden md:block">
-      <HeroBanner
-        images={{
-          desktop: familiesImages.familiesHeroBanner,
-          mobile: familiesImages.familiesHeroBannerMobile,
-        }}
-        alt="Ava's Hub families hero banner"
-        showCtas={false}
-      />
+    <div className="hidden bg-[#fffaf4] lg:block">
+      <section className="py-9 xl:py-12">
+        <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
+          <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
+            <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
+              For Families
+            </p>
+            <h2 className="mt-6 max-w-xl text-[clamp(2.6rem,4vw,4.25rem)] font-extrabold leading-[1.03] tracking-tight text-brand-navy">
+              You&apos;re Not Alone.
+              <br />
+              We&apos;re Here With You.{" "}
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+            <p className="mt-6 max-w-xl text-[clamp(1rem,1.1vw,1.125rem)] leading-relaxed text-brand-navy/85">
+              At Ava&apos;s Hub, we partner with families every step of the way,
+              providing support, guidance, and tools to help your loved one
+              thrive at home, in the community, and in life.
+            </p>
 
-      <section className={`bg-white ${pageSectionPad}`} aria-labelledby="family-support-heading">
+            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+              <Icon
+                name="heart"
+                className="mt-1 shrink-0 text-brand-purple-bright"
+                size="2x"
+              />
+              <p className="text-lg font-extrabold leading-relaxed text-brand-navy">
+                Strong families build strong futures.
+              </p>
+            </div>
+
+            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
+              <CTAButton href="/contact" className="min-w-[14rem]">
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="calendar" size="sm" />
+                  Schedule Consultation
+                </span>
+              </CTAButton>
+              <CTAButton
+                href="#family-support-desktop"
+                variant="secondary"
+                className="min-w-[13rem]"
+              >
+                <span className="inline-flex items-center gap-2">
+                  <Icon name="family" size="sm" />
+                  How We Support You
+                </span>
+              </CTAButton>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -left-8 top-10 h-52 w-52 rounded-full bg-brand-lavender/45 blur-3xl" />
+            <div className="absolute -bottom-10 right-8 h-56 w-56 rounded-full bg-brand-gold/20 blur-3xl" />
+            <div className="relative overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-teal/10 xl:rounded-[7rem_3rem_7rem_3rem]">
+              <PlaceholderImage
+                src={familiesImages.familiesMobileHero}
+                alt="Ava's Hub families mobile hero banner"
+                width={1182}
+                height={1331}
+                priority
+                className="h-[min(76vh,48rem)] w-full object-cover object-[50%_34%]"
+                sizes="(min-width: 1280px) 54vw, 50vw"
+              />
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section id="family-support-desktop" className="pb-12">
         <SectionContainer>
-          <SectionHeadingDecorated
-            id="family-support-heading"
-            title="How We Support Your Family"
-            className="mb-8 sm:mb-10"
-          />
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            How We Support Your Family
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-5">
             {supportCards.map((card) => (
               <article
                 key={card.title}
-                className="flex h-full flex-col items-center rounded-3xl bg-white px-5 py-7 text-center shadow-card ring-1 ring-brand-teal/10"
+                className={`overflow-hidden rounded-[1.75rem] shadow-card ring-1 ${toneStyles[card.tone].soft} ${toneStyles[card.tone].ring}`}
               >
-                <span
-                  className={`inline-flex h-16 w-16 items-center justify-center rounded-full shadow-sm ${toneStyles[card.tone].icon}`}
-                >
-                  <Icon name={card.icon} size="lg" />
-                </span>
-                <h2 className={`mt-5 text-lg font-bold leading-tight ${toneStyles[card.tone].text}`}>
-                  {card.title}
-                </h2>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-brand-navy/80">
-                  {card.description}
-                </p>
+                <div className="relative h-44 bg-brand-teal-light">
+                  <PlaceholderImage
+                    src={card.image}
+                    alt={`${card.title} at Ava's Hub`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(min-width: 1280px) 20vw, 50vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                    {card.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                    {card.description}
+                  </p>
+                </div>
               </article>
             ))}
           </div>
         </SectionContainer>
       </section>
 
-      <section
-        className={`bg-gradient-to-b from-brand-lavender/20 to-white ${pageSectionPad}`}
-        aria-labelledby="journey-heading"
-      >
+      <section className="pb-12">
         <SectionContainer>
-          <div className={cardShell}>
-            <div className={`${cardInnerPad} lg:px-10`}>
-              <div className={innerContentWrap}>
-                <SectionHeadingDecorated
-                  id="journey-heading"
-                  title="We're Here for Every Step of the Journey"
-                  className="mb-8"
-                />
-                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
-                  {journeySteps.map((step) => (
-                    <article
-                      key={step.title}
-                      className="rounded-3xl bg-white px-5 py-6 text-center ring-1 ring-brand-teal/10"
+          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+            We&apos;re Here for Every Step of the Journey
+            <span className="ml-3 text-brand-purple-bright/55">
+              <TiltedHeartOutline />
+            </span>
+          </h2>
+          <div className="mx-auto mt-8 max-w-3xl">
+            {journeySteps.map((step, index) => (
+              <div
+                key={step.title}
+                className={`relative ${index < journeySteps.length - 1 ? "pb-10" : ""}`}
+              >
+                <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
+                  <div className="grid grid-cols-[4.5rem_1fr] items-center gap-5">
+                    <span
+                      className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
                     >
-                      <span
-                        className={`mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[step.tone].icon}`}
-                      >
-                        <Icon name={step.icon} size="lg" />
-                      </span>
-                      <h3 className={`mt-4 text-base font-bold leading-tight ${toneStyles[step.tone].text}`}>
+                      <Icon name={step.icon} size="lg" />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
                         {step.title}
                       </h3>
-                      <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                      <p className="mt-2 text-base leading-relaxed text-brand-navy/75">
                         {step.description}
                       </p>
-                    </article>
-                  ))}
+                    </div>
+                  </div>
+                </article>
+                {index < journeySteps.length - 1 ? <JourneyArrow /> : null}
+              </div>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {familyCards.map((card) => (
+              <article
+                key={card.title}
+                className={`overflow-hidden rounded-[1.75rem] shadow-card ring-1 ${toneStyles[card.tone].soft} ${toneStyles[card.tone].ring}`}
+              >
+                <div className="relative h-48 bg-brand-teal-light">
+                  <PlaceholderImage
+                    src={card.image}
+                    alt={`${card.title} family support`}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(min-width: 1024px) 33vw, 100vw"
+                  />
                 </div>
+                <div className="p-6">
+                  <h2 className="text-2xl font-extrabold leading-tight text-brand-navy">
+                    {card.title}
+                  </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-brand-navy/85">
+                    {card.text}
+                  </p>
+                  <div className="mt-5">
+                    <CheckList items={card.bullets ?? []} />
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </SectionContainer>
+      </section>
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/70 shadow-card ring-1 ring-brand-purple-deep/10">
+            <div className="grid items-stretch lg:grid-cols-[0.42fr_0.58fr]">
+              <div className="relative min-h-[22rem] bg-brand-teal-light">
+                <PlaceholderImage
+                  src={familiesImages.familyFinalCtaImage}
+                  alt="Family support and belonging at Ava's Hub"
+                  fill
+                  className="object-cover object-center"
+                  sizes="42vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 xl:p-10">
+                <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
+                  We&apos;re more than a therapy center. We&apos;re a partner in
+                  your family&apos;s journey.
+                </h2>
+                <p className="mt-5 max-w-2xl text-xl font-extrabold leading-relaxed text-brand-purple-bright">
+                  Together, we build skills. Together, we build independence.
+                  Together, we build futures.
+                </p>
+                <CTAButton href="/contact" className="mt-6 w-fit">
+                  <span className="inline-flex items-center gap-2">
+                    <Icon name="calendar" size="sm" />
+                    Schedule Consultation
+                  </span>
+                </CTAButton>
               </div>
             </div>
           </div>
         </SectionContainer>
       </section>
 
-      <section className={pageSectionPad} aria-labelledby="family-cards-heading">
+      <section className="pb-12" aria-label="Family contact actions">
         <SectionContainer>
-          <h2 id="family-cards-heading" className="sr-only">
-            Family support resources
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {familyCards.map((card) => (
-              <article
-                key={card.title}
-                className={`flex h-full flex-col rounded-3xl px-6 py-7 shadow-card ring-1 ring-brand-teal/10 ${toneStyles[card.tone].soft}`}
-              >
-                <div className="flex items-start gap-4">
-                  <span
-                    className={`inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-                  >
-                    <Icon name={card.icon} size="lg" />
-                  </span>
-                  <div>
-                    <h2 className={`text-xl font-bold leading-tight ${toneStyles[card.tone].text}`}>
-                      {card.title}
-                    </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-brand-navy/85">
-                      {card.text}
-                    </p>
-                  </div>
-                </div>
-                {card.bullets ? (
-                  <div className="mt-6">
-                    <CheckList items={card.bullets} />
-                  </div>
-                ) : null}
-                {card.highlight ? (
-                  <div className="mt-8 flex items-center gap-4 rounded-2xl bg-white/75 px-5 py-4 ring-1 ring-brand-teal/10">
-                    <Icon name="heart" className="text-brand-teal" size="2x" />
-                    <p className="text-base font-bold leading-relaxed text-brand-teal">
-                      {card.highlight}
-                    </p>
-                  </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className="pb-6 sm:pb-8 lg:pb-10" aria-label="Family partnership message">
-        <SectionContainer>
-          <div className="rounded-3xl bg-gradient-to-r from-brand-purple-deep to-brand-purple-bright px-6 py-6 text-center text-white shadow-card sm:px-8 lg:px-12">
-            <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 sm:flex-row">
-              <Icon name="heart" className="text-brand-gold" size="2x" />
-              <p className="text-base font-bold leading-relaxed sm:text-lg">
-                We&apos;re more than a therapy center; we&apos;re a partner in your
-                family&apos;s journey. Together, we build skills. Together, we build
-                independence. Together, we build futures.
-              </p>
-            </div>
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className={`bg-white ${pageSectionPad}`} aria-label="Family contact actions">
-        <SectionContainer>
-          <div className="overflow-hidden rounded-3xl bg-white shadow-card ring-1 ring-brand-teal/10">
-            <div className="grid gap-0 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10">
+            <div className="grid gap-0 lg:grid-cols-5">
               {actionItems.map((item, index) => (
                 <div
                   key={item.title}
                   className={
-                    `flex gap-4 px-5 py-6 text-left sm:flex-col sm:items-center sm:text-center lg:min-h-36 lg:justify-center ` +
+                    `flex gap-4 px-5 py-6 text-left lg:min-h-36 lg:flex-col lg:items-center lg:justify-center lg:text-center ` +
                     (index === 0 ? "" : "lg:border-l lg:border-brand-teal/15")
                   }
                 >
@@ -695,7 +760,7 @@ function DesktopFamiliesPage() {
                     <h3 className="text-sm font-bold text-brand-teal">
                       {item.title}
                     </h3>
-                    <p className="mt-1 text-xs leading-relaxed text-brand-navy/80 sm:text-sm">
+                    <p className="mt-1 text-sm leading-relaxed text-brand-navy/80">
                       {item.description}
                     </p>
                   </div>
@@ -705,13 +770,19 @@ function DesktopFamiliesPage() {
           </div>
         </SectionContainer>
       </section>
+
+      <section className="pb-14">
+        <SectionContainer>
+          <MobileFinalCta />
+        </SectionContainer>
+      </section>
     </div>
   );
 }
 
 export default function FamiliesPage() {
   return (
-    <main className="flex-1 bg-[#fffaf4] md:bg-white">
+    <main className="flex-1 bg-[#fffaf4]">
       <h1 className="sr-only">Ava&apos;s Hub For Families</h1>
       <MobileFamiliesPage />
       <DesktopFamiliesPage />
