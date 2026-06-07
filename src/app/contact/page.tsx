@@ -51,6 +51,12 @@ type SupportCard = {
   tone: Tone;
 };
 
+type SupportPrompt = {
+  icon: IconName;
+  title: string;
+  tone: Tone;
+};
+
 const toneStyles = {
   purple: {
     icon: "bg-brand-purple-deep text-white",
@@ -142,6 +148,24 @@ const supportCards: SupportCard[] = [
     title: "We Care",
     description: "Your family’s journey is our priority.",
     tone: "gold",
+  },
+];
+
+const supportPrompts: SupportPrompt[] = [
+  {
+    icon: "handHeart",
+    title: "Occupational Therapy",
+    tone: "purple",
+  },
+  {
+    icon: "communication",
+    title: "Speech Therapy",
+    tone: "gold",
+  },
+  {
+    icon: "independence",
+    title: "Physical Therapy",
+    tone: "teal",
   },
 ];
 
@@ -374,39 +398,53 @@ function MobileContactPage() {
             <h2 className="text-[clamp(2rem,9vw,2.35rem)] font-extrabold leading-[1.05] tracking-tight text-brand-navy">
               Let&apos;s Connect
             </h2>
-            <p className="mt-3 flex flex-nowrap items-center gap-1.5 text-[clamp(0.92rem,4.35vw,1.08rem)] font-extrabold leading-snug text-brand-purple-bright">
-              <span className="min-w-0 shrink">
-                We&apos;re here for you and your family
-              </span>
-              <span className="shrink-0 text-[0.95em] text-brand-purple-bright/55">
+            <p className="mt-3 text-xl font-extrabold leading-snug text-brand-purple-bright">
+              We&apos;re here for you and your family{" "}
+              <span className="text-brand-purple-bright/55">
                 <TiltedHeartOutline />
               </span>
             </p>
             <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-              Have a question, ready to get started, or want to learn more about
-              Ava&apos;s Hub? Our team is here to help you every step of the way.
+              Have a question, ready to get started, or want to learn more
+              about Ava&apos;s Hub?
             </p>
-
+            <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
+              Our team is here to help you every step of the way.
+            </p>
+            <p className="mt-5 text-sm italic leading-relaxed text-brand-navy/70">
+              Intake forms for each service will be available here soon.
+            </p>
             <div className="mt-6 space-y-3">
-              {supportCards.map((card) => (
-                <div
-                  key={card.title}
-                  className="flex items-start gap-4 rounded-[1.4rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10"
+              {supportPrompts.map((item, index) => (
+                <button
+                  type="button"
+                  key={item.title}
+                  className={`grid min-h-11 w-full grid-cols-[2.35rem_minmax(0,1fr)_auto] items-center gap-2 rounded-full py-2.5 pl-1.5 pr-4 text-[0.72rem] font-extrabold shadow-sm ring-2 transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold min-[380px]:grid-cols-[2.6rem_minmax(0,1fr)_auto] min-[380px]:text-[0.78rem] ${
+                    index === 0
+                      ? "bg-brand-purple-bright text-white ring-brand-purple-bright"
+                      : "bg-white/85 text-brand-purple-bright ring-brand-purple-bright/75"
+                  }`}
                 >
                   <span
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
+                    className={`flex h-8 w-8 items-center justify-center rounded-full min-[380px]:h-9 min-[380px]:w-9 ${
+                      index === 0
+                        ? "bg-white/95 text-brand-purple-bright"
+                        : "bg-brand-purple-bright text-white"
+                    }`}
                   >
-                    <Icon name={card.icon} size="sm" />
+                    <Icon name={item.icon} size="sm" />
                   </span>
-                  <div>
-                    <h3 className="text-base font-extrabold leading-tight text-brand-navy">
-                      {card.title}
-                    </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-brand-navy/75">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
+                  <span className="min-w-0 flex-1 whitespace-nowrap text-left">
+                    {item.title}
+                  </span>
+                  <span
+                    className={`shrink-0 whitespace-nowrap text-[0.58rem] font-semibold italic min-[380px]:text-[0.64rem] ${
+                      index === 0 ? "text-white/80" : "text-brand-purple-bright/70"
+                    }`}
+                  >
+                    Coming soon
+                  </span>
+                </button>
               ))}
             </div>
           </div>
@@ -579,9 +617,6 @@ function MobileContactPage() {
             <div className="mt-5">
               <EmailSignupForm placeholder="Enter your email address" />
             </div>
-            <p className="mt-4 text-xs font-semibold text-brand-navy/60">
-              We respect your privacy.
-            </p>
           </div>
         </div>
       </section>
