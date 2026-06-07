@@ -452,7 +452,7 @@ function MobileProgramHero() {
 function InsuranceOptionsCard({ className = "" }: { className?: string }) {
   return (
     <section className={className} aria-labelledby="insurance-options-heading">
-      <div className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+      <div className="flex h-full flex-col rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
         <div className="flex items-start gap-4">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
             <Icon name="shieldHeart" size="lg" />
@@ -1052,41 +1052,40 @@ function DesktopProgramsPage() {
 
       <section className="pb-12">
         <SectionContainer>
-          <InsuranceOptionsCard />
-        </SectionContainer>
-      </section>
+          <div className="grid gap-6 xl:grid-cols-[0.48fr_0.52fr] xl:items-stretch">
+            <div className="h-full">
+              <InsuranceOptionsCard className="h-full" />
+            </div>
 
-      <section className="pb-12">
-        <SectionContainer>
-          <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
-            Resources & Support for Families
-            <span className="ml-3 text-brand-purple-bright/55">
-              <TiltedHeartOutline />
-            </span>
-          </h2>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
-            Tools, education, and community, just for you.
-          </p>
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {resourceCards.map((card) => (
-              <article
-                key={card.title}
-                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
-              >
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
-                  <Icon name={card.icon} size="lg" />
+            <div className="h-full rounded-[1.75rem] bg-white/80 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7">
+              <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
+                Resources & Support for Families
+                <span className="ml-3 text-brand-purple-bright/55">
+                  <TiltedHeartOutline />
                 </span>
-                <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
-                  {card.title}
-                </h3>
-                <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
-                  {card.text}
-                </p>
-                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
-                  <Icon name="arrowRight" size="sm" />
-                </span>
-              </article>
-            ))}
+              </h2>
+              <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
+                Tools, education, and community, just for you.
+              </p>
+              <div className="mt-6 grid gap-4 lg:grid-cols-3">
+                {resourceCards.map((card) => (
+                  <article
+                    key={card.title}
+                    className="flex h-full flex-col rounded-[1.5rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+                      <Icon name={card.icon} size="lg" />
+                    </span>
+                    <h3 className="mt-4 text-base font-extrabold leading-tight text-brand-navy">
+                      {card.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                      {card.text}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </SectionContainer>
       </section>
