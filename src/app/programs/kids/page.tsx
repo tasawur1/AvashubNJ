@@ -16,112 +16,66 @@ export const metadata: Metadata = {
   alternates: { canonical: "/programs/kids" },
 };
 
-type Tone = "purple" | "teal" | "gold";
-
-type DetailCard = {
+type GuideItem = {
   icon: IconName;
   title: string;
   text: string;
-  tone: Tone;
 };
 
-const toneStyles = {
-  purple: {
-    icon: "bg-brand-lavender text-brand-purple-bright",
-    card: "bg-brand-lavender/55 ring-brand-purple-deep/10",
-  },
-  teal: {
-    icon: "bg-brand-teal-light text-brand-teal",
-    card: "bg-brand-teal-light/60 ring-brand-teal/10",
-  },
-  gold: {
-    icon: "bg-brand-gold/25 text-brand-navy",
-    card: "bg-brand-gold/12 ring-brand-gold/20",
-  },
-} satisfies Record<Tone, Record<string, string>>;
-
-const workOnCards: DetailCard[] = [
+const workOnItems: GuideItem[] = [
   {
     icon: "handHeart",
     title: "Fine Motor Skills",
-    tone: "purple",
-    text: "Helping children build hand strength, coordination, grasp patterns, cutting skills, manipulating toys, and everyday classroom participation.",
+    text: "We help children build hand strength, coordination, grasp patterns, and control needed for play, feeding, dressing, cutting, pre-writing, and classroom activities.",
   },
   {
     icon: "puzzlePiece",
     title: "Sensory Processing",
-    tone: "teal",
-    text: "Supporting children who may feel overwhelmed, avoid sensory experiences, seek movement, or struggle processing everyday environments.",
+    text: "Some children feel overwhelmed by sounds, textures, movement, or busy environments, while others seek extra input. We use supportive sensory activities to help children feel more organized and ready to participate.",
   },
   {
     icon: "child",
     title: "Developmental Play",
-    tone: "gold",
-    text: "Using play as the foundation for learning communication, problem solving, creativity, participation, and confidence.",
+    text: "Play is how young children learn. We use play to support problem solving, social interaction, creativity, communication, attention, and confidence.",
   },
   {
     icon: "compass",
     title: "Motor Planning",
-    tone: "teal",
-    text: "Building the ability to plan, sequence, and perform movements through play, obstacle courses, and functional activities like dressing, climbing, new games, and multi-step tasks.",
+    text: "Motor planning is the ability to figure out how to move the body to complete a task. At Ava's Hub, we support this through obstacle courses, movement games, dressing practice, playground-style activities, and step-by-step routines.",
   },
   {
     icon: "home",
     title: "Self-Care Routines",
-    tone: "purple",
-    text: "Supporting independence with dressing, feeding, toileting, hygiene, and everyday participation.",
+    text: "We support early independence with dressing, feeding, toileting readiness, hygiene routines, and everyday participation in ways that feel realistic for each child and family.",
   },
   {
     icon: "community",
     title: "Early Social Participation",
-    tone: "gold",
-    text: "Building confidence engaging with peers, sharing, taking turns, and participating with others.",
+    text: "We help children practice sharing, turn-taking, group participation, peer interaction, and emotional regulation during play and daily routines.",
   },
   {
     icon: "resources",
     title: "Pre-Writing Readiness",
-    tone: "teal",
-    text: "Developing foundational skills needed before handwriting, including posture, visual motor skills, grasp development, and bilateral coordination.",
+    text: "Before handwriting begins, children need posture, hand strength, visual-motor coordination, bilateral coordination, and grasp development. We build these skills through meaningful play and hands-on activities.",
   },
 ];
 
-const fitCards: DetailCard[] = [
-  {
-    icon: "shieldHeart",
-    title: "Children who avoid tasks",
-    tone: "purple",
-    text: "Avoiding dressing, crafts, writing, movement activities, or self-care routines.",
-  },
-  {
-    icon: "clock",
-    title: "Children who struggle with transitions",
-    tone: "teal",
-    text: "Difficulty moving between activities, routines, environments, or expectations.",
-  },
-  {
-    icon: "heart",
-    title: "Children needing support with play, routines, or regulation",
-    tone: "gold",
-    text: "Challenges participating independently at home, school, or in the community.",
-  },
-  {
-    icon: "brain",
-    title: "Children building confidence with everyday demands",
-    tone: "purple",
-    text: "Needing warm, practical support to try new tasks, stay engaged, and feel successful.",
-  },
+const goodFitItems = [
+  "Avoids or becomes frustrated with tasks like dressing, crafts, feeding, or pre-writing",
+  "Has difficulty transitioning between activities or following routines",
+  "Seems overwhelmed by sensory input or seeks constant movement",
+  "Has trouble with fine motor skills like grasping, cutting, manipulating toys, or using utensils",
+  "Needs support with play, attention, emotional regulation, or peer interaction",
+  "Is working toward more independence in daily routines",
 ];
 
-const sessionActivities = [
-  "Obstacle courses",
-  "Sensory play",
-  "Movement activities",
-  "Cooking",
-  "Crafts",
-  "Social games",
-  "Pretend play",
-  "Visual schedules",
-  "Functional routines",
+const sessionItems = [
+  "Movement and obstacle courses",
+  "Sensory play and regulation activities",
+  "Fine motor games and crafts",
+  "Pretend play and social practice",
+  "Dressing, feeding, and daily routine practice",
+  "Visual schedules and transition supports",
 ];
 
 const otherPrograms = [
@@ -145,6 +99,41 @@ const otherPrograms = [
   },
 ];
 
+function GuideSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="border-t border-brand-purple-deep/10 pt-8 lg:pt-10">
+      <h2 className="font-serif text-[clamp(1.7rem,5vw,2.35rem)] font-semibold leading-tight text-brand-navy">
+        {title}
+      </h2>
+      <div className="mt-6">{children}</div>
+    </section>
+  );
+}
+
+function WorkOnItem({ item }: { item: GuideItem }) {
+  return (
+    <div className="grid gap-4 sm:grid-cols-[3rem_1fr]">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+        <Icon name={item.icon} size="sm" />
+      </span>
+      <div>
+        <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+          {item.title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-brand-navy/75 lg:text-base">
+          {item.text}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function SectionHeading({
   title,
   subtitle,
@@ -163,26 +152,6 @@ function SectionHeading({
         </p>
       ) : null}
     </div>
-  );
-}
-
-function DetailCard({ card }: { card: DetailCard }) {
-  return (
-    <article
-      className={`h-full rounded-[1.75rem] p-6 shadow-card ring-1 ${toneStyles[card.tone].card}`}
-    >
-      <span
-        className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-      >
-        <Icon name={card.icon} size="lg" />
-      </span>
-      <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
-        {card.title}
-      </h3>
-      <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
-        {card.text}
-      </p>
-    </article>
   );
 }
 
@@ -211,113 +180,111 @@ export default function KidsProgramPage() {
 
       <section className="pb-10 lg:pb-14" aria-labelledby="kids-program-heading">
         <SectionContainer>
-          <div className="grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-stretch lg:gap-8">
-            <div className="overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-teal/10 lg:rounded-[2.5rem]">
-              <div className="relative aspect-[4/3] lg:h-full lg:min-h-[31rem]">
-                <PlaceholderImage
-                  src={programsImages.kidsProgramImage}
-                  alt="Kids Program at Ava's Hub"
-                  fill
-                  priority
-                  className="object-cover object-center"
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                />
-              </div>
-            </div>
-
-            <div className="rounded-[2rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.5rem] lg:p-10 xl:p-12">
-              <p className="inline-flex rounded-full bg-brand-lavender px-4 py-2 text-sm font-extrabold text-brand-purple-bright">
-                Ages 3-7
-              </p>
-              <h1
-                id="kids-program-heading"
-                className="mt-5 text-[clamp(2.55rem,8vw,5rem)] font-extrabold leading-[0.98] tracking-tight text-brand-navy"
-              >
-                Kids Program
-              </h1>
-              <p className="mt-4 max-w-2xl text-xl font-extrabold leading-snug text-brand-purple-bright lg:text-2xl">
-                Building confidence through play, movement, and meaningful
-                everyday experiences.
-              </p>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-brand-navy/82 lg:text-lg">
-                Play-based occupational therapy support that helps young
-                children build the foundation for confidence, curiosity,
-                regulation, and everyday independence.
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <CTAButton href="/contact" className="sm:min-w-[14rem]">
-                  Schedule Consultation
-                </CTAButton>
-                <CTAButton
-                  href="/forms/ot-intake.html"
-                  variant="secondary"
-                  className="sm:min-w-[12rem]"
-                >
-                  Start Intake
-                </CTAButton>
-              </div>
-            </div>
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className="py-10 lg:py-14" aria-labelledby="work-on-heading">
-        <SectionContainer>
-          <SectionHeading
-            title="What We Work On"
-            subtitle="Support is practical, playful, and built around skills children use every day."
-          />
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {workOnCards.map((card) => (
-              <DetailCard key={card.title} card={card} />
-            ))}
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className="py-10 lg:py-14" aria-labelledby="good-fit-heading">
-        <SectionContainer>
-          <SectionHeading title="This Program May Be A Good Fit If..." />
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {fitCards.map((card) => (
-              <DetailCard key={card.title} card={card} />
-            ))}
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className="py-10 lg:py-14" aria-labelledby="sessions-heading">
-        <SectionContainer>
-          <div className="rounded-[2rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-teal/10 lg:rounded-[2.5rem] lg:p-10">
-            <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-center">
-              <div>
-                <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
-                  <Icon name="child" size="lg" />
-                </span>
-                <h2
-                  id="sessions-heading"
-                  className="mt-5 font-serif text-[clamp(2rem,6vw,3rem)] font-semibold leading-tight text-brand-navy"
-                >
-                  What Sessions May Look Like
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-brand-navy/75">
-                  Sessions are designed to feel warm and meaningful, while
-                  giving children chances to practice real skills through
-                  movement, play, and everyday routines.
-                </p>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {sessionActivities.map((activity) => (
-                  <div
-                    key={activity}
-                    className="rounded-2xl bg-[#fffaf4] px-4 py-3 text-sm font-extrabold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
-                  >
-                    {activity}
+          <article className="overflow-hidden rounded-[2.25rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem]">
+            <div className="grid gap-0 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
+              <div className="p-4 pb-0 lg:p-6 lg:pr-0">
+                <div className="overflow-hidden rounded-[1.75rem] bg-brand-teal-light ring-1 ring-brand-teal/10 lg:sticky lg:top-24">
+                  <div className="relative aspect-[4/3] lg:aspect-[4/5]">
+                    <PlaceholderImage
+                      src={programsImages.kidsProgramImage}
+                      alt="Kids Program at Ava's Hub"
+                      fill
+                      priority
+                      className="object-cover object-center"
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                    />
                   </div>
-                ))}
+                </div>
+              </div>
+
+              <div className="space-y-9 p-6 lg:p-10 xl:p-12">
+                <header>
+                  <p className="inline-flex rounded-full bg-brand-lavender px-4 py-2 text-sm font-extrabold text-brand-purple-bright">
+                    Ages 3-7
+                  </p>
+                  <h1
+                    id="kids-program-heading"
+                    className="mt-5 text-[clamp(2.55rem,8vw,5rem)] font-extrabold leading-[0.98] tracking-tight text-brand-navy"
+                  >
+                    Kids Program
+                  </h1>
+                  <p className="mt-4 max-w-2xl text-xl font-extrabold leading-snug text-brand-purple-bright lg:text-2xl">
+                    Building confidence through play, movement, and meaningful
+                    everyday experiences.
+                  </p>
+                  <p className="mt-6 max-w-3xl text-base leading-relaxed text-brand-navy/82 lg:text-lg">
+                    At Ava&apos;s Hub, our Kids Program uses play-based
+                    occupational therapy to help young children build the skills
+                    they need for everyday life. Sessions are designed to feel
+                    fun, supportive, and meaningful while helping children
+                    develop confidence, regulation, motor skills, independence,
+                    and early participation at home, in school, and in the
+                    community.
+                  </p>
+                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <CTAButton href="/contact" className="sm:min-w-[14rem]">
+                      Schedule Consultation
+                    </CTAButton>
+                    <CTAButton
+                      href="/forms/ot-intake.html"
+                      variant="secondary"
+                      className="sm:min-w-[12rem]"
+                    >
+                      Start Intake
+                    </CTAButton>
+                  </div>
+                </header>
+
+                <GuideSection title="What We Work On">
+                  <div className="space-y-6">
+                    {workOnItems.map((item) => (
+                      <WorkOnItem key={item.title} item={item} />
+                    ))}
+                  </div>
+                </GuideSection>
+
+                <GuideSection title="This Program May Be A Good Fit If Your Child...">
+                  <ul className="grid gap-3 lg:grid-cols-2">
+                    {goodFitItems.map((item) => (
+                      <li
+                        key={item}
+                        className="flex gap-3 rounded-2xl bg-[#fffaf4] px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/78 ring-1 ring-brand-purple-deep/10"
+                      >
+                        <Icon
+                          name="check"
+                          className="mt-1 shrink-0 text-brand-teal"
+                          size="sm"
+                        />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </GuideSection>
+
+                <GuideSection title="What Sessions May Look Like">
+                  <p className="max-w-3xl text-base leading-relaxed text-brand-navy/78">
+                    Sessions are designed to feel playful while targeting real
+                    developmental goals. A child may move through obstacle
+                    courses, explore sensory materials, practice dressing or
+                    feeding skills, complete fine motor activities, engage in
+                    pretend play, or work through short routines with visual
+                    supports.
+                  </p>
+                  <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                    {sessionItems.map((item) => (
+                      <li
+                        key={item}
+                        className="flex items-center gap-3 text-sm font-extrabold text-brand-navy/85"
+                      >
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-gold" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </GuideSection>
               </div>
             </div>
-          </div>
+          </article>
         </SectionContainer>
       </section>
 
