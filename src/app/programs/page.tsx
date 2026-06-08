@@ -238,6 +238,7 @@ const mobilePrograms = [
     image: programsImages.teenProgramImage,
     title: "Teen Life Skills Program",
     age: "Ages 14-18",
+    detailHref: "/programs/teens",
     description:
       "Real-world therapy and coaching that helps teens build independence, confidence, self-advocacy, and daily life skills before adulthood.",
     workOn: [
