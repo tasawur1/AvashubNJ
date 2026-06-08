@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { ResourceBottomCta } from "@/components/page/ResourceMobileComponents";
@@ -165,7 +164,7 @@ function WorkOnItem({ item }: { item: GuideItem }) {
           {item.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="max-w-none text-[1rem] leading-[1.78] text-brand-navy/72 lg:text-[1.08rem]"
+              className="max-w-none text-[1.08rem] leading-[1.78] text-brand-navy/74 lg:text-[1.22rem]"
             >
               {paragraph}
             </p>
@@ -271,19 +270,7 @@ export default function KidsProgramPage() {
       <section className="pb-10 lg:pb-14">
         <SectionContainer>
           <article className="rounded-[2.25rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-10 xl:p-12">
-            <div className="max-w-6xl space-y-9">
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <CTAButton href="/contact" className="sm:min-w-[14rem]">
-                  Schedule Consultation
-                </CTAButton>
-                <CTAButton
-                  href="/forms/ot-intake.html"
-                  variant="secondary"
-                  className="sm:min-w-[12rem]"
-                >
-                  Start Intake
-                </CTAButton>
-              </div>
+            <div className="w-full space-y-9">
                 <GuideSection title="What We Work On">
                   <div className="space-y-6">
                     {workOnItems.map((item) => (
@@ -311,7 +298,7 @@ export default function KidsProgramPage() {
                 </GuideSection>
 
                 <GuideSection title="What Sessions May Look Like">
-                  <p className="max-w-3xl text-base leading-relaxed text-brand-navy/78">
+                  <p className="max-w-none text-[1.08rem] leading-[1.78] text-brand-navy/78 lg:text-[1.18rem]">
                     Sessions are designed to feel playful while targeting real
                     developmental goals. A child may move through obstacle
                     courses, explore sensory materials, practice dressing or
