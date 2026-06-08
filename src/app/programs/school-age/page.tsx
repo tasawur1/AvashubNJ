@@ -11,10 +11,10 @@ import type { IconName } from "@/data/icons";
 import { programsImages } from "@/data/pageImages/programsImages";
 
 export const metadata: Metadata = {
-  title: "Kids Program | Ava's Hub",
+  title: "School-Age Occupational Therapy Program | Ava's Hub",
   description:
-    "Explore Ava's Hub Kids Program for ages 3-7, offering play-based occupational therapy support for fine motor skills, sensory processing, self-care routines, motor planning, and early social participation.",
-  alternates: { canonical: "/programs/kids" },
+    "Ava's Hub School-Age Program supports children ages 8-13 with handwriting, executive functioning, sensory regulation, daily routines, fine motor skills, social participation, and school success.",
+  alternates: { canonical: "/programs/school-age" },
 };
 
 type GuideItem = {
@@ -28,137 +28,148 @@ type GuideItem = {
 
 const workOnItems: GuideItem[] = [
   {
-    icon: "handHeart",
-    title: "Fine Motor Skills",
+    icon: "resources",
+    title: "Executive Functioning",
     explanation:
-      "Fine motor skills are the small movements we make using our hands, fingers, wrists, and eyes together to complete everyday activities. These skills allow children to manipulate objects, hold utensils, fasten clothing, build with toys, color, cut with scissors, use school tools, and participate more independently in daily routines.",
+      "Executive functioning includes the thinking skills children use to plan, organize, start tasks, manage time, shift attention, follow routines, and complete activities. These skills are important for schoolwork, homework, morning routines, transitions, and daily independence.",
     look: [
-      "Difficulty holding crayons correctly",
-      "Challenges opening containers, using utensils, or buttoning clothing",
-      "Avoiding tasks that require using both hands together",
-      "Tiring quickly or becoming frustrated during hand-based activities",
+      "Difficulty starting tasks",
+      "Messy backpack or desk",
+      "Trouble following multi-step directions",
+      "Difficulty finishing assignments",
+      "Frequent reminders needed",
+      "Frustration during transitions",
     ],
     helps:
-      "At Ava's Hub, we use meaningful, play-based occupational therapy activities to strengthen these foundational skills in ways that feel motivating rather than frustrating. Sessions may include obstacle courses, crafts, grasp development, bilateral coordination games, dressing activities, cooking activities, and sensory-rich experiences.",
-    note: "Rather than practicing isolated exercises repeatedly, we focus on helping children develop fine motor skills through real-life activities that connect directly to everyday success.",
+      "Ava's Hub uses visual schedules, routines, planning activities, real-life problem solving, organization tasks, games, and functional challenges to help children build strategies they can use at home, in school, and in daily routines.",
+  },
+  {
+    icon: "handHeart",
+    title: "Handwriting & School Skills",
+    explanation:
+      "Handwriting depends on posture, hand strength, visual-motor coordination, attention, spacing, letter formation, and endurance. For many school-age children, handwriting struggles can affect confidence, school participation, and task completion.",
+    look: [
+      "Messy or hard-to-read writing",
+      "Poor spacing or letter reversals",
+      "Hand fatigue",
+      "Avoiding writing tasks",
+      "Difficulty copying from the board",
+      "Slow written work",
+    ],
+    helps:
+      "We support handwriting through fine motor strengthening, visual-motor activities, grasp development, posture support, multisensory writing practice, writing mechanics, and functional school-based activities that help children feel more confident and successful.",
   },
   {
     icon: "puzzlePiece",
-    title: "Sensory Processing",
+    title: "Sensory Regulation",
     explanation:
-      "Sensory processing refers to how the brain receives, organizes, interprets, and responds to information from the environment and the body. Children constantly process sounds, movement, touch, textures, visual information, body awareness, and many other sensations throughout the day.",
+      "Sensory regulation is the ability to notice, process, and respond to sensory information in a way that supports attention, emotional control, and participation. School-age children may struggle with noise, movement, touch, crowded spaces, transitions, or sitting for extended periods.",
     look: [
-      "Overwhelm with clothing textures, foods, noise, or busy spaces",
-      "Difficulty with transitions, attention, or emotional regulation",
-      "Seeking constant movement, touch, or input",
-      "Avoiding certain everyday sensory experiences",
+      "Constant movement seeking",
+      "Difficulty sitting still",
+      "Covering ears or avoiding certain textures",
+      "Emotional outbursts",
+      "Shutting down in busy environments",
+      "Difficulty calming after frustration",
     ],
     helps:
-      "At Ava's Hub, we help children better understand and respond to sensory experiences through movement-based activities, sensory play, regulation strategies, obstacle courses, heavy work activities, visual supports, and structured routines.",
-    note: "Our goal is not to eliminate sensory differences. We help children develop strategies, confidence, and participation so sensory experiences feel more manageable.",
-  },
-  {
-    icon: "child",
-    title: "Developmental Play",
-    explanation:
-      "Play is one of the primary ways young children learn. Through play, children develop problem solving, creativity, communication, emotional regulation, motor skills, social interaction, and confidence.",
-    look: [
-      "Limited pretend play",
-      "Difficulty engaging with toys appropriately",
-      "Rigid play patterns or frustration during play",
-      "Challenges playing with peers",
-    ],
-    helps:
-      "At Ava's Hub, we use play intentionally to support growth. Therapy sessions may include pretend play, sensory activities, movement games, social games, building activities, imaginative play scenarios, crafts, and structured challenges.",
-    note: "We believe children learn best when therapy feels meaningful and enjoyable. Play is not separate from learning - it is learning.",
-  },
-  {
-    icon: "compass",
-    title: "Motor Planning",
-    explanation:
-      "Motor planning is the brain's ability to figure out how to move the body to complete a task. This includes knowing what movement is needed, organizing the steps, coordinating the body, and adjusting movements as activities change.",
-    look: [
-      "Appearing clumsy or unsure with movement",
-      "Avoiding playground equipment or new activities",
-      "Frustration with dressing tasks or movement sequences",
-      "Needing repeated demonstrations to learn new skills",
-    ],
-    helps:
-      "At Ava's Hub, we support motor planning through obstacle courses, movement games, climbing activities, dressing practice, sequencing activities, playground-style challenges, sports-based activities, and functional tasks.",
-    note: "Our focus is helping children build confidence with movement so everyday activities feel easier, more successful, and less frustrating.",
+      "We use movement activities, heavy work, sensory tools, regulation routines, body awareness activities, visual supports, and calming strategies to help children understand what their bodies need and participate more successfully.",
   },
   {
     icon: "home",
-    title: "Self-Care Routines",
+    title: "Daily Routines & Independence",
     explanation:
-      "Self-care skills include the everyday activities children participate in to care for themselves and become more independent. These routines include dressing, feeding, hygiene, toileting, grooming, sleep routines, and participating in household responsibilities.",
+      "School-age children are often expected to take on more responsibility for dressing, hygiene, homework, chores, packing bags, managing materials, and following routines. These skills can be difficult when children struggle with sequencing, attention, motor skills, or regulation.",
     look: [
-      "Daily routines feeling stressful for children and families",
-      "Difficulty dressing independently",
-      "Avoiding hygiene tasks or feeding routines",
-      "Becoming overwhelmed during everyday expectations",
+      "Needing repeated reminders",
+      "Trouble completing morning routines",
+      "Difficulty organizing school materials",
+      "Avoiding hygiene tasks",
+      "Difficulty following step-by-step routines",
+      "Dependence on adults for daily tasks",
     ],
     helps:
-      "At Ava's Hub, we focus on building independence through real-life practice and meaningful routines. Therapy sessions may include dressing activities, feeding practice, grooming routines, kitchen activities, visual supports, sequencing tasks, and environmental modifications.",
-    note: "We believe therapy should help children participate more confidently in real life - not only inside the therapy room.",
+      "Ava's Hub practices real-life routines using visual supports, sequencing activities, checklists, role play, dressing and grooming practice, organization tasks, and meaningful daily living activities that support independence.",
+  },
+  {
+    icon: "handHeart",
+    title: "Fine Motor Skills",
+    explanation:
+      "Fine motor skills continue to be important during school-age years for handwriting, typing, using tools, completing crafts, opening containers, managing clothing fasteners, and participating in classroom activities.",
+    look: [
+      "Weak grasp",
+      "Difficulty cutting",
+      "Trouble opening containers",
+      "Messy work or hand fatigue",
+      "Difficulty manipulating small objects",
+      "Avoiding crafts or school tools",
+    ],
+    helps:
+      "We use strengthening activities, crafts, tool use, games, cooking activities, school tool practice, bilateral coordination activities, and real-life fine motor tasks to improve hand skills in a meaningful way.",
   },
   {
     icon: "community",
-    title: "Early Social Participation",
+    title: "Social Participation & Confidence",
     explanation:
-      "Social participation involves engaging with others during play, daily routines, learning activities, and community experiences. These skills include turn-taking, emotional regulation, communication, flexibility, problem solving, and interacting with peers.",
+      "School-age children are building friendships, learning teamwork, navigating group activities, and developing self-confidence. Some children may need support understanding social expectations, managing frustration, or participating with peers.",
     look: [
-      "Preferring to play alone",
-      "Struggling to enter play activities",
-      "Becoming overwhelmed in groups",
-      "Difficulty sharing or understanding social situations",
+      "Difficulty joining play",
+      "Avoiding group activities",
+      "Frustration with losing or waiting",
+      "Trouble taking turns",
+      "Limited confidence",
+      "Difficulty expressing needs",
+      "Challenges with peer interaction",
     ],
     helps:
-      "At Ava's Hub, social participation is naturally embedded throughout therapy. Children practice these skills during movement activities, games, group experiences, cooking activities, pretend play, collaborative challenges, and everyday interactions.",
-    note: "Our goal is not simply teaching social skills - it is helping children build meaningful relationships, confidence, and participation.",
+      "We embed social participation into games, group activities, collaborative problem solving, movement tasks, role play, and real-life routines so children practice confidence and connection in natural ways.",
   },
   {
-    icon: "resources",
-    title: "Pre-Writing Readiness",
+    icon: "compass",
+    title: "Movement & Coordination",
     explanation:
-      "Before children learn handwriting, they first develop many foundational skills that support writing success. These include posture, shoulder stability, bilateral coordination, visual-motor integration, grasp development, attention, body awareness, and hand strength.",
+      "Movement and coordination help children participate in playground activities, sports, physical education, classroom movement, dressing, and daily routines. Some children may struggle with balance, body awareness, strength, motor planning, or coordination.",
     look: [
-      "Avoiding coloring or table activities",
-      "Tiring quickly during early academic tasks",
-      "Using awkward grasp patterns",
-      "Becoming frustrated with writing readiness activities",
+      "Clumsiness",
+      "Avoiding playground equipment",
+      "Difficulty with sports or PE",
+      "Poor balance",
+      "Trouble learning new movements",
+      "Low endurance",
+      "Difficulty coordinating both sides of the body",
     ],
     helps:
-      "At Ava's Hub, we build these skills through movement, climbing activities, crafts, sensory play, obstacle courses, fine motor games, strengthening activities, and playful experiences that naturally support writing development.",
-    note: "Rather than focusing only on paper-and-pencil tasks, we build the foundation first - because strong foundations create more confident learners.",
+      "We use obstacle courses, balance activities, strengthening games, movement challenges, motor planning activities, ball skills, and functional play to help children feel more confident in their bodies.",
   },
 ];
 
 const goodFitItems = [
-  "Avoids or becomes frustrated with tasks like dressing, crafts, feeding, or pre-writing",
-  "Has difficulty transitioning between activities or following routines",
-  "Seems overwhelmed by sensory input or seeks constant movement",
-  "Has trouble with fine motor skills like grasping, cutting, manipulating toys, or using utensils",
-  "Needs support with play, attention, emotional regulation, or peer interaction",
-  "Is working toward more independence in daily routines",
+  "Struggles with handwriting, spacing, letter formation, or written work",
+  "Has difficulty with attention, organization, routines, or transitions",
+  "Needs support with sensory regulation or emotional control",
+  "Avoids school tasks, homework, crafts, or daily routines",
+  "Needs help becoming more independent with self-care or responsibilities",
+  "Has trouble joining peer activities or building confidence",
+  "Struggles with movement, coordination, body awareness, or motor planning",
 ];
 
 const sessionItems = [
-  "Movement and obstacle courses",
-  "Sensory play and regulation activities",
-  "Fine motor games and crafts",
-  "Pretend play and social practice",
-  "Dressing, feeding, and daily routine practice",
-  "Visual schedules and transition supports",
+  "Handwriting and visual-motor activities",
+  "Executive functioning games and planning tasks",
+  "Sensory regulation and movement activities",
+  "Obstacle courses and coordination challenges",
+  "School tool and organization practice",
+  "Dressing, hygiene, and daily routine activities",
+  "Social games and confidence-building activities",
 ];
 
 const otherPrograms = [
   {
-    image: programsImages.schoolAgeProgramImage,
-    title: "School-Age Program",
-    age: "Ages 8-13",
-    text: "Practical support for confidence, organization, handwriting, regulation, and participation.",
-    href: "/programs/school-age",
+    image: programsImages.kidsProgramImage,
+    title: "Kids Program",
+    age: "Ages 3-7",
+    text: "Play-based occupational therapy support for confidence, regulation, motor skills, and early independence.",
+    href: "/programs/kids",
   },
   {
     image: programsImages.teenProgramImage,
@@ -295,11 +306,12 @@ function SessionsCard() {
             <Icon name="child" size="lg" />
           </span>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/78 lg:text-lg">
-            Sessions are designed to feel playful while targeting real
-            developmental goals. A child may move through obstacle courses,
-            explore sensory materials, practice dressing or feeding skills,
-            complete fine motor activities, engage in pretend play, or work
-            through short routines with visual supports.
+            Sessions are designed to connect school-age goals to real-life
+            participation. A child may work through movement activities,
+            handwriting practice, organization tasks, sensory regulation
+            routines, daily living activities, games, problem-solving
+            challenges, social participation activities, and functional routines
+            that support success at home, in school, and in the community.
           </p>
         </div>
         <ul className="grid gap-3 sm:grid-cols-2">
@@ -339,7 +351,7 @@ function SectionHeading({
   );
 }
 
-export default function KidsProgramPage() {
+export default function SchoolAgeProgramPage() {
   return (
     <main className="flex-1 bg-[#fffaf4]">
       <SectionContainer className="py-6 lg:py-8">
@@ -358,19 +370,19 @@ export default function KidsProgramPage() {
             Programs
           </Link>
           <span aria-hidden>&gt;</span>
-          <span className="text-brand-purple-bright">Kids Program</span>
+          <span className="text-brand-purple-bright">School-Age Program</span>
         </nav>
       </SectionContainer>
 
-      <section className="pb-8 lg:pb-10" aria-labelledby="kids-program-heading">
+      <section className="pb-8 lg:pb-10" aria-labelledby="school-age-program-heading">
         <SectionContainer>
           <article className="rounded-[2.25rem] bg-white/95 p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-6">
             <div className="grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-8">
               <div className="overflow-hidden rounded-[1.75rem] bg-brand-teal-light ring-1 ring-brand-teal/10">
                 <div className="relative aspect-[4/3] lg:h-[24rem] lg:aspect-auto xl:h-[26rem]">
                     <PlaceholderImage
-                      src={programsImages.kidsProgramImage}
-                      alt="Kids Program at Ava's Hub"
+                      src={programsImages.schoolAgeProgramImage}
+                      alt="School-Age Program at Ava's Hub"
                       fill
                       priority
                       className="object-cover object-center"
@@ -382,26 +394,26 @@ export default function KidsProgramPage() {
               <div className="px-2 pb-3 lg:px-4 lg:py-4 xl:px-6">
                 <header>
                   <h1
-                    id="kids-program-heading"
+                    id="school-age-program-heading"
                     className="text-[clamp(2.55rem,8vw,5rem)] font-extrabold leading-[0.98] tracking-tight text-brand-navy"
                   >
-                    Kids Program
+                    School-Age Program
                   </h1>
                   <p className="mt-4 max-w-2xl text-lg font-extrabold leading-snug text-brand-purple-bright lg:text-xl">
-                    Building confidence through play, movement, and meaningful
-                    everyday experiences.
+                    Building confidence, independence, and school success
+                    through real-life occupational therapy.
                   </p>
                   <p className="mt-5 inline-flex rounded-full bg-brand-lavender px-4 py-2 text-sm font-extrabold text-brand-purple-bright">
-                    Ages 3-7
+                    Ages 8-13
                   </p>
                   <p className="mt-5 max-w-3xl text-base leading-relaxed text-brand-navy/82 lg:text-lg">
-                    The Kids Program at Ava&apos;s Hub uses play-based
-                    occupational therapy to help young children build confidence,
-                    regulation, motor skills, and everyday independence. Through
-                    movement, sensory play, fine motor activities, self-care
-                    practice, and social participation, children work on
-                    real-life skills in a way that feels fun, supportive, and
-                    meaningful.
+                    The School-Age Program at Ava&apos;s Hub supports children
+                    who are building independence at home, in school, and in the
+                    community. Through occupational therapy-based activities,
+                    children work on executive functioning, handwriting, sensory
+                    regulation, daily routines, motor skills, social
+                    participation, and confidence in ways that connect directly
+                    to real life.
                   </p>
                   <StartIntakeButton className="mt-6" />
                 </header>
@@ -417,9 +429,9 @@ export default function KidsProgramPage() {
             <div className="w-full space-y-9">
                 <GuideSection
                   title="What We Work On"
-                  subtitle="Play-based care that supports everyday confidence and participation."
+                  subtitle="Real-life occupational therapy support for school, home, and community participation."
                 >
-                  <div className="grid gap-5 lg:grid-cols-3">
+                  <div className="grid gap-5 lg:grid-cols-2">
                     {workOnItems.map((item) => (
                       <WorkOnCard key={item.title} item={item} />
                     ))}

@@ -215,6 +215,7 @@ const mobilePrograms = [
     image: programsImages.schoolAgeProgramImage,
     title: "School-Age Program",
     age: "Ages 8-13",
+    detailHref: "/programs/school-age",
     description:
       "Practical support for school-aged children who need help with confidence, organization, handwriting, emotional regulation, and participation at school and home.",
     workOn: [
