@@ -215,9 +215,9 @@ function GuideSection({
 }) {
   return (
     <section className="border-t border-brand-purple-deep/10 pt-8 lg:pt-10">
-      <h2 className="font-serif text-[clamp(1.9rem,4.5vw,2.75rem)] font-semibold leading-tight text-brand-navy">
-        {title}
-        <span className="ml-3 text-brand-purple-bright/55">
+      <h2 className="flex items-center whitespace-nowrap font-serif text-[clamp(1.25rem,5vw,2.75rem)] font-semibold leading-tight text-brand-navy">
+        <span>{title}</span>
+        <span className="ml-2 shrink-0 text-brand-purple-bright/55 sm:ml-3">
           <TiltedHeartOutline />
         </span>
       </h2>

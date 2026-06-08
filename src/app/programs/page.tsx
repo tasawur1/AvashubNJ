@@ -578,7 +578,7 @@ function MobileProgramsPage() {
           {mobilePrograms.map((program) => (
             <article
               key={program.title}
-              className="overflow-hidden rounded-[1.75rem] bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+              className="flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-white/90 shadow-card ring-1 ring-brand-teal/10"
             >
               <div className="relative h-44 bg-brand-teal-light">
                 <PlaceholderImage
@@ -589,7 +589,7 @@ function MobileProgramsPage() {
                   sizes="100vw"
                 />
               </div>
-              <div className="p-5">
+              <div className="flex flex-1 flex-col p-5">
                 <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
                   {program.title}
                 </h3>
@@ -628,7 +628,7 @@ function MobileProgramsPage() {
                   </ul>
                 </details>
                 {"detailHref" in program ? (
-                  <CTAButton href={program.detailHref} className="mt-5 w-full !py-2.5">
+                  <CTAButton href={program.detailHref} className="mt-auto w-full !py-2.5">
                     Learn More
                   </CTAButton>
                 ) : null}
@@ -901,7 +901,7 @@ function DesktopProgramsPage() {
             {mobilePrograms.map((program) => (
               <article
                 key={program.title}
-                className="overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
+                className="flex h-full flex-col overflow-hidden rounded-3xl bg-white/90 shadow-card ring-1 ring-brand-teal/10"
               >
                 <div className="relative h-48 bg-brand-teal-light xl:h-52">
                   <PlaceholderImage
@@ -912,7 +912,7 @@ function DesktopProgramsPage() {
                     sizes="(min-width: 1280px) 25vw, 50vw"
                   />
                 </div>
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
                     {program.title}
                   </h3>
@@ -965,7 +965,7 @@ function DesktopProgramsPage() {
                     </ul>
                   </details>
                   {"detailHref" in program ? (
-                    <CTAButton href={program.detailHref} className="mt-5 w-full !py-2.5">
+                    <CTAButton href={program.detailHref} className="mt-auto w-full !py-2.5">
                       Learn More
                     </CTAButton>
                   ) : null}
