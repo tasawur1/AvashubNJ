@@ -375,19 +375,12 @@ function DesktopHomePage() {
                   />
                 </div>
                 <div className="p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-                        {program.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-bold text-brand-purple-bright">
-                        {program.age}
-                      </p>
-                    </div>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                      <Icon name="arrowRight" size="sm" />
-                    </span>
-                  </div>
+                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                    {program.title}
+                  </h3>
+                  <p className="mt-1 text-sm font-bold text-brand-purple-bright">
+                    {program.age}
+                  </p>
                   <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                     {program.description}
                   </p>
@@ -466,9 +459,6 @@ function DesktopHomePage() {
                 <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
                   {card.text}
                 </p>
-                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
-                  <Icon name="arrowRight" size="sm" />
-                </span>
               </article>
             ))}
           </div>
@@ -652,7 +642,7 @@ export default function HomePage() {
             {mobilePrograms.map((program) => (
               <article
                 key={program.title}
-                className="grid grid-cols-[clamp(5.75rem,28vw,8rem)_minmax(0,1fr)_2.25rem] items-center gap-3 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10 min-[520px]:grid-cols-[8rem_1fr_auto] min-[520px]:gap-4"
+                className="grid grid-cols-[clamp(5.75rem,28vw,8rem)_minmax(0,1fr)] items-center gap-3 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10 min-[520px]:grid-cols-[8rem_1fr] min-[520px]:gap-4"
               >
                 <div className="relative h-20 overflow-hidden rounded-2xl bg-brand-teal-light min-[520px]:h-24">
                   <PlaceholderImage
@@ -674,9 +664,6 @@ export default function HomePage() {
                     {program.description}
                   </p>
                 </div>
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm min-[520px]:h-10 min-[520px]:w-10">
-                  <Icon name="arrowRight" size="sm" />
-                </span>
               </article>
             ))}
           </div>

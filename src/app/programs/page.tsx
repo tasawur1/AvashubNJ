@@ -193,6 +193,7 @@ const mobilePrograms = [
     image: programsImages.kidsProgramImage,
     title: "Kids Program",
     age: "Ages 3-7",
+    detailHref: "/programs/kids",
     description:
       "Play-based occupational therapy support that helps young children build the foundation for confidence, curiosity, regulation, and everyday independence.",
     workOn: [
@@ -545,14 +546,9 @@ function MobileProgramsPage() {
                 <h3 className="text-[1.05rem] font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h3>
-                <div className="mt-2 grid grid-cols-[1fr_2.25rem] items-center gap-3">
-                  <p className="text-xs leading-relaxed text-brand-navy/75">
-                    {card.intro}
-                  </p>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                    <Icon name="arrowRight" size="sm" />
-                  </span>
-                </div>
+                <p className="mt-2 text-xs leading-relaxed text-brand-navy/75">
+                  {card.intro}
+                </p>
               </div>
             </article>
           ))}
@@ -592,19 +588,12 @@ function MobileProgramsPage() {
                 />
               </div>
               <div className="p-5">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
-                      {program.title}
-                    </h3>
-                    <p className="mt-1 text-sm font-bold text-brand-purple-bright">
-                      {program.age}
-                    </p>
-                  </div>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                    <Icon name="arrowRight" size="sm" />
-                  </span>
-                </div>
+                <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
+                  {program.title}
+                </h3>
+                <p className="mt-1 text-sm font-bold text-brand-purple-bright">
+                  {program.age}
+                </p>
                 <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                   {program.description}
                 </p>
@@ -636,6 +625,11 @@ function MobileProgramsPage() {
                     ))}
                   </ul>
                 </details>
+                {"detailHref" in program ? (
+                  <CTAButton href={program.detailHref} className="mt-5 w-full !py-2.5">
+                    Learn More
+                  </CTAButton>
+                ) : null}
               </div>
             </article>
           ))}
@@ -739,9 +733,6 @@ function MobileProgramsPage() {
                 <p className="mt-3 min-h-12 text-sm leading-relaxed text-brand-navy/75">
                   {card.text}
                 </p>
-                <span className="mt-5 flex h-9 w-9 items-center justify-center rounded-full border border-brand-purple-deep text-brand-purple-deep">
-                  <Icon name="arrowRight" size="sm" />
-                </span>
               </article>
             ))}
           </div>
@@ -884,14 +875,9 @@ function DesktopProgramsPage() {
                 <h3 className="mt-5 text-lg font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h3>
-                <div className="mt-3 grid grid-cols-[1fr_2.25rem] items-center gap-4">
-                  <p className="text-sm leading-relaxed text-brand-navy/75">
-                    {card.intro}
-                  </p>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                    <Icon name="arrowRight" size="sm" />
-                  </span>
-                </div>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+                  {card.intro}
+                </p>
               </article>
             ))}
           </div>
@@ -925,19 +911,12 @@ function DesktopProgramsPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-                        {program.title}
-                      </h3>
-                      <p className="mt-1 text-sm font-bold text-brand-purple-bright">
-                        {program.age}
-                      </p>
-                    </div>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                      <Icon name="arrowRight" size="sm" />
-                    </span>
-                  </div>
+                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
+                    {program.title}
+                  </h3>
+                  <p className="mt-1 text-sm font-bold text-brand-purple-bright">
+                    {program.age}
+                  </p>
                   <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
                     {program.description}
                   </p>
@@ -983,6 +962,11 @@ function DesktopProgramsPage() {
                       ))}
                     </ul>
                   </details>
+                  {"detailHref" in program ? (
+                    <CTAButton href={program.detailHref} className="mt-5 w-full !py-2.5">
+                      Learn More
+                    </CTAButton>
+                  ) : null}
                 </div>
               </article>
             ))}

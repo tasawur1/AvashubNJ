@@ -248,36 +248,6 @@ function TiltedHeartOutline({ className = "" }: { className?: string }) {
   );
 }
 
-function JourneyArrow() {
-  return (
-    <div
-      className="pointer-events-none absolute -bottom-7 right-5 z-20 hidden min-[360px]:block"
-      aria-hidden
-    >
-      <svg
-        className="h-16 w-16 text-brand-purple-bright/35"
-        viewBox="0 0 72 72"
-        fill="none"
-      >
-        <path
-          d="M18 10c24 8 34 23 24 47"
-          stroke="currentColor"
-          strokeWidth="2.25"
-          strokeLinecap="round"
-          strokeDasharray="4 7"
-        />
-        <path
-          d="M35 54l8 9 9-8"
-          stroke="currentColor"
-          strokeWidth="2.25"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </div>
-  );
-}
-
 function CheckList({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2.5">
@@ -430,7 +400,7 @@ function MobileFamiliesPage() {
           {journeySteps.map((step, index) => (
             <div
               key={step.title}
-              className={`relative ${index < journeySteps.length - 1 ? "pb-9" : ""}`}
+              className={index < journeySteps.length - 1 ? "pb-4" : ""}
             >
               <article className="relative z-10 rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-teal/10">
                 <div className="grid grid-cols-[4rem_1fr] items-center gap-4">
@@ -449,7 +419,6 @@ function MobileFamiliesPage() {
                 </div>
               </div>
               </article>
-              {index < journeySteps.length - 1 ? <JourneyArrow /> : null}
             </div>
           ))}
         </div>

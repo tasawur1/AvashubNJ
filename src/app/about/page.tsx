@@ -341,7 +341,7 @@ function MobileAboutPage() {
           {serveCards.map((card) => (
             <article
               key={card.title}
-              className="grid grid-cols-[clamp(5.75rem,28vw,8rem)_minmax(0,1fr)_2.25rem] items-center gap-3 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10 min-[520px]:grid-cols-[8rem_1fr_auto] min-[520px]:gap-4"
+              className="grid grid-cols-[clamp(5.75rem,28vw,8rem)_minmax(0,1fr)] items-center gap-3 rounded-3xl bg-white/90 p-3 shadow-card ring-1 ring-brand-teal/10 min-[520px]:grid-cols-[8rem_1fr] min-[520px]:gap-4"
             >
               <div className="relative h-20 overflow-hidden rounded-2xl bg-brand-teal-light min-[520px]:h-24">
                 <PlaceholderImage
@@ -360,9 +360,6 @@ function MobileAboutPage() {
                   {card.text}
                 </p>
               </div>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm min-[520px]:h-10 min-[520px]:w-10">
-                <Icon name="arrowRight" size="sm" />
-              </span>
             </article>
           ))}
         </div>
@@ -647,14 +644,9 @@ function DesktopAboutPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-xl font-extrabold leading-tight text-brand-purple-bright">
-                      {card.title}
-                    </h3>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-purple-bright text-white shadow-sm">
-                      <Icon name="arrowRight" size="sm" />
-                    </span>
-                  </div>
+                  <h3 className="text-xl font-extrabold leading-tight text-brand-purple-bright">
+                    {card.title}
+                  </h3>
                   <p className="mt-3 text-sm leading-relaxed text-brand-navy/85">
                     {card.text}
                   </p>
