@@ -1,11 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
 export async function POST(request: NextRequest) {
   try {
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (!resendApiKey) {
+      console.error('Notify route is missing RESEND_API_KEY.');
+      return NextResponse.json({
+        success: false,
+        error: 'Email notifications are not configured.',
+      });
+    }
+
+    const resend = new Resend(resendApiKey);
+
     const {
       formId,
       childName,
