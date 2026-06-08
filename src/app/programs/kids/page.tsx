@@ -108,7 +108,7 @@ function GuideSection({
 }) {
   return (
     <section className="border-t border-brand-purple-deep/10 pt-8 lg:pt-10">
-      <h2 className="font-serif text-[clamp(1.7rem,5vw,2.35rem)] font-semibold leading-tight text-brand-navy">
+      <h2 className="text-[clamp(1.35rem,4.5vw,1.85rem)] font-extrabold leading-tight text-brand-navy">
         {title}
       </h2>
       <div className="mt-6">{children}</div>
@@ -178,13 +178,12 @@ export default function KidsProgramPage() {
         </nav>
       </SectionContainer>
 
-      <section className="pb-10 lg:pb-14" aria-labelledby="kids-program-heading">
+      <section className="pb-8 lg:pb-10" aria-labelledby="kids-program-heading">
         <SectionContainer>
-          <article className="overflow-hidden rounded-[2.25rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem]">
-            <div className="grid gap-0 lg:grid-cols-[0.4fr_0.6fr] lg:items-start">
-              <div className="p-4 pb-0 lg:p-6 lg:pr-0">
-                <div className="overflow-hidden rounded-[1.75rem] bg-brand-teal-light ring-1 ring-brand-teal/10 lg:sticky lg:top-24">
-                  <div className="relative aspect-[4/3] lg:aspect-[4/5]">
+          <article className="rounded-[2.25rem] bg-white/95 p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-6">
+            <div className="grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-8">
+              <div className="overflow-hidden rounded-[1.75rem] bg-brand-teal-light ring-1 ring-brand-teal/10">
+                <div className="relative aspect-[4/3] lg:h-[24rem] lg:aspect-auto xl:h-[26rem]">
                     <PlaceholderImage
                       src={programsImages.kidsProgramImage}
                       alt="Kids Program at Ava's Hub"
@@ -193,11 +192,10 @@ export default function KidsProgramPage() {
                       className="object-cover object-center"
                       sizes="(min-width: 1024px) 40vw, 100vw"
                     />
-                  </div>
                 </div>
               </div>
 
-              <div className="space-y-9 p-6 lg:p-10 xl:p-12">
+              <div className="px-2 pb-3 lg:px-4 lg:py-4 xl:px-6">
                 <header>
                   <p className="inline-flex rounded-full bg-brand-lavender px-4 py-2 text-sm font-extrabold text-brand-purple-bright">
                     Ages 3-7
@@ -208,33 +206,42 @@ export default function KidsProgramPage() {
                   >
                     Kids Program
                   </h1>
-                  <p className="mt-4 max-w-2xl text-xl font-extrabold leading-snug text-brand-purple-bright lg:text-2xl">
+                  <p className="mt-4 max-w-2xl text-lg font-extrabold leading-snug text-brand-purple-bright lg:text-xl">
                     Building confidence through play, movement, and meaningful
                     everyday experiences.
                   </p>
-                  <p className="mt-6 max-w-3xl text-base leading-relaxed text-brand-navy/82 lg:text-lg">
-                    At Ava&apos;s Hub, our Kids Program uses play-based
-                    occupational therapy to help young children build the skills
-                    they need for everyday life. Sessions are designed to feel
-                    fun, supportive, and meaningful while helping children
-                    develop confidence, regulation, motor skills, independence,
-                    and early participation at home, in school, and in the
-                    community.
+                  <p className="mt-5 max-w-3xl text-base leading-relaxed text-brand-navy/82 lg:text-lg">
+                    The Kids Program at Ava&apos;s Hub uses play-based
+                    occupational therapy to help young children build confidence,
+                    regulation, motor skills, and everyday independence. Through
+                    movement, sensory play, fine motor activities, self-care
+                    practice, and social participation, children work on
+                    real-life skills in a way that feels fun, supportive, and
+                    meaningful.
                   </p>
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                    <CTAButton href="/contact" className="sm:min-w-[14rem]">
-                      Schedule Consultation
-                    </CTAButton>
-                    <CTAButton
-                      href="/forms/ot-intake.html"
-                      variant="secondary"
-                      className="sm:min-w-[12rem]"
-                    >
-                      Start Intake
-                    </CTAButton>
-                  </div>
                 </header>
+              </div>
+            </div>
+          </article>
+        </SectionContainer>
+      </section>
 
+      <section className="pb-10 lg:pb-14">
+        <SectionContainer>
+          <article className="rounded-[2.25rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-10 xl:p-12">
+            <div className="max-w-6xl space-y-9">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <CTAButton href="/contact" className="sm:min-w-[14rem]">
+                  Schedule Consultation
+                </CTAButton>
+                <CTAButton
+                  href="/forms/ot-intake.html"
+                  variant="secondary"
+                  className="sm:min-w-[12rem]"
+                >
+                  Start Intake
+                </CTAButton>
+              </div>
                 <GuideSection title="What We Work On">
                   <div className="space-y-6">
                     {workOnItems.map((item) => (
@@ -243,7 +250,7 @@ export default function KidsProgramPage() {
                   </div>
                 </GuideSection>
 
-                <GuideSection title="This Program May Be A Good Fit If Your Child...">
+                <GuideSection title="Who This Program Supports">
                   <ul className="grid gap-3 lg:grid-cols-2">
                     {goodFitItems.map((item) => (
                       <li
@@ -282,7 +289,6 @@ export default function KidsProgramPage() {
                     ))}
                   </ul>
                 </GuideSection>
-              </div>
             </div>
           </article>
         </SectionContainer>
