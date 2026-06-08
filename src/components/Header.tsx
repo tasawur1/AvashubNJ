@@ -40,7 +40,7 @@ export function Header() {
 
   const desktopLinkClass = (active: boolean) =>
     [
-      "whitespace-nowrap rounded-md px-1.5 py-1.5 text-sm font-semibold transition-colors md:px-2 xl:text-base xl:px-2.5",
+      "whitespace-nowrap rounded-md px-[clamp(0.2rem,0.35vw,0.55rem)] py-1.5 text-[clamp(0.74rem,0.78vw,0.95rem)] font-semibold transition-colors",
       active
         ? "text-brand-purple-deep decoration-brand-gold underline decoration-2 underline-offset-8"
         : "text-brand-navy/80 hover:text-brand-purple-bright",
@@ -58,7 +58,7 @@ export function Header() {
         {/* Brand: logo image + tagline only */}
         <Link
           href="/"
-          className="group flex min-w-0 max-w-[min(100%,14rem)] items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:max-w-none sm:gap-3 xl:max-w-md xl:gap-4"
+          className="group flex min-w-0 max-w-[min(100%,14rem)] items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:max-w-none sm:gap-3 xl:max-w-[19rem] xl:gap-3 2xl:max-w-md 2xl:gap-4"
           onClick={() => setOpen(false)}
         >
           <span className="sr-only">Ava&apos;s Hub — Home</span>
@@ -72,7 +72,7 @@ export function Header() {
               className="object-contain object-left"
             />
           </div>
-          <p className="hidden min-w-0 text-[0.6875rem] font-medium leading-snug text-brand-teal sm:block sm:max-w-[9.5rem] sm:text-xs md:max-w-[11rem] md:text-[0.8125rem] xl:max-w-xs xl:text-sm">
+          <p className="hidden min-w-0 text-[0.6875rem] font-medium leading-snug text-brand-teal sm:block sm:max-w-[9.5rem] sm:text-xs md:max-w-[11rem] md:text-[0.8125rem] xl:max-w-[8.5rem] xl:text-xs 2xl:max-w-xs 2xl:text-sm">
             Skills for Today. Independence for Life.
           </p>
         </Link>
@@ -82,7 +82,7 @@ export function Header() {
           className="mx-2 hidden min-w-0 flex-1 justify-center xl:flex"
           aria-label="Primary"
         >
-          <ul className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 md:gap-x-3 xl:gap-x-5">
+          <ul className="flex flex-nowrap items-center justify-center gap-x-[clamp(0.35rem,0.8vw,1.25rem)]">
             {navItems.map((item) => {
               const active =
                 item.href === "/"
@@ -103,7 +103,7 @@ export function Header() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
           <CTAButton
             href="/contact"
-            className="!px-3.5 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:text-sm xl:!px-6 xl:!py-3"
+            className="whitespace-nowrap !px-3.5 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:text-sm xl:!px-4 xl:!py-2.5 xl:text-xs 2xl:!px-6 2xl:!py-3 2xl:text-sm"
           >
             <span className="hidden min-[400px]:inline">Enroll Now</span>
             <span className="min-[400px]:hidden">Enroll</span>

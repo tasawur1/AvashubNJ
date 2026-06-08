@@ -176,12 +176,14 @@ const otherPrograms = [
     title: "Teen Life Skills Program",
     age: "Ages 14-18",
     text: "Real-world therapy and coaching for independence, self-advocacy, and daily life skills.",
+    href: "/programs/teens",
   },
   {
     image: programsImages.youngAdultProgramImage,
     title: "Young Adult Life Readiness",
     age: "Ages 19-21+",
     text: "Functional skill-building for work, independence, community life, and meaningful routines.",
+    href: "/programs/young-adults",
   },
 ];
 
@@ -431,21 +433,25 @@ export default function SchoolAgeProgramPage() {
                   title="What We Work On"
                   subtitle="Real-life occupational therapy support for school, home, and community participation."
                 >
-                  <div className="grid gap-5 lg:grid-cols-2">
+                  <div className="grid gap-5 md:grid-cols-2">
                     {workOnItems.map((item) => (
                       <WorkOnCard key={item.title} item={item} />
                     ))}
                   </div>
                 </GuideSection>
 
-                <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
-                  <GuideSection title="Who This Program Supports">
-                    <CheckListCard items={goodFitItems} />
-                  </GuideSection>
+                <div className="grid gap-6 xl:grid-cols-2 xl:items-stretch">
+                  <div className="min-w-0">
+                    <GuideSection title="Who This Program Supports">
+                      <CheckListCard items={goodFitItems} />
+                    </GuideSection>
+                  </div>
 
-                  <GuideSection title="What Sessions May Look Like">
-                    <SessionsCard />
-                  </GuideSection>
+                  <div className="min-w-0">
+                    <GuideSection title="What Sessions May Look Like">
+                      <SessionsCard />
+                    </GuideSection>
+                  </div>
                 </div>
             </div>
           </article>
@@ -458,11 +464,11 @@ export default function SchoolAgeProgramPage() {
             title="Explore Other Programs"
             subtitle="Support grows with your child and adapts as daily life changes."
           />
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {otherPrograms.map((program) => (
               <article
                 key={program.title}
-                className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10"
+                className="flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10"
               >
                 <div className="relative h-44 bg-brand-teal-light">
                   <PlaceholderImage
@@ -473,7 +479,7 @@ export default function SchoolAgeProgramPage() {
                     sizes="(min-width: 768px) 33vw, 100vw"
                   />
                 </div>
-                <div className="p-5">
+                <div className="flex flex-1 flex-col p-5">
                   <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
                     {program.title}
                   </h3>
@@ -484,7 +490,7 @@ export default function SchoolAgeProgramPage() {
                     {program.text}
                   </p>
                   {"href" in program ? (
-                    <CTAButton href={program.href} className="mt-5 w-full !py-2.5">
+                    <CTAButton href={program.href} className="mt-auto w-full !py-2.5">
                       Learn More
                     </CTAButton>
                   ) : null}

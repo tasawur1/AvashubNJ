@@ -262,6 +262,7 @@ const mobilePrograms = [
     image: programsImages.youngAdultProgramImage,
     title: "Young Adult Life Readiness",
     age: "Ages 19-21+",
+    detailHref: "/programs/young-adults",
     description:
       "Functional, community-based skill-building for young adults preparing for work, independence, social participation, and meaningful daily routines.",
     workOn: [
