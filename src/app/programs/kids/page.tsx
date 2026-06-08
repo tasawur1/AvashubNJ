@@ -171,18 +171,47 @@ const otherPrograms = [
   },
 ];
 
+function TiltedHeartOutline({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      aria-hidden
+      className={`inline-block h-[1em] w-[1em] rotate-[-12deg] align-[-0.08em] ${className}`}
+      fill="none"
+    >
+      <path
+        d="M12 20.4C7.05 16.2 4 13.36 4 9.8 4 7.25 5.93 5.2 8.35 5.2c1.4 0 2.75.7 3.65 1.82A4.64 4.64 0 0 1 15.65 5.2C18.07 5.2 20 7.25 20 9.8c0 3.56-3.05 6.4-8 10.6Z"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function GuideSection({
   title,
+  subtitle,
   children,
 }: {
   title: string;
+  subtitle?: string;
   children: React.ReactNode;
 }) {
   return (
     <section className="border-t border-brand-purple-deep/10 pt-8 lg:pt-10">
-      <h2 className="font-serif text-[clamp(1.85rem,4.5vw,2.65rem)] font-semibold leading-tight text-brand-navy">
+      <h2 className="font-serif text-[clamp(1.9rem,4.5vw,2.75rem)] font-semibold leading-tight text-brand-navy">
         {title}
+        <span className="ml-3 text-brand-purple-bright/55">
+          <TiltedHeartOutline />
+        </span>
       </h2>
+      {subtitle ? (
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
+          {subtitle}
+        </p>
+      ) : null}
       <div className="mt-6">{children}</div>
     </section>
   );
@@ -234,8 +263,8 @@ function WorkOnCard({ item }: { item: GuideItem }) {
 
 function CheckListCard({ items }: { items: string[] }) {
   return (
-    <div className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
-      <ul className="grid gap-3 lg:grid-cols-2">
+    <div className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+      <ul className="grid gap-3">
         {items.map((item) => (
           <li
             key={item}
@@ -256,8 +285,8 @@ function CheckListCard({ items }: { items: string[] }) {
 
 function SessionsCard() {
   return (
-    <div className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
-      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+    <div className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
+      <div className="grid gap-6">
         <div>
           <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
             <Icon name="child" size="lg" />
@@ -382,21 +411,26 @@ export default function KidsProgramPage() {
         <SectionContainer>
           <article className="rounded-[2.25rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-10 xl:p-12">
             <div className="w-full space-y-9">
-                <GuideSection title="What We Work On">
-                  <div className="grid gap-5 lg:grid-cols-2">
+                <GuideSection
+                  title="What We Work On"
+                  subtitle="Play-based care that supports everyday confidence and participation."
+                >
+                  <div className="grid gap-5 lg:grid-cols-3">
                     {workOnItems.map((item) => (
                       <WorkOnCard key={item.title} item={item} />
                     ))}
                   </div>
                 </GuideSection>
 
-                <GuideSection title="Who This Program Supports">
-                  <CheckListCard items={goodFitItems} />
-                </GuideSection>
+                <div className="grid gap-6 lg:grid-cols-2 lg:items-stretch">
+                  <GuideSection title="Who This Program Supports">
+                    <CheckListCard items={goodFitItems} />
+                  </GuideSection>
 
-                <GuideSection title="What Sessions May Look Like">
-                  <SessionsCard />
-                </GuideSection>
+                  <GuideSection title="What Sessions May Look Like">
+                    <SessionsCard />
+                  </GuideSection>
+                </div>
             </div>
           </article>
         </SectionContainer>
