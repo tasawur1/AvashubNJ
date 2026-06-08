@@ -19,109 +19,79 @@ export const metadata: Metadata = {
 type GuideItem = {
   icon: IconName;
   title: string;
-  intro: string;
-  signs: string[];
-  helps: string;
+  paragraphs: string[];
 };
 
 const workOnItems: GuideItem[] = [
   {
     icon: "handHeart",
     title: "Fine Motor Skills",
-    intro:
-      "Fine motor skills are the small movements children use with their hands, fingers, wrists, and eyes together to complete everyday activities.",
-    signs: [
-      "Difficulty holding crayons or school tools",
-      "Frustration with buttons, zippers, or containers",
-      "Avoiding coloring, cutting, crafts, or table tasks",
-      "Challenges using utensils or manipulating toys",
+    paragraphs: [
+      "Fine motor skills are the small movements we make using our hands, fingers, wrists, and eyes together to complete everyday activities. These skills allow children to manipulate objects, hold utensils, fasten clothing, build with toys, color, cut with scissors, use school tools, and participate more independently in daily routines.",
+      "When fine motor skills are difficult, children may appear clumsy, avoid tasks that require using their hands, become frustrated more easily, tire quickly during activities, or struggle keeping up with peers during play or classroom tasks. Parents may notice difficulty holding crayons correctly, opening containers, using utensils, buttoning clothing, manipulating toys, or completing activities that require both hands working together.",
+      "At Ava's Hub, we use meaningful, play-based occupational therapy activities to strengthen these foundational skills in ways that feel motivating rather than frustrating. Sessions may include obstacle courses that build upper body strength and postural stability, crafts that encourage grasp development and bilateral coordination, games that improve finger strength and dexterity, dressing activities that target independence, cooking activities that practice functional hand skills, and sensory-rich experiences that support participation.",
+      "Rather than practicing isolated exercises repeatedly, we focus on helping children develop fine motor skills through real-life activities that connect directly to everyday success at home, school, playgrounds, and within their communities.",
     ],
-    helps:
-      "At Ava's Hub, we use obstacle courses, crafts, sensory activities, dressing practice, cooking activities, strengthening games, and real-life functional activities to build these skills naturally.",
   },
   {
     icon: "puzzlePiece",
     title: "Sensory Processing",
-    intro:
-      "Sensory processing is how the brain receives, organizes, and responds to information from the body and environment.",
-    signs: [
-      "Sensitivity to sounds, textures, clothing, or foods",
-      "Difficulty with transitions, attention, or busy spaces",
-      "Seeking constant movement, crashing, spinning, or touch",
-      "Big emotions when sensory experiences feel overwhelming",
+    paragraphs: [
+      "Sensory processing refers to how the brain receives, organizes, interprets, and responds to information from the environment and the body. Children constantly process sounds, movement, touch, textures, visual information, body awareness, and many other sensations throughout the day.",
+      "Some children may become overwhelmed by sensory experiences, while others actively seek more movement, touch, or input. Parents may notice challenges with clothing textures, food preferences, noise sensitivity, emotional regulation, transitions, attention, busy environments, or constant movement seeking.",
+      "At Ava's Hub, we help children better understand and respond to sensory experiences through movement-based activities, sensory play, regulation strategies, obstacle courses, heavy work activities, visual supports, and structured routines that help children feel safer and more successful throughout their day.",
+      "Our goal is not to eliminate sensory differences. Instead, we help children develop strategies, confidence, and participation so sensory experiences feel more manageable at home, school, and within the community.",
     ],
-    helps:
-      "We use movement-based activities, sensory play, regulation strategies, obstacle courses, heavy work, visual supports, and structured routines so children feel safer and more successful throughout the day.",
   },
   {
     icon: "child",
     title: "Developmental Play",
-    intro:
-      "Play is one of the primary ways young children learn communication, problem solving, emotional regulation, motor skills, and confidence.",
-    signs: [
-      "Limited pretend play or rigid play patterns",
-      "Difficulty using toys in flexible or meaningful ways",
-      "Frustration during play activities",
-      "Challenges joining play with peers or adults",
+    paragraphs: [
+      "Play is one of the primary ways young children learn. Through play, children develop problem solving, creativity, communication, emotional regulation, motor skills, social interaction, and confidence.",
+      "When developmental play skills are difficult, parents may notice limited pretend play, difficulty engaging with toys appropriately, challenges playing with peers, rigid play patterns, or frustration during play activities.",
+      "At Ava's Hub, we use play intentionally to support growth. Therapy sessions may include pretend play, sensory activities, movement games, social games, building activities, imaginative play scenarios, crafts, and structured challenges designed to build developmental skills while keeping children engaged.",
+      "We believe children learn best when therapy feels meaningful and enjoyable. Play is not separate from learning - it is learning.",
     ],
-    helps:
-      "Therapy may include pretend play, sensory activities, movement games, social games, building activities, imaginative scenarios, crafts, and structured challenges that keep children engaged while building developmental skills.",
   },
   {
     icon: "compass",
     title: "Motor Planning",
-    intro:
-      "Motor planning is the brain's ability to figure out how to move the body, organize steps, and adjust movements to complete a task.",
-    signs: [
-      "Appearing clumsy or unsure with movement",
-      "Avoiding playground equipment or new activities",
-      "Difficulty with dressing steps or movement sequences",
-      "Needing repeated demonstrations to learn new skills",
+    paragraphs: [
+      "Motor planning is the brain's ability to figure out how to move the body to complete a task. This includes knowing what movement is needed, organizing the steps, coordinating the body, and adjusting movements as activities change.",
+      "Children who struggle with motor planning may appear clumsy, avoid playground equipment, struggle learning new movements, become frustrated with dressing tasks, have difficulty following movement sequences, or require repeated demonstrations to learn new skills.",
+      "At Ava's Hub, we support motor planning through obstacle courses, movement games, climbing activities, dressing practice, sequencing activities, playground-style challenges, sports-based activities, and functional tasks that encourage children to problem solve using their bodies.",
+      "Our focus is helping children build confidence with movement so everyday activities feel easier, more successful, and less frustrating.",
     ],
-    helps:
-      "We support motor planning through obstacle courses, movement games, climbing activities, dressing practice, sequencing activities, playground-style challenges, sports-based activities, and functional tasks.",
   },
   {
     icon: "home",
     title: "Self-Care Routines",
-    intro:
-      "Self-care routines include dressing, feeding, hygiene, toileting readiness, grooming, sleep routines, and everyday participation at home.",
-    signs: [
-      "Daily routines feel stressful or slow",
-      "Difficulty dressing, feeding, or grooming independently",
-      "Avoiding hygiene tasks or toileting routines",
-      "Becoming overwhelmed during everyday expectations",
+    paragraphs: [
+      "Self-care skills include the everyday activities children participate in to care for themselves and become more independent. These routines include dressing, feeding, hygiene, toileting, grooming, sleep routines, and participating in household responsibilities.",
+      "When self-care becomes difficult, daily routines may feel stressful for both children and families. Parents may notice difficulty dressing independently, avoiding hygiene tasks, challenges feeding themselves, or becoming overwhelmed during everyday routines.",
+      "At Ava's Hub, we focus on building independence through real-life practice and meaningful routines. Therapy sessions may include dressing activities, feeding practice, grooming routines, kitchen activities, visual supports, sequencing tasks, and environmental modifications that help children experience success.",
+      "We believe therapy should help children participate more confidently in real life - not only inside the therapy room.",
     ],
-    helps:
-      "We build independence through real-life practice, dressing activities, feeding practice, grooming routines, kitchen activities, visual supports, sequencing tasks, and realistic strategies for each family.",
   },
   {
     icon: "community",
     title: "Early Social Participation",
-    intro:
-      "Social participation means engaging with others during play, routines, learning activities, and community experiences.",
-    signs: [
-      "Preferring to play alone or struggling to enter play",
-      "Difficulty sharing, turn-taking, or flexible play",
-      "Feeling overwhelmed in groups",
-      "Challenges with emotional regulation during social moments",
+    paragraphs: [
+      "Social participation involves engaging with others during play, daily routines, learning activities, and community experiences. These skills include turn-taking, emotional regulation, communication, flexibility, problem solving, and interacting with peers.",
+      "Some children may prefer playing alone, struggle entering play activities, become overwhelmed in groups, have difficulty sharing, or experience challenges understanding social situations.",
+      "At Ava's Hub, social participation is naturally embedded throughout therapy. Children practice these skills during movement activities, games, group experiences, cooking activities, pretend play, collaborative challenges, and everyday interactions with therapists and peers.",
+      "Our goal is not simply teaching social skills - it is helping children build meaningful relationships, confidence, and participation.",
     ],
-    helps:
-      "Social participation is embedded into movement activities, games, group experiences, cooking activities, pretend play, collaborative challenges, and everyday interactions with therapists and peers.",
   },
   {
     icon: "resources",
     title: "Pre-Writing Readiness",
-    intro:
-      "Before handwriting begins, children need posture, shoulder stability, bilateral coordination, visual-motor integration, grasp development, attention, and hand strength.",
-    signs: [
-      "Avoiding coloring or table activities",
-      "Tiring quickly during early school tasks",
-      "Using awkward grasp patterns",
-      "Feeling frustrated with pre-writing or fine motor activities",
+    paragraphs: [
+      "Before children learn handwriting, they first develop many foundational skills that support writing success. These include posture, shoulder stability, bilateral coordination, visual-motor integration, grasp development, attention, body awareness, and hand strength.",
+      "Children who struggle with these foundational skills may avoid coloring, dislike table activities, tire quickly, use awkward grasp patterns, or become frustrated during early academic tasks.",
+      "At Ava's Hub, we build these skills through movement, climbing activities, crafts, sensory play, obstacle courses, fine motor games, strengthening activities, and playful experiences that naturally support writing development.",
+      "Rather than focusing only on paper-and-pencil tasks, we build the foundation first - because strong foundations create more confident learners.",
     ],
-    helps:
-      "We build these foundations through movement, climbing activities, crafts, sensory play, obstacle courses, fine motor games, strengthening activities, and playful hands-on experiences.",
   },
 ];
 
@@ -183,42 +153,23 @@ function GuideSection({
 
 function WorkOnItem({ item }: { item: GuideItem }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-[3rem_1fr]">
+    <div className="grid gap-4 border-b border-brand-purple-deep/10 pb-8 last:border-b-0 last:pb-0 sm:grid-cols-[3rem_minmax(0,1fr)] lg:gap-5">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
         <Icon name={item.icon} size="sm" />
       </span>
-      <div>
+      <div className="min-w-0">
         <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
           {item.title}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-brand-navy/70 lg:text-[0.95rem]">
-          {item.intro}
-        </p>
-        <div className="mt-4 grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-              How this may look
+        <div className="mt-3 space-y-4">
+          {item.paragraphs.map((paragraph) => (
+            <p
+              key={paragraph}
+              className="max-w-none text-[1rem] leading-[1.78] text-brand-navy/72 lg:text-[1.08rem]"
+            >
+              {paragraph}
             </p>
-            <ul className="mt-2 space-y-2">
-              {item.signs.map((sign) => (
-                <li
-                  key={sign}
-                  className="flex gap-2 text-sm leading-relaxed text-brand-navy/72"
-                >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
-                  <span>{sign}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-normal text-brand-teal">
-              How Ava&apos;s Hub Helps
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-brand-navy/68">
-              {item.helps}
-            </p>
-          </div>
+          ))}
         </div>
       </div>
     </div>
