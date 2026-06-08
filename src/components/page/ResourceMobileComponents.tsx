@@ -3,6 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
+import { SectionContainer } from "@/components/SectionContainer";
 
 type DownloadCardProps = {
   title: string;
@@ -17,6 +18,8 @@ type DownloadCardProps = {
 type ResourceBottomCtaProps = {
   title: string;
   text: string;
+  buttonLabel?: string;
+  buttonHref?: string;
 };
 
 export function TiltedHeartOutline({ className = "" }: { className?: string }) {
@@ -156,28 +159,36 @@ export function ResourceNewsletterCard() {
   );
 }
 
-export function ResourceBottomCta({ title, text }: ResourceBottomCtaProps) {
+export function ResourceBottomCta({
+  title,
+  text,
+  buttonLabel = "Schedule Consultation",
+  buttonHref = "/contact",
+}: ResourceBottomCtaProps) {
   return (
-    <section className="px-6 pb-10">
-      <div className="rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card">
-        <div className="flex flex-col gap-4">
+    <section className="px-6 pb-10 lg:px-0 lg:pb-14">
+      <SectionContainer className="max-w-none !px-0 lg:max-w-[1440px] lg:!px-8 xl:!px-10">
+        <div className="rounded-[1.75rem] bg-brand-purple-bright p-5 text-white shadow-card lg:rounded-[2rem] lg:p-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
           <div>
-            <h2 className="text-xl font-extrabold leading-tight">{title}</h2>
-            <p className="mt-1 text-sm text-white/90">{text}</p>
+            <h2 className="text-xl font-extrabold leading-tight lg:text-3xl">
+              {title}
+            </h2>
+            <p className="mt-1 text-sm text-white/90 lg:text-base">{text}</p>
           </div>
           <CTAButton
-            href="/contact"
+            href={buttonHref}
             variant="secondary"
-            className="w-full !border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender"
+            className="w-full !border-white !bg-white !px-4 !py-3 !text-brand-purple-deep hover:!bg-brand-lavender lg:w-auto lg:min-w-[15rem]"
           >
             <span className="inline-flex items-center justify-center gap-2">
               <Icon name="calendar" size="sm" />
-              <span className="text-xs">Schedule Consultation</span>
+              <span className="text-xs lg:text-sm">{buttonLabel}</span>
             </span>
           </CTAButton>
+          </div>
         </div>
-      </div>
+      </SectionContainer>
     </section>
   );
 }
-

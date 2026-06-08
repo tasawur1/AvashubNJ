@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ClosingCtaBanner } from "@/components/page/ClosingCtaBanner";
 import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
@@ -570,6 +569,8 @@ function MobileContactPage() {
       <ResourceBottomCta
         title="Ready To Take The Next Step?"
         text="We'd love to meet your family."
+        buttonLabel="Schedule Consultation"
+        buttonHref="#mobile-message-heading"
       />
     </div>
   );
@@ -705,6 +706,27 @@ function DesktopContactPage() {
         </SectionContainer>
       </section>
 
+      <section className="py-12 xl:py-14" aria-labelledby="desktop-intake-heading">
+        <SectionContainer>
+          <div className="mx-auto max-w-3xl rounded-[2.25rem] bg-white/95 p-8 text-center shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10">
+            <h2
+              id="desktop-intake-heading"
+              className="inline-flex items-center justify-center gap-3 font-serif text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-tight text-brand-navy"
+            >
+              <span>Start an Intake Form</span>
+              <span className="text-brand-purple-bright/55">
+                <TiltedHeartOutline />
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm italic leading-relaxed text-brand-navy/70">
+              Choose the service that best fits your family&apos;s needs to begin
+              the intake process.
+            </p>
+            <IntakePillButtons className="mx-auto max-w-xl text-left" />
+          </div>
+        </SectionContainer>
+      </section>
+
       <section
         id="desktop-message-form"
         className="py-12 xl:py-14"
@@ -743,11 +765,8 @@ function DesktopContactPage() {
               <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
                 We&apos;re excited to welcome your family.
               </p>
-              <p className="mt-2 text-sm font-semibold text-brand-navy/80">
-                280 S Harrison Street, Suite 311, East Orange NJ
-              </p>
               <div className="mt-6 overflow-hidden rounded-[1.5rem] ring-1 ring-brand-teal/10">
-                <div className="relative aspect-[3/4] min-h-[22rem]">
+                <div className="relative h-[34rem] max-h-[calc(100vh-14rem)] min-h-[28rem]">
                   <iframe
                     title="Ava's Hub location on Google Maps"
                     src={MAP_EMBED_SRC}
@@ -841,9 +860,9 @@ function DesktopContactPage() {
         </SectionContainer>
       </section>
 
-      <ClosingCtaBanner
-        heading="Ready To Take The Next Step?"
-        description="We'd love to meet your family."
+      <ResourceBottomCta
+        title="Ready To Take The Next Step?"
+        text="We'd love to meet your family."
         buttonLabel="Schedule Consultation"
         buttonHref="#desktop-message-form"
       />

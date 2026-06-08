@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { ClosingCtaBanner } from "@/components/page/ClosingCtaBanner";
 import { CTAButton } from "@/components/CTAButton";
 import { EventsCalendar } from "@/components/page/EventsCalendar";
 import { EventsHighlightsShowcase } from "@/components/page/EventsHighlightsShowcase";
@@ -168,6 +167,8 @@ function MobileEventsPage({
       <ResourceBottomCta
         title="Ready to Join the Community?"
         text="We'd love to welcome your family."
+        buttonLabel="Schedule Consultation"
+        buttonHref="/contact"
       />
     </div>
   );
@@ -348,9 +349,9 @@ function DesktopEventsPage({
         </SectionContainer>
       </section>
 
-      <ClosingCtaBanner
-        heading="Ready to Join the Community?"
-        description="We'd love to welcome your family."
+      <ResourceBottomCta
+        title="Ready to Join the Community?"
+        text="We'd love to welcome your family."
         buttonLabel="Schedule Consultation"
         buttonHref="/contact"
       />
