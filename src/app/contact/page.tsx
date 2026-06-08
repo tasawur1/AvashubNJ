@@ -44,14 +44,6 @@ type FeatureItem = {
   tone: Tone;
 };
 
-type SupportCard = {
-  icon: IconName;
-  title: string;
-  description: string;
-  tone: Tone;
-};
-
-
 const toneStyles = {
   purple: {
     icon: "bg-brand-purple-deep text-white",
@@ -122,27 +114,6 @@ const featureItems: FeatureItem[] = [
     title: "Community Focused",
     description: "Supporting families inside and outside the therapy room.",
     tone: "teal",
-  },
-];
-
-const supportCards: SupportCard[] = [
-  {
-    icon: "communication",
-    title: "We Listen",
-    description: "We take time to understand your needs and goals.",
-    tone: "purple",
-  },
-  {
-    icon: "compass",
-    title: "We Guide",
-    description: "We’ll help you find the right support for your loved one.",
-    tone: "teal",
-  },
-  {
-    icon: "handHeart",
-    title: "We Care",
-    description: "Your family’s journey is our priority.",
-    tone: "gold",
   },
 ];
 
@@ -607,41 +578,7 @@ function DesktopContactPage() {
               Ava&apos;s Hub? Our team is here to help you every step of the way.
             </p>
 
-            <div className="mt-7 space-y-3">
-              {supportCards.map((card) => (
-                <div
-                  key={card.title}
-                  className="flex items-start gap-4 rounded-[1.65rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-teal/10"
-                >
-                  <span
-                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-                  >
-                    <Icon name={card.icon} size="lg" />
-                  </span>
-                  <div>
-                    <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-                      {card.title}
-                    </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-brand-navy/75">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              <CTAButton href="tel:+19087584692" className="min-w-[12rem]">
-                Call Us Now
-              </CTAButton>
-              <CTAButton
-                href="#desktop-message-form"
-                variant="secondary"
-                className="min-w-[12rem]"
-              >
-                Send a Message
-              </CTAButton>
-            </div>
+            <IntakePillButtons className="max-w-xl" />
           </div>
 
           <div className="overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-purple-deep/10 xl:rounded-[7rem_3rem_7rem_3rem]">
@@ -702,27 +639,6 @@ function DesktopContactPage() {
                 </div>
               </article>
             ))}
-          </div>
-        </SectionContainer>
-      </section>
-
-      <section className="py-12 xl:py-14" aria-labelledby="desktop-intake-heading">
-        <SectionContainer>
-          <div className="mx-auto max-w-3xl rounded-[2.25rem] bg-white/95 p-8 text-center shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10">
-            <h2
-              id="desktop-intake-heading"
-              className="inline-flex items-center justify-center gap-3 font-serif text-[clamp(2rem,2.8vw,3rem)] font-semibold leading-tight text-brand-navy"
-            >
-              <span>Start an Intake Form</span>
-              <span className="text-brand-purple-bright/55">
-                <TiltedHeartOutline />
-              </span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm italic leading-relaxed text-brand-navy/70">
-              Choose the service that best fits your family&apos;s needs to begin
-              the intake process.
-            </p>
-            <IntakePillButtons className="mx-auto max-w-xl text-left" />
           </div>
         </SectionContainer>
       </section>
