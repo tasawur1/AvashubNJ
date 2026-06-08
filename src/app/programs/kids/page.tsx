@@ -18,79 +18,117 @@ export const metadata: Metadata = {
 type GuideItem = {
   icon: IconName;
   title: string;
-  paragraphs: string[];
+  explanation: string;
+  look: string[];
+  helps: string;
+  note?: string;
 };
 
 const workOnItems: GuideItem[] = [
   {
     icon: "handHeart",
     title: "Fine Motor Skills",
-    paragraphs: [
+    explanation:
       "Fine motor skills are the small movements we make using our hands, fingers, wrists, and eyes together to complete everyday activities. These skills allow children to manipulate objects, hold utensils, fasten clothing, build with toys, color, cut with scissors, use school tools, and participate more independently in daily routines.",
-      "When fine motor skills are difficult, children may appear clumsy, avoid tasks that require using their hands, become frustrated more easily, tire quickly during activities, or struggle keeping up with peers during play or classroom tasks. Parents may notice difficulty holding crayons correctly, opening containers, using utensils, buttoning clothing, manipulating toys, or completing activities that require both hands working together.",
-      "At Ava's Hub, we use meaningful, play-based occupational therapy activities to strengthen these foundational skills in ways that feel motivating rather than frustrating. Sessions may include obstacle courses that build upper body strength and postural stability, crafts that encourage grasp development and bilateral coordination, games that improve finger strength and dexterity, dressing activities that target independence, cooking activities that practice functional hand skills, and sensory-rich experiences that support participation.",
-      "Rather than practicing isolated exercises repeatedly, we focus on helping children develop fine motor skills through real-life activities that connect directly to everyday success at home, school, playgrounds, and within their communities.",
+    look: [
+      "Difficulty holding crayons correctly",
+      "Challenges opening containers, using utensils, or buttoning clothing",
+      "Avoiding tasks that require using both hands together",
+      "Tiring quickly or becoming frustrated during hand-based activities",
     ],
+    helps:
+      "At Ava's Hub, we use meaningful, play-based occupational therapy activities to strengthen these foundational skills in ways that feel motivating rather than frustrating. Sessions may include obstacle courses, crafts, grasp development, bilateral coordination games, dressing activities, cooking activities, and sensory-rich experiences.",
+    note: "Rather than practicing isolated exercises repeatedly, we focus on helping children develop fine motor skills through real-life activities that connect directly to everyday success.",
   },
   {
     icon: "puzzlePiece",
     title: "Sensory Processing",
-    paragraphs: [
+    explanation:
       "Sensory processing refers to how the brain receives, organizes, interprets, and responds to information from the environment and the body. Children constantly process sounds, movement, touch, textures, visual information, body awareness, and many other sensations throughout the day.",
-      "Some children may become overwhelmed by sensory experiences, while others actively seek more movement, touch, or input. Parents may notice challenges with clothing textures, food preferences, noise sensitivity, emotional regulation, transitions, attention, busy environments, or constant movement seeking.",
-      "At Ava's Hub, we help children better understand and respond to sensory experiences through movement-based activities, sensory play, regulation strategies, obstacle courses, heavy work activities, visual supports, and structured routines that help children feel safer and more successful throughout their day.",
-      "Our goal is not to eliminate sensory differences. Instead, we help children develop strategies, confidence, and participation so sensory experiences feel more manageable at home, school, and within the community.",
+    look: [
+      "Overwhelm with clothing textures, foods, noise, or busy spaces",
+      "Difficulty with transitions, attention, or emotional regulation",
+      "Seeking constant movement, touch, or input",
+      "Avoiding certain everyday sensory experiences",
     ],
+    helps:
+      "At Ava's Hub, we help children better understand and respond to sensory experiences through movement-based activities, sensory play, regulation strategies, obstacle courses, heavy work activities, visual supports, and structured routines.",
+    note: "Our goal is not to eliminate sensory differences. We help children develop strategies, confidence, and participation so sensory experiences feel more manageable.",
   },
   {
     icon: "child",
     title: "Developmental Play",
-    paragraphs: [
+    explanation:
       "Play is one of the primary ways young children learn. Through play, children develop problem solving, creativity, communication, emotional regulation, motor skills, social interaction, and confidence.",
-      "When developmental play skills are difficult, parents may notice limited pretend play, difficulty engaging with toys appropriately, challenges playing with peers, rigid play patterns, or frustration during play activities.",
-      "At Ava's Hub, we use play intentionally to support growth. Therapy sessions may include pretend play, sensory activities, movement games, social games, building activities, imaginative play scenarios, crafts, and structured challenges designed to build developmental skills while keeping children engaged.",
-      "We believe children learn best when therapy feels meaningful and enjoyable. Play is not separate from learning - it is learning.",
+    look: [
+      "Limited pretend play",
+      "Difficulty engaging with toys appropriately",
+      "Rigid play patterns or frustration during play",
+      "Challenges playing with peers",
     ],
+    helps:
+      "At Ava's Hub, we use play intentionally to support growth. Therapy sessions may include pretend play, sensory activities, movement games, social games, building activities, imaginative play scenarios, crafts, and structured challenges.",
+    note: "We believe children learn best when therapy feels meaningful and enjoyable. Play is not separate from learning - it is learning.",
   },
   {
     icon: "compass",
     title: "Motor Planning",
-    paragraphs: [
+    explanation:
       "Motor planning is the brain's ability to figure out how to move the body to complete a task. This includes knowing what movement is needed, organizing the steps, coordinating the body, and adjusting movements as activities change.",
-      "Children who struggle with motor planning may appear clumsy, avoid playground equipment, struggle learning new movements, become frustrated with dressing tasks, have difficulty following movement sequences, or require repeated demonstrations to learn new skills.",
-      "At Ava's Hub, we support motor planning through obstacle courses, movement games, climbing activities, dressing practice, sequencing activities, playground-style challenges, sports-based activities, and functional tasks that encourage children to problem solve using their bodies.",
-      "Our focus is helping children build confidence with movement so everyday activities feel easier, more successful, and less frustrating.",
+    look: [
+      "Appearing clumsy or unsure with movement",
+      "Avoiding playground equipment or new activities",
+      "Frustration with dressing tasks or movement sequences",
+      "Needing repeated demonstrations to learn new skills",
     ],
+    helps:
+      "At Ava's Hub, we support motor planning through obstacle courses, movement games, climbing activities, dressing practice, sequencing activities, playground-style challenges, sports-based activities, and functional tasks.",
+    note: "Our focus is helping children build confidence with movement so everyday activities feel easier, more successful, and less frustrating.",
   },
   {
     icon: "home",
     title: "Self-Care Routines",
-    paragraphs: [
+    explanation:
       "Self-care skills include the everyday activities children participate in to care for themselves and become more independent. These routines include dressing, feeding, hygiene, toileting, grooming, sleep routines, and participating in household responsibilities.",
-      "When self-care becomes difficult, daily routines may feel stressful for both children and families. Parents may notice difficulty dressing independently, avoiding hygiene tasks, challenges feeding themselves, or becoming overwhelmed during everyday routines.",
-      "At Ava's Hub, we focus on building independence through real-life practice and meaningful routines. Therapy sessions may include dressing activities, feeding practice, grooming routines, kitchen activities, visual supports, sequencing tasks, and environmental modifications that help children experience success.",
-      "We believe therapy should help children participate more confidently in real life - not only inside the therapy room.",
+    look: [
+      "Daily routines feeling stressful for children and families",
+      "Difficulty dressing independently",
+      "Avoiding hygiene tasks or feeding routines",
+      "Becoming overwhelmed during everyday expectations",
     ],
+    helps:
+      "At Ava's Hub, we focus on building independence through real-life practice and meaningful routines. Therapy sessions may include dressing activities, feeding practice, grooming routines, kitchen activities, visual supports, sequencing tasks, and environmental modifications.",
+    note: "We believe therapy should help children participate more confidently in real life - not only inside the therapy room.",
   },
   {
     icon: "community",
     title: "Early Social Participation",
-    paragraphs: [
+    explanation:
       "Social participation involves engaging with others during play, daily routines, learning activities, and community experiences. These skills include turn-taking, emotional regulation, communication, flexibility, problem solving, and interacting with peers.",
-      "Some children may prefer playing alone, struggle entering play activities, become overwhelmed in groups, have difficulty sharing, or experience challenges understanding social situations.",
-      "At Ava's Hub, social participation is naturally embedded throughout therapy. Children practice these skills during movement activities, games, group experiences, cooking activities, pretend play, collaborative challenges, and everyday interactions with therapists and peers.",
-      "Our goal is not simply teaching social skills - it is helping children build meaningful relationships, confidence, and participation.",
+    look: [
+      "Preferring to play alone",
+      "Struggling to enter play activities",
+      "Becoming overwhelmed in groups",
+      "Difficulty sharing or understanding social situations",
     ],
+    helps:
+      "At Ava's Hub, social participation is naturally embedded throughout therapy. Children practice these skills during movement activities, games, group experiences, cooking activities, pretend play, collaborative challenges, and everyday interactions.",
+    note: "Our goal is not simply teaching social skills - it is helping children build meaningful relationships, confidence, and participation.",
   },
   {
     icon: "resources",
     title: "Pre-Writing Readiness",
-    paragraphs: [
+    explanation:
       "Before children learn handwriting, they first develop many foundational skills that support writing success. These include posture, shoulder stability, bilateral coordination, visual-motor integration, grasp development, attention, body awareness, and hand strength.",
-      "Children who struggle with these foundational skills may avoid coloring, dislike table activities, tire quickly, use awkward grasp patterns, or become frustrated during early academic tasks.",
-      "At Ava's Hub, we build these skills through movement, climbing activities, crafts, sensory play, obstacle courses, fine motor games, strengthening activities, and playful experiences that naturally support writing development.",
-      "Rather than focusing only on paper-and-pencil tasks, we build the foundation first - because strong foundations create more confident learners.",
+    look: [
+      "Avoiding coloring or table activities",
+      "Tiring quickly during early academic tasks",
+      "Using awkward grasp patterns",
+      "Becoming frustrated with writing readiness activities",
     ],
+    helps:
+      "At Ava's Hub, we build these skills through movement, climbing activities, crafts, sensory play, obstacle courses, fine motor games, strengthening activities, and playful experiences that naturally support writing development.",
+    note: "Rather than focusing only on paper-and-pencil tasks, we build the foundation first - because strong foundations create more confident learners.",
   },
 ];
 
@@ -142,7 +180,7 @@ function GuideSection({
 }) {
   return (
     <section className="border-t border-brand-purple-deep/10 pt-8 lg:pt-10">
-      <h2 className="text-[clamp(1.35rem,4.5vw,1.85rem)] font-extrabold leading-tight text-brand-navy">
+      <h2 className="font-serif text-[clamp(1.85rem,4.5vw,2.65rem)] font-semibold leading-tight text-brand-navy">
         {title}
       </h2>
       <div className="mt-6">{children}</div>
@@ -150,26 +188,99 @@ function GuideSection({
   );
 }
 
-function WorkOnItem({ item }: { item: GuideItem }) {
+function WorkOnCard({ item }: { item: GuideItem }) {
   return (
-    <div className="grid gap-4 border-b border-brand-purple-deep/10 pb-8 last:border-b-0 last:pb-0 sm:grid-cols-[3rem_minmax(0,1fr)] lg:gap-5">
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
-        <Icon name={item.icon} size="sm" />
+    <article className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+        <Icon name={item.icon} size="lg" />
       </span>
-      <div className="min-w-0">
-        <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-          {item.title}
-        </h3>
-        <div className="mt-3 space-y-4">
-          {item.paragraphs.map((paragraph) => (
-            <p
-              key={paragraph}
-              className="max-w-none text-[1.08rem] leading-[1.78] text-brand-navy/74 lg:text-[1.22rem]"
-            >
-              {paragraph}
-            </p>
+      <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
+        {item.title}
+      </h3>
+      <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+        {item.explanation}
+      </p>
+
+      <div className="mt-5 rounded-2xl bg-[#fffaf4] p-4 ring-1 ring-brand-purple-deep/10">
+        <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
+          How this may look
+        </p>
+        <ul className="mt-3 space-y-2.5">
+          {item.look.map((look) => (
+            <li key={look} className="flex gap-2 text-sm leading-relaxed text-brand-navy/75">
+              <Icon name="check" className="mt-1 shrink-0 text-brand-teal" size="sm" />
+              <span>{look}</span>
+            </li>
           ))}
+        </ul>
+      </div>
+
+      <div className="mt-5">
+        <p className="text-xs font-extrabold uppercase tracking-normal text-brand-teal">
+          How Ava&apos;s Hub helps
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
+          {item.helps}
+        </p>
+        {item.note ? (
+          <p className="mt-3 text-sm font-semibold italic leading-relaxed text-brand-purple-deep/75">
+            {item.note}
+          </p>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
+function CheckListCard({ items }: { items: string[] }) {
+  return (
+    <div className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+      <ul className="grid gap-3 lg:grid-cols-2">
+        {items.map((item) => (
+          <li
+            key={item}
+            className="flex gap-3 rounded-2xl bg-[#fffaf4] px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/78 ring-1 ring-brand-purple-deep/10"
+          >
+            <Icon
+              name="check"
+              className="mt-1 shrink-0 text-brand-teal"
+              size="sm"
+            />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function SessionsCard() {
+  return (
+    <div className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
+      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+        <div>
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
+            <Icon name="child" size="lg" />
+          </span>
+          <p className="mt-5 text-base leading-relaxed text-brand-navy/78 lg:text-lg">
+            Sessions are designed to feel playful while targeting real
+            developmental goals. A child may move through obstacle courses,
+            explore sensory materials, practice dressing or feeding skills,
+            complete fine motor activities, engage in pretend play, or work
+            through short routines with visual supports.
+          </p>
         </div>
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {sessionItems.map((item) => (
+            <li
+              key={item}
+              className="flex gap-3 rounded-2xl bg-[#fffaf4] px-4 py-3 text-sm font-extrabold leading-relaxed text-brand-navy/80 ring-1 ring-brand-purple-deep/10"
+            >
+              <Icon name="check" className="mt-1 shrink-0 text-brand-teal" size="sm" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -272,51 +383,19 @@ export default function KidsProgramPage() {
           <article className="rounded-[2.25rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-10 xl:p-12">
             <div className="w-full space-y-9">
                 <GuideSection title="What We Work On">
-                  <div className="space-y-6">
+                  <div className="grid gap-5 lg:grid-cols-2">
                     {workOnItems.map((item) => (
-                      <WorkOnItem key={item.title} item={item} />
+                      <WorkOnCard key={item.title} item={item} />
                     ))}
                   </div>
                 </GuideSection>
 
                 <GuideSection title="Who This Program Supports">
-                  <ul className="grid gap-3 lg:grid-cols-2">
-                    {goodFitItems.map((item) => (
-                      <li
-                        key={item}
-                        className="flex gap-3 rounded-2xl bg-[#fffaf4] px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/78 ring-1 ring-brand-purple-deep/10"
-                      >
-                        <Icon
-                          name="check"
-                          className="mt-1 shrink-0 text-brand-teal"
-                          size="sm"
-                        />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <CheckListCard items={goodFitItems} />
                 </GuideSection>
 
                 <GuideSection title="What Sessions May Look Like">
-                  <p className="max-w-none text-[1.08rem] leading-[1.78] text-brand-navy/78 lg:text-[1.18rem]">
-                    Sessions are designed to feel playful while targeting real
-                    developmental goals. A child may move through obstacle
-                    courses, explore sensory materials, practice dressing or
-                    feeding skills, complete fine motor activities, engage in
-                    pretend play, or work through short routines with visual
-                    supports.
-                  </p>
-                  <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                    {sessionItems.map((item) => (
-                      <li
-                        key={item}
-                        className="flex items-center gap-3 text-sm font-extrabold text-brand-navy/85"
-                      >
-                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-brand-gold" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <SessionsCard />
                 </GuideSection>
             </div>
           </article>
