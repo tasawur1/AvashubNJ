@@ -227,7 +227,7 @@ function GuideSection({
 
 function WorkOnCard({ item }: { item: GuideItem }) {
   return (
-    <article className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
+    <article className="flex h-full min-w-0 flex-col rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
       <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
         <Icon name={item.icon} size="lg" />
       </span>
@@ -269,10 +269,16 @@ function WorkOnCard({ item }: { item: GuideItem }) {
   );
 }
 
-function CheckListCard({ items }: { items: string[] }) {
+function ProgramSupportsCard({ items }: { items: string[] }) {
   return (
     <div className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
-      <ul className="grid gap-3">
+      <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
+        <Icon name="community" size="lg" />
+      </span>
+      <h2 className="mt-5 text-[clamp(1.35rem,2.2vw,2rem)] font-extrabold leading-tight text-brand-navy">
+        Who This Program Supports
+      </h2>
+      <ul className="mt-5 grid gap-3">
         {items.map((item) => (
           <li
             key={item}
@@ -296,9 +302,12 @@ function SessionsCard() {
     <div className="h-full rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-teal/10">
       <div className="grid gap-6">
         <div>
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
             <Icon name="child" size="lg" />
           </span>
+          <h2 className="mt-5 text-[clamp(1.35rem,2.2vw,2rem)] font-extrabold leading-tight text-brand-navy">
+            What Sessions May Look Like
+          </h2>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/78 lg:text-lg">
             Sessions are designed to feel age appropriate, functional, and
             meaningful. Teens may participate in cooking activities,
@@ -418,34 +427,25 @@ export default function TeenProgramPage() {
 
       <section className="pb-10 lg:pb-14">
         <SectionContainer>
-          <article className="rounded-[2.25rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-10 xl:p-12">
-            <div className="w-full space-y-9">
-                <GuideSection
+          <GuideSection
                   title="What We Work On"
                   subtitle="Age-appropriate support for independence, confidence, and future readiness."
                 >
-                  <div className="grid gap-5 md:grid-cols-2">
+                  <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
                     {workOnItems.map((item) => (
                       <WorkOnCard key={item.title} item={item} />
                     ))}
                   </div>
-                </GuideSection>
+          </GuideSection>
+        </SectionContainer>
+      </section>
 
-                <div className="grid gap-6 xl:grid-cols-2 xl:items-stretch">
-                  <div className="min-w-0">
-                    <GuideSection title="Who This Program Supports">
-                      <CheckListCard items={goodFitItems} />
-                    </GuideSection>
-                  </div>
-
-                  <div className="min-w-0">
-                    <GuideSection title="What Sessions May Look Like">
-                      <SessionsCard />
-                    </GuideSection>
-                  </div>
-                </div>
-            </div>
-          </article>
+      <section className="pb-10 lg:pb-14">
+        <SectionContainer>
+          <div className="mx-auto grid max-w-[78rem] gap-6 xl:grid-cols-2 xl:items-stretch">
+            <div className="min-w-0"><ProgramSupportsCard items={goodFitItems} /></div>
+            <div className="min-w-0"><SessionsCard /></div>
+          </div>
         </SectionContainer>
       </section>
 
@@ -461,7 +461,7 @@ export default function TeenProgramPage() {
                 key={program.title}
                 className="flex h-full min-w-0 flex-col overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10"
               >
-                <div className="relative h-44 bg-brand-teal-light">
+                <div className="relative h-52 bg-brand-teal-light xl:h-56">
                   <PlaceholderImage
                     src={program.image}
                     alt={`${program.title} at Ava's Hub`}
@@ -481,9 +481,11 @@ export default function TeenProgramPage() {
                     {program.text}
                   </p>
                   {"href" in program ? (
-                    <CTAButton href={program.href} className="mt-auto w-full !py-2.5">
-                      Learn More
-                    </CTAButton>
+                    <div className="mt-auto pt-5">
+                      <CTAButton href={program.href} className="w-full !py-2.5">
+                        Learn More
+                      </CTAButton>
+                    </div>
                   ) : null}
                 </div>
               </article>
@@ -494,8 +496,19 @@ export default function TeenProgramPage() {
 
       <section className="py-10 lg:py-14" aria-labelledby="teen-newsletter-heading">
         <SectionContainer>
-          <div className="rounded-[2rem] bg-brand-lavender/45 p-6 text-center shadow-card ring-1 ring-brand-purple-deep/10 lg:p-10">
-            <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+          <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2rem]">
+            <div className="grid h-full items-stretch lg:grid-cols-[0.38fr_0.62fr]">
+              <div className="relative min-h-52 bg-brand-teal-light lg:min-h-[17rem]">
+                <PlaceholderImage
+                  src="/images/resources/mobile/newsletter-card.png"
+                  alt="Family updates from Ava's Hub"
+                  fill
+                  className="object-cover object-center"
+                  sizes="(min-width: 1024px) 38vw, 100vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-6 text-center lg:p-10">
+              <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
               <Icon name="email" size="lg" />
             </span>
             <h2
@@ -509,6 +522,11 @@ export default function TeenProgramPage() {
             </p>
             <div className="mx-auto mt-6 max-w-xl">
               <EmailSignupForm placeholder="Enter your email address" source="programs/teens" />
+            </div>
+            <p className="mt-4 text-xs font-semibold text-brand-navy/60">
+              We respect your privacy. Unsubscribe anytime.
+            </p>
+              </div>
             </div>
           </div>
         </SectionContainer>

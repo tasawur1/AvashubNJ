@@ -8,8 +8,6 @@ const highlightCards = [
     subtitle: "Every Month",
     description:
       "Practical tools and strategies to support your child and your family.",
-    buttonLabel: "Learn More",
-    tone: "purple",
   },
   {
     image: eventsImages.mobileEventCard2,
@@ -17,8 +15,6 @@ const highlightCards = [
     subtitle: "May 3 & 17",
     description:
       "Join us for fun, connection, and community every first and third Saturday.",
-    buttonLabel: "Learn More",
-    tone: "teal",
   },
   {
     image: eventsImages.mobileEventCard3,
@@ -26,8 +22,6 @@ const highlightCards = [
     subtitle: "May 10 & 24",
     description:
       "Getting out, exploring, and building real-world skills together.",
-    buttonLabel: "Learn More",
-    tone: "teal",
   },
   {
     image: eventsImages.mobileEventCard4,
@@ -35,8 +29,6 @@ const highlightCards = [
     subtitle: "May 1",
     description:
       "A morning of sensory exploration, play, and connection for all ages.",
-    buttonLabel: "Learn More",
-    tone: "purple",
   },
 ] as const;
 
@@ -94,7 +86,7 @@ export function EventsHighlightsShowcase() {
               aria-label={card.title}
               role="img"
             />
-            <div className="flex min-h-56 flex-col p-5">
+            <div className="flex min-h-48 flex-col p-5">
               <p className="text-xs font-bold uppercase tracking-normal text-brand-purple-bright">
                 {card.subtitle}
               </p>
@@ -104,18 +96,6 @@ export function EventsHighlightsShowcase() {
               <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
                 {card.description}
               </p>
-              <div className="mt-auto pt-5">
-                <span
-                  className={
-                    `block rounded-full px-4 py-2 text-center text-sm font-bold text-white shadow-sm ` +
-                    (card.tone === "purple"
-                      ? "bg-brand-purple-deep"
-                      : "bg-brand-teal")
-                  }
-                >
-                  {card.buttonLabel}
-                </span>
-              </div>
             </div>
           </article>
         ))}

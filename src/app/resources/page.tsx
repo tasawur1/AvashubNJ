@@ -682,61 +682,62 @@ export default function ResourcesPage() {
 
         <section className="pb-12">
           <SectionContainer>
-            <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
-              <div className="grid items-stretch lg:grid-cols-[0.42fr_0.58fr]">
-                <div className="relative min-h-[20rem] bg-brand-teal-light">
-                  <PlaceholderImage
-                    src="/images/resources/mobile/newsletter-card.png"
-                    alt="Family resource updates from Ava's Hub"
-                    fill
-                    className="object-cover object-center"
-                    sizes="42vw"
-                  />
-                </div>
-                <div className="flex flex-col justify-center p-8 text-center xl:p-10">
-                  <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
-                    <Icon name="email" size="2x" />
-                  </span>
-                  <h2 className="mt-5 text-2xl font-extrabold text-brand-navy">
-                    Stay Informed
-                  </h2>
-                  <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-navy/80">
-                    Get new printables, resource updates, and helpful tips right
-                    to your inbox.
-                  </p>
-                  <div className="mx-auto mt-6 w-full max-w-xl">
-                    <EmailSignupForm placeholder="Enter your email address" source="resources" />
+            <div className="grid gap-6 xl:grid-cols-2 xl:items-stretch">
+              <div className="min-w-0 overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+                <div className="grid h-full items-stretch 2xl:grid-cols-[0.38fr_0.62fr]">
+                  <div className="relative min-h-[15rem] bg-brand-teal-light">
+                    <PlaceholderImage
+                      src="/images/resources/mobile/newsletter-card.png"
+                      alt="Family resource updates from Ava's Hub"
+                      fill
+                      className="object-cover object-center"
+                      sizes="(min-width: 1536px) 19vw, 50vw"
+                    />
                   </div>
-                  <p className="mt-5 text-xs font-semibold text-brand-navy/60">
-                    We respect your privacy. Unsubscribe anytime.
-                  </p>
+                  <div className="flex flex-col justify-center p-7 text-center xl:p-8">
+                    <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+                      <Icon name="email" size="lg" />
+                    </span>
+                    <h2 className="mt-4 text-2xl font-extrabold text-brand-navy">
+                      Stay Informed
+                    </h2>
+                    <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/80">
+                      Get new printables, resource updates, and helpful tips right
+                      to your inbox.
+                    </p>
+                    <div className="mx-auto mt-5 w-full max-w-xl">
+                      <EmailSignupForm placeholder="Enter your email address" source="resources" />
+                    </div>
+                    <p className="mt-4 text-xs font-semibold text-brand-navy/60">
+                      We respect your privacy. Unsubscribe anytime.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SectionContainer>
-        </section>
 
-        <section className="pb-12">
-          <SectionContainer>
-            <div className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10">
-              <div className="grid items-stretch lg:grid-cols-[0.38fr_0.62fr]">
-                <div className="relative min-h-[18rem] bg-brand-teal-light">
-                  <PlaceholderImage
-                    src={resourcesImages.mobileFinalCta}
-                    alt="Ava's Hub family resource support"
-                    fill
-                    className="object-cover object-center"
-                    sizes="38vw"
-                  />
-                </div>
-                <div className="flex flex-col justify-center p-8 xl:p-10">
-                  <h2 className="text-[clamp(2rem,3vw,3rem)] font-extrabold leading-tight text-brand-navy">
-                    We&apos;re here to walk beside you.
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-navy/75">
-                    Helpful tools are just the beginning. We can help your family
-                    choose strategies that make everyday life feel more supported.
-                  </p>
+              <div className="min-w-0 overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-purple-deep/10">
+                <div className="grid h-full items-stretch 2xl:grid-cols-[0.42fr_0.58fr]">
+                  <div className="relative min-h-[15rem] bg-brand-teal-light">
+                    <PlaceholderImage
+                      src={resourcesImages.mobileFinalCta}
+                      alt="Ava's Hub family resource support"
+                      fill
+                      className="object-cover object-center"
+                      sizes="(min-width: 1536px) 21vw, 50vw"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center p-7 xl:p-8">
+                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-teal-light text-brand-teal">
+                      <Icon name="handHeart" size="lg" />
+                    </span>
+                    <h2 className="mt-4 text-[clamp(1.75rem,2.4vw,2.5rem)] font-extrabold leading-tight text-brand-navy">
+                      We&apos;re here to walk beside you.
+                    </h2>
+                    <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-navy/75">
+                      Helpful tools are just the beginning. We can help your family
+                      choose strategies that make everyday life feel more supported.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
