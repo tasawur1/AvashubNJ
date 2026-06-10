@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     // EMAIL 1 — Marilyn's copy (clinical summary)
     const clinicEmailResult = await resend.emails.send({
-      from: 'Ava\'s Hub Forms <onboarding@resend.dev>',
+      from: 'Ava\'s Hub Forms <forms@avashubnj.com>',
       to: NOTIFY_EMAIL,
       subject: `🆕 New OT Intake — ${childName} | Ava's Hub`,
       text: `
@@ -69,7 +69,7 @@ Essex County's premier pediatric therapy clinic
     let parentEmailResult = null;
     if (parentEmail && parentEmail.includes('@')) {
       parentEmailResult = await resend.emails.send({
-        from: 'Ava\'s Hub <onboarding@resend.dev>',
+        from: 'Ava\'s Hub <forms@avashubnj.com>',
         to: parentEmail,
         subject: `Your Ava's Hub OT Assessment Results — ${childName}`,
         text: `
