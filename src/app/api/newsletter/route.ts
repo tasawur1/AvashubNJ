@@ -4,10 +4,10 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { buildEmail, intakeFormButtonsHtml, esc } from '@/lib/emailTemplate';
 
-// WARNING: On Vercel the filesystem is read-only — CSV writes will silently fail
-// (the thank-you email still sends). On Hostinger with a persistent Node.js
-// deployment this path works and survives between requests.
-// Override at any time: set SUBSCRIBER_CSV_PATH env var.
+// TEMPORARY: CSV subscriber store — migrate to Klaviyo, then remove this file.
+// Set SUBSCRIBER_CSV_PATH to an absolute path OUTSIDE the app dir on Hostinger
+// (e.g. /home/{username}/ava-subscriber-data/newsletter-subscribers.csv)
+// so redeployments don't wipe it. The fallback below is fine for local dev only.
 const CSV_PATH =
   process.env.SUBSCRIBER_CSV_PATH ??
   path.join(process.cwd(), 'data', 'newsletter-subscribers.csv');
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // — CSV append (best-effort; silently skipped on read-only hosts) —
+    // — CSV append (best-effort; email still sends even if this fails) —
     try {
       await fs.mkdir(path.dirname(CSV_PATH), { recursive: true });
       let existing = '';
@@ -45,7 +45,11 @@ export async function POST(request: NextRequest) {
         await fs.appendFile(CSV_PATH, header + row, 'utf-8');
       }
     } catch (csvErr) {
-      console.warn('Newsletter CSV write failed (filesystem may be read-only on this host):', csvErr);
+      console.error(
+        `[NEWSLETTER] SUBSCRIBER NOT SAVED — CSV write failed. ` +
+        `Email: ${email} | Path attempted: ${CSV_PATH} | Error:`,
+        csvErr
+      );
     }
 
     const firstName = esc(name || 'there');
