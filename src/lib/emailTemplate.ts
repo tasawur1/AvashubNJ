@@ -1,4 +1,4 @@
-const SITE_URL = process.env.SITE_URL ?? 'https://www.avashubnj.com';
+const SITE_URL = process.env.SITE_URL ?? 'https://avashub-nj.vercel.app';
 
 // Logo served from the same host — email clients block base64 data URIs
 const LOGO_URL = `${SITE_URL}/images/logo.png`;
