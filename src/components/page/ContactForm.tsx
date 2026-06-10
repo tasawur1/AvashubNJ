@@ -1,131 +1,183 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { CTAButton } from "@/components/CTAButton";
+import { Icon } from "@/components/Icon";
 
-export function ContactForm() {
+type Status = "idle" | "loading" | "success" | "error";
+
+const MOBILE_INPUT =
+  "w-full rounded-[1.1rem] border border-brand-teal/15 bg-white/95 px-5 py-4 text-sm font-medium text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
+
+const DESKTOP_INPUT =
+  "w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
+
+export function ContactForm({ variant = "desktop" }: { variant?: "mobile" | "desktop" }) {
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const cls = variant === "mobile" ? MOBILE_INPUT : DESKTOP_INPUT;
+  const isMobile = variant === "mobile";
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status === "loading" || status === "success") return;
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: data.get("firstName") ?? "",
+          lastName:  data.get("lastName")  ?? "",
+          email:     data.get("email")     ?? "",
+          phone:     data.get("phone")     ?? "",
+          interest:  data.get("interest")  ?? "",
+          message:   data.get("message")   ?? "",
+        }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        setStatus("success");
+        formRef.current?.reset();
+      } else {
+        setErrorMsg(result.error ?? "Something went wrong. Please try again.");
+        setStatus("error");
+      }
+    } catch {
+      setErrorMsg("Could not connect. Please try again.");
+      setStatus("error");
+    }
+  }
+
   return (
     <form
-      className="space-y-5"
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
+      ref={formRef}
+      className={isMobile ? "space-y-4" : "space-y-5"}
+      onSubmit={handleSubmit}
       noValidate
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label
-            htmlFor="contact-first-name"
-            className="mb-1.5 block text-sm font-semibold text-brand-navy"
-          >
-            First name
-          </label>
-          <input
-            id="contact-first-name"
-            name="firstName"
-            type="text"
-            autoComplete="given-name"
-            required
-            className="w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-          />
+      {/* First + Last name */}
+      {isMobile ? (
+        <div className="grid gap-4">
+          <input name="firstName" type="text" autoComplete="given-name" required
+            placeholder="First Name *" className={cls} aria-label="First Name" />
+          <input name="lastName" type="text" autoComplete="family-name" required
+            placeholder="Last Name *" className={cls} aria-label="Last Name" />
         </div>
-        <div>
-          <label
-            htmlFor="contact-last-name"
-            className="mb-1.5 block text-sm font-semibold text-brand-navy"
-          >
-            Last name
-          </label>
-          <input
-            id="contact-last-name"
-            name="lastName"
-            type="text"
-            autoComplete="family-name"
-            required
-            className="w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-          />
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="cf-first-name" className="sr-only">First Name</label>
+            <input id="cf-first-name" name="firstName" type="text" autoComplete="given-name"
+              required placeholder="First Name *" className={cls} />
+          </div>
+          <div>
+            <label htmlFor="cf-last-name" className="sr-only">Last Name</label>
+            <input id="cf-last-name" name="lastName" type="text" autoComplete="family-name"
+              required placeholder="Last Name *" className={cls} />
+          </div>
         </div>
-      </div>
+      )}
 
-      <div>
-        <label
-          htmlFor="contact-email"
-          className="mb-1.5 block text-sm font-semibold text-brand-navy"
-        >
-          Email
-        </label>
-        <input
-          id="contact-email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-          className="w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-        />
-      </div>
+      {/* Email + Phone */}
+      {isMobile ? (
+        <>
+          <input name="email" type="email" autoComplete="email" required
+            placeholder="Email Address *" className={cls} aria-label="Email Address" />
+          <input name="phone" type="tel" autoComplete="tel"
+            placeholder="Phone Number *" className={cls} aria-label="Phone Number" />
+        </>
+      ) : (
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="cf-email" className="sr-only">Email Address</label>
+            <input id="cf-email" name="email" type="email" autoComplete="email"
+              required placeholder="Email Address *" className={cls} />
+          </div>
+          <div>
+            <label htmlFor="cf-phone" className="sr-only">Phone Number</label>
+            <input id="cf-phone" name="phone" type="tel" autoComplete="tel"
+              placeholder="Phone Number *" className={cls} />
+          </div>
+        </div>
+      )}
 
-      <div>
-        <label
-          htmlFor="contact-phone"
-          className="mb-1.5 block text-sm font-semibold text-brand-navy"
-        >
-          Phone
-        </label>
-        <input
-          id="contact-phone"
-          name="phone"
-          type="tel"
-          autoComplete="tel"
-          className="w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="contact-interest"
-          className="mb-1.5 block text-sm font-semibold text-brand-navy"
-        >
-          I&apos;m interested in
-        </label>
-        <select
-          id="contact-interest"
-          name="interest"
-          className="w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-          defaultValue=""
-        >
-          <option value="" disabled>
-            Select a program or topic
-          </option>
-          <option value="programs">Programs overview</option>
-          <option value="kids">Kids (Ages 3–7)</option>
-          <option value="school-age">School-Age (Ages 8–13)</option>
-          <option value="teens">Teens (Ages 14–18)</option>
-          <option value="young-adults">Young Adults (19+)</option>
-          <option value="insurance">Insurance &amp; enrollment</option>
-          <option value="tour">Schedule a tour</option>
+      {/* Interest / help topic */}
+      {isMobile ? (
+        <select name="interest" required defaultValue="" className={cls} aria-label="How can we help you?">
+          <option value="" disabled>How can we help you? *</option>
+          <option value="schedule-tour">Schedule a tour</option>
+          <option value="programs">Learn about programs</option>
+          <option value="family-support">Family support</option>
+          <option value="resources">Resources</option>
           <option value="other">Other</option>
         </select>
-      </div>
+      ) : (
+        <div>
+          <label htmlFor="cf-interest" className="sr-only">How can we help you?</label>
+          <select id="cf-interest" name="interest" required defaultValue="" className={cls}>
+            <option value="" disabled>How can we help you? *</option>
+            <option value="schedule-tour">Schedule a tour</option>
+            <option value="programs">Learn about programs</option>
+            <option value="family-support">Family support</option>
+            <option value="resources">Resources</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      )}
 
-      <div>
-        <label
-          htmlFor="contact-message"
-          className="mb-1.5 block text-sm font-semibold text-brand-navy"
-        >
-          Message
+      {/* Message */}
+      {isMobile ? (
+        <textarea name="message" rows={5} required
+          placeholder="Message *" className={`${cls} resize-y`} aria-label="Message" />
+      ) : (
+        <div>
+          <label htmlFor="cf-message" className="sr-only">Message</label>
+          <textarea id="cf-message" name="message" rows={5} required
+            placeholder="Message *" className={`${cls} resize-y`} />
+        </div>
+      )}
+
+      {/* Consent */}
+      {isMobile ? (
+        <label className="flex gap-3 rounded-[1.1rem] bg-brand-teal-light/35 px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/80">
+          <input type="checkbox" name="consent" required
+            className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-purple-bright" />
+          <span>I consent to being contacted by Ava&apos;s Hub.</span>
         </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          rows={5}
-          required
-          className="w-full resize-y rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20"
-          placeholder="Tell us about your child and how we can help."
-        />
-      </div>
+      ) : (
+        <label className="flex gap-3 text-sm font-medium text-brand-navy/80">
+          <input type="checkbox" name="consent" required
+            className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-teal" />
+          <span>I consent to being contacted by Ava&apos;s Hub.</span>
+        </label>
+      )}
 
-      <CTAButton type="submit" className="w-full sm:w-auto">
-        Send Message
+      {/* Submit button */}
+      <CTAButton type="submit" className={isMobile ? "w-full !py-4" : "w-full"}>
+        <span className="inline-flex items-center gap-2">
+          {status === "loading" ? "Sending…" : "Send Message"}
+          {status !== "loading" && <Icon name="paperPlane" size="sm" />}
+        </span>
       </CTAButton>
+
+      {/* Feedback — shown below the button, form stays visible */}
+      {status === "success" && (
+        <p className="rounded-full bg-brand-teal/10 px-5 py-3 text-center text-sm font-semibold text-brand-teal">
+          ✓ Message sent! We&apos;ll be in touch within 1–2 business days.
+        </p>
+      )}
+      {status === "error" && (
+        <p className="px-2 text-xs font-semibold text-red-500">{errorMsg}</p>
+      )}
     </form>
   );
 }

@@ -147,8 +147,7 @@ export function ResourceNewsletterCard() {
             inbox.
           </p>
           <div className="mt-5">
-            {/* Backend newsletter integration can be added here later. */}
-            <EmailSignupForm placeholder="Enter your email address" />
+            <EmailSignupForm placeholder="Enter your email address" source="resources" />
           </div>
           <p className="mt-4 text-xs font-semibold text-brand-navy/60">
             We respect your privacy. Unsubscribe anytime.

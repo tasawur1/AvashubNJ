@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@/components/Icon";
 import { IntakeOverlay, type IntakeFormId } from "@/components/intake/IntakeOverlay";
 import type { IconName } from "@/data/icons";
@@ -28,6 +28,14 @@ const supportPrompts: SupportPrompt[] = [
 
 export function IntakePillButtons({ className = "" }: { className?: string }) {
   const [activeForm, setActiveForm] = useState<IntakeFormId | null>(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const form = params.get('form');
+    if (form === 'ot' || form === 'slp' || form === 'pt') {
+      setActiveForm(form as IntakeFormId);
+    }
+  }, []);
 
   return (
     <>

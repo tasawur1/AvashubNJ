@@ -155,7 +155,7 @@ function MobileEventsPage({
               workshops, and new opportunities.
             </p>
             <div className="mt-5">
-              <EmailSignupForm placeholder="Enter your email address" />
+              <EmailSignupForm placeholder="Enter your email address" source="events" />
             </div>
             <p className="mt-4 text-xs font-semibold text-brand-navy/60">
               We respect your privacy.
@@ -339,7 +339,7 @@ function DesktopEventsPage({
                 workshops, and new opportunities.
               </p>
               <div className="mx-auto mt-6 w-full max-w-xl">
-                <EmailSignupForm placeholder="Enter your email address" />
+                <EmailSignupForm placeholder="Enter your email address" source="events" />
               </div>
               <p className="mt-4 text-xs font-semibold text-brand-navy/60">
                 We respect your privacy.

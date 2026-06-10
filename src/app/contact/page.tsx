@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CTAButton } from "@/components/CTAButton";
+import { ContactForm } from "@/components/page/ContactForm";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
 import {
@@ -117,211 +117,6 @@ const featureItems: FeatureItem[] = [
   },
 ];
 
-const mobileInputClass =
-  "w-full rounded-[1.1rem] border border-brand-teal/15 bg-white/95 px-5 py-4 text-sm font-medium text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
-
-const desktopInputClass =
-  "w-full rounded-xl border border-brand-teal/20 bg-white px-4 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/45 focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/20";
-
-function MobileContactForm() {
-  return (
-    <form className="space-y-4">
-      <div className="grid gap-4">
-        <input
-          name="firstName"
-          type="text"
-          autoComplete="given-name"
-          required
-          placeholder="First Name *"
-          className={mobileInputClass}
-          aria-label="First Name"
-        />
-        <input
-          name="lastName"
-          type="text"
-          autoComplete="family-name"
-          required
-          placeholder="Last Name *"
-          className={mobileInputClass}
-          aria-label="Last Name"
-        />
-      </div>
-      <input
-        name="email"
-        type="email"
-        autoComplete="email"
-        required
-        placeholder="Email Address *"
-        className={mobileInputClass}
-        aria-label="Email Address"
-      />
-      <input
-        name="phone"
-        type="tel"
-        autoComplete="tel"
-        required
-        placeholder="Phone Number *"
-        className={mobileInputClass}
-        aria-label="Phone Number"
-      />
-      <select
-        name="helpTopic"
-        required
-        defaultValue=""
-        className={mobileInputClass}
-        aria-label="How can we help you?"
-      >
-        <option value="" disabled>
-          How can we help you? *
-        </option>
-        <option value="schedule-tour">Schedule a tour</option>
-        <option value="programs">Learn about programs</option>
-        <option value="family-support">Family support</option>
-        <option value="resources">Resources</option>
-        <option value="other">Other</option>
-      </select>
-      <textarea
-        name="message"
-        rows={5}
-        required
-        placeholder="Message *"
-        className={`${mobileInputClass} resize-y`}
-        aria-label="Message"
-      />
-      <label className="flex gap-3 rounded-[1.1rem] bg-brand-teal-light/35 px-4 py-3 text-sm font-semibold leading-relaxed text-brand-navy/80">
-        <input
-          type="checkbox"
-          name="consent"
-          required
-          className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-purple-bright"
-        />
-        <span>I consent to being contacted by Ava&apos;s Hub.</span>
-      </label>
-      <CTAButton type="submit" className="w-full !py-4">
-        <span className="inline-flex items-center gap-2">
-          Send Message
-          <Icon name="paperPlane" size="sm" />
-        </span>
-      </CTAButton>
-    </form>
-  );
-}
-
-function DesktopContactForm() {
-  return (
-    <form className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="desktop-first-name" className="sr-only">
-            First Name
-          </label>
-          <input
-            id="desktop-first-name"
-            name="firstName"
-            type="text"
-            autoComplete="given-name"
-            required
-            placeholder="First Name *"
-            className={desktopInputClass}
-          />
-        </div>
-        <div>
-          <label htmlFor="desktop-last-name" className="sr-only">
-            Last Name
-          </label>
-          <input
-            id="desktop-last-name"
-            name="lastName"
-            type="text"
-            autoComplete="family-name"
-            required
-            placeholder="Last Name *"
-            className={desktopInputClass}
-          />
-        </div>
-      </div>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div>
-          <label htmlFor="desktop-email" className="sr-only">
-            Email Address
-          </label>
-          <input
-            id="desktop-email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="Email Address *"
-            className={desktopInputClass}
-          />
-        </div>
-        <div>
-          <label htmlFor="desktop-phone" className="sr-only">
-            Phone Number
-          </label>
-          <input
-            id="desktop-phone"
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            required
-            placeholder="Phone Number *"
-            className={desktopInputClass}
-          />
-        </div>
-      </div>
-      <div>
-        <label htmlFor="desktop-help-topic" className="sr-only">
-          How can we help you?
-        </label>
-        <select
-          id="desktop-help-topic"
-          name="helpTopic"
-          required
-          defaultValue=""
-          className={desktopInputClass}
-        >
-          <option value="" disabled>
-            How can we help you? *
-          </option>
-          <option value="schedule-tour">Schedule a tour</option>
-          <option value="programs">Learn about programs</option>
-          <option value="family-support">Family support</option>
-          <option value="resources">Resources</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-      <div>
-        <label htmlFor="desktop-message" className="sr-only">
-          Message
-        </label>
-        <textarea
-          id="desktop-message"
-          name="message"
-          rows={5}
-          required
-          placeholder="Message *"
-          className={`${desktopInputClass} resize-y`}
-        />
-      </div>
-      <label className="flex gap-3 text-sm font-medium text-brand-navy/80">
-        <input
-          type="checkbox"
-          name="consent"
-          required
-          className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright focus:ring-brand-teal"
-        />
-        <span>I consent to being contacted by Ava&apos;s Hub.</span>
-      </label>
-      <CTAButton type="submit" className="w-full">
-        <span className="inline-flex items-center gap-2">
-          Send Message
-          <Icon name="paperPlane" size="sm" />
-        </span>
-      </CTAButton>
-    </form>
-  );
-}
 
 function MobileContactPage() {
   return (
@@ -433,7 +228,7 @@ function MobileContactPage() {
             We&apos;d love to hear from you.
           </p>
           <div className="mt-6">
-            <MobileContactForm />
+            <ContactForm variant="mobile" />
           </div>
         </div>
       </section>
@@ -531,7 +326,7 @@ function MobileContactPage() {
               Get updates about programs, events, and resources.
             </p>
             <div className="mt-5">
-              <EmailSignupForm placeholder="Enter your email address" />
+              <EmailSignupForm placeholder="Enter your email address" source="contact" />
             </div>
           </div>
         </div>
@@ -664,7 +459,7 @@ function DesktopContactPage() {
                 We&apos;d love to hear from you.
               </p>
               <div className="mt-6">
-                <DesktopContactForm />
+                <ContactForm variant="desktop" />
               </div>
             </div>
 
@@ -766,7 +561,7 @@ function DesktopContactPage() {
                 Get updates about programs, events, and resources.
               </p>
               <div className="mx-auto mt-6 w-full max-w-xl">
-                <EmailSignupForm placeholder="Enter your email address" />
+                <EmailSignupForm placeholder="Enter your email address" source="contact" />
               </div>
               <p className="mt-4 text-xs font-semibold text-brand-navy/60">
                 We respect your privacy.

@@ -705,7 +705,7 @@ export default function ResourcesPage() {
                     to your inbox.
                   </p>
                   <div className="mx-auto mt-6 w-full max-w-xl">
-                    <EmailSignupForm placeholder="Enter your email address" />
+                    <EmailSignupForm placeholder="Enter your email address" source="resources" />
                   </div>
                   <p className="mt-5 text-xs font-semibold text-brand-navy/60">
                     We respect your privacy. Unsubscribe anytime.

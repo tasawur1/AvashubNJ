@@ -505,7 +505,7 @@ export default function KidsProgramPage() {
               Get updates about programs, events, and resources from Ava&apos;s Hub.
             </p>
             <div className="mx-auto mt-6 max-w-xl">
-              <EmailSignupForm placeholder="Enter your email address" />
+              <EmailSignupForm placeholder="Enter your email address" source="programs/kids" />
             </div>
           </div>
         </SectionContainer>

@@ -275,6 +275,7 @@ function gc(name){return Array.from(document.querySelectorAll('input[name="'+nam
 async function submitForm(){
   const childName=document.getElementById('child-name').value;
   const parentName=document.getElementById('parent-name').value;
+  const parentEmail=document.getElementById('parent-email').value;
   const childAge=document.getElementById('child-age').value;
   const dx=document.getElementById('child-dx').value;
   const mainConcern=document.getElementById('main-concern').value;
@@ -318,8 +319,14 @@ Guidelines: Lead with strengths always. Be specific to their responses. Referenc
     const res=await fetch('/api/intake/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,formId:'slp',system:"You are a warm family-friendly pediatric therapy coordinator at Ava's Hub. You are NOT a licensed SLP. Always disclaim this is not a clinical evaluation. Plain text only, no ** markdown."})});
     clearInterval(iv);
     const result=await res.json();
-    if(result.result){document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(result.result)}</div></div>`;}
-    else{showFallback(childName,parentName);}
+    if(result.text){
+      document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(result.text)}</div></div>`;
+      fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+        formId:'slp',service:'Speech-Language Therapy',
+        childName,parentName,parentEmail,phone:'',
+        results:result.text
+      })}).catch(()=>{});
+    }else{showFallback(childName,parentName);}
   }catch(e){clearInterval(iv);showFallback(childName,parentName);}
   document.getElementById('result-actions').style.display='flex';
 }
