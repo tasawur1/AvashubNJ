@@ -50,9 +50,9 @@ export function buildEmail({ heading, bodyHtml, ctaHtml, footerNote }: EmailOpti
 <tr><td align="center">
 <table width="100%" style="max-width:580px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 24px rgba(23,19,71,0.08);">
   <!-- Header -->
-  <tr><td style="background:${C.navy};padding:22px 28px 18px;">
+  <tr><td style="background:${C.lavender};padding:22px 28px 18px;border-bottom:2px solid ${C.purpleBright}55;">
     <img src="${LOGO_URL}" alt="Ava's Hub" height="46" style="display:block;max-width:160px;height:auto;">
-    <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.38);">East Orange, NJ &nbsp;·&nbsp; hello@avashubnj.com</p>
+    <p style="margin:8px 0 0;font-size:11px;color:${C.purpleDeep};">East Orange, NJ &nbsp;·&nbsp; hello@avashubnj.com</p>
   </td></tr>
   <!-- Body -->
   <tr><td style="padding:28px 28px 24px;">
@@ -81,8 +81,8 @@ export function buildEmail({ heading, bodyHtml, ctaHtml, footerNote }: EmailOpti
 /** Three full-width buttons linking directly to the standalone intake form pages. */
 export function intakeFormButtonsHtml(): string {
   const buttons: { label: string; sub: string; path: string; bg: string; }[] = [
-    { label: 'Occupational Therapy', sub: 'Start OT intake form',  path: '/forms/ot-intake.html',  bg: C.purpleDeep   },
-    { label: 'Physical Therapy',     sub: 'Start PT intake form',  path: '/forms/pt-intake.html',  bg: C.navy         },
+    { label: 'Occupational Therapy', sub: 'Start OT intake form',  path: '/forms/ot-intake.html',  bg: C.purpleBright },
+    { label: 'Physical Therapy',     sub: 'Start PT intake form',  path: '/forms/pt-intake.html',  bg: C.purpleDeep   },
     { label: 'Speech Therapy',       sub: 'Start SLP intake form', path: '/forms/slp-intake.html', bg: C.teal         },
   ];
   const rows = buttons.map(({ label, sub, path, bg }) => `
@@ -98,7 +98,7 @@ export function intakeFormButtonsHtml(): string {
 /** Single "Schedule Your Evaluation" full-width button for post-intake emails. */
 export function scheduleButtonHtml(): string {
   return `<table cellpadding="0" cellspacing="0" style="width:100%;"><tr><td>
-    <a href="${SITE_URL}/contact" style="display:block;background:${C.purpleDeep};border-radius:8px;padding:14px 20px;color:#fff;font-size:15px;font-weight:700;text-decoration:none;text-align:center;">
+    <a href="${SITE_URL}/contact" style="display:block;background:${C.purpleBright};border-radius:8px;padding:14px 20px;color:#fff;font-size:15px;font-weight:700;text-decoration:none;text-align:center;">
       Schedule Your Evaluation →
     </a>
   </td></tr></table>`;
