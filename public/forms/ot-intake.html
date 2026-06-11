@@ -825,7 +825,7 @@ async function submitForm(){
           method:'POST',
           headers:{'Content-Type':'application/json'},
           body:JSON.stringify({
-            model:'claude-sonnet-4-20250514',
+            model:'claude-sonnet-4-6',
             max_tokens:1400,
             system:`You are the clinical director of Ava's Hub in East Orange, NJ — Essex County's premier pediatric therapy clinic. You use PEO, MOHO, and CMOP-E frameworks. Write warm, hopeful, strength-based results. Plain text only, no ** markdown.`,
             messages:[{role:'user',content:prompt}]

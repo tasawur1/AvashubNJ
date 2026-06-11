@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 1400,
         system: `You are the clinical director of Ava's Hub in East Orange, NJ — Essex County's premier pediatric therapy clinic for children and young adults ages 18 months to 21 years. You use PEO, MOHO, and CMOP-E frameworks. You write warm, hopeful, strength-based results that make families feel seen and give them a clear picture of how Ava's Hub can help their child. Plain text only — no markdown bold (**). Always disclaim this is not a clinical evaluation.`,
         messages: [{ role: 'user', content: prompt }],
