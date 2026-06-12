@@ -315,24 +315,114 @@ Write a warm personalized results summary with these exact section headers:
 
 Guidelines: Lead with strengths always. Be specific to their responses. Reference AAC/feeding if flagged. Mention play-based therapy for young children, caregiver coaching, social skills/SLP collaboration. Next step = schedule in-office evaluation at hello@avashubnj.com. Plain text only, no ** markdown, ~600-700 words, warm and parent-friendly.`;
 
+  const formData={dx,mainConcern,commMode:gr('comm-mode'),expressNeeds:gr('slp-express-needs'),sentences:gr('slp-sentences'),initiate:gr('slp-initiate'),step1:gr('slp-1step'),step2:gr('slp-2step'),questions:gr('slp-questions'),intelFamiliar:gr('slp-intel-familiar'),intelUnfamiliar:gr('slp-intel-unfamiliar'),pragmatic:gr('slp-pragmatic'),feedingYN:gr('slp-feeding-yn'),feeding:gc('slp-feeding'),concerns:gc('slp-concerns'),impact:gc('slp-impact'),prev:gr('slp-prev'),topGoal:document.getElementById('slp-top-goal').value,anything:document.getElementById('slp-anything').value};
+
+  let resultText=null;
   try{
-    const res=await fetch('/api/intake/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,formId:'slp',system:"You are a warm family-friendly pediatric therapy coordinator at Ava's Hub. You are NOT a licensed SLP. Always disclaim this is not a clinical evaluation. Plain text only, no ** markdown."})});
-    clearInterval(iv);
-    const result=await res.json();
-    if(result.text){
-      document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(result.text)}</div></div>`;
-      fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-        formId:'slp',service:'Speech-Language Therapy',
-        childName,parentName,parentEmail,phone:'',
-        results:result.text
-      })}).catch(()=>{});
-    }else{showFallback(childName,parentName);}
-  }catch(e){clearInterval(iv);showFallback(childName,parentName);}
+    const res=await fetch('/api/intake/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,formId:'slp_screener'})});
+    if(res.ok){
+      const result=await res.json();
+      if(result.text) resultText=result.text;
+    }
+  }catch(e){console.warn('SLP generate route error:',e);}
+
+  clearInterval(iv);
+  const finalText=resultText||buildSLPFallback(childName,parentName,formData);
+  document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
+  fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    formId:'slp_screener',service:'Speech-Language Therapy',
+    childName,parentName,parentEmail,phone:'',
+    results:finalText
+  })}).catch(()=>{});
   document.getElementById('result-actions').style.display='flex';
 }
 
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function showFallback(name,parent){document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">Thank you, ${parent}, for sharing about ${name}.\n\nOur team at Ava's Hub will be in touch to discuss ${name}'s speech-language needs. Remember — this questionnaire is informational only. A formal in-office evaluation with our licensed SLP is the important next step.\n\nhello@avashubnj.com · www.avashubnj.com\n280 S Harrison St, Suite 311, East Orange NJ 07018\n\nWarm regards,\nThe Ava's Hub Team</div></div>`;}
+function buildSLPFallback(name,parent,d){
+  d=d||{};
+  const mainConcern=d.mainConcern||'';
+  const dx=d.dx||'';
+  const commMode=d.commMode||'Not answered';
+  const concerns=(d.concerns&&d.concerns.length)?d.concerns:[];
+  const impact=(d.impact&&d.impact.length)?d.impact:[];
+  const feeding=(d.feeding&&d.feeding.length)?d.feeding:[];
+  const feedingYN=d.feedingYN||'';
+  const topGoal=d.topGoal||'';
+  const expressNeeds=parseInt(d.expressNeeds)||3;
+  const sentences=parseInt(d.sentences)||3;
+  const pragmatic=parseInt(d.pragmatic)||3;
+  const intelFamiliar=parseInt(d.intelFamiliar)||3;
+  const needsSupport=[];
+  if(expressNeeds<=2) needsSupport.push('expressing basic wants and needs');
+  if(sentences<=2) needsSupport.push('building longer sentences and expressive language');
+  if(parseInt(d.initiate)<=2) needsSupport.push('initiating communication and conversations');
+  if(parseInt(d.step1)<=2) needsSupport.push('following directions');
+  if(intelFamiliar<=2) needsSupport.push('speech clarity and intelligibility');
+  if(pragmatic<=2) needsSupport.push('social communication and back-and-forth conversation');
+  if(concerns.includes('not-talking')) needsSupport.push('early language development');
+  if(concerns.includes('aac-needed')) needsSupport.push('AAC (alternative communication) exploration');
+  if(feedingYN==='yes'||(feeding.length&&!feeding.includes('none'))) needsSupport.push('feeding and oral motor skills');
+  const supportText=needsSupport.length>0
+    ?`Based on what you shared, the areas where ${name} could most benefit from SLP support include ${needsSupport.slice(0,4).join(', ')}.`
+    :`Based on what you shared, our licensed SLP will do a comprehensive look at ${name}'s communication profile during the in-office evaluation.`;
+  const impactText=impact.length>0?`You shared that communication is most affecting ${impact.slice(0,3).join(', ')} — and helping ${name} communicate more fully in these areas is exactly what our SLP program is built for.`:'';
+  const goalText=topGoal?`Your most important goal — "${topGoal}" — becomes the anchor of ${name}'s entire SLP program at Ava's Hub.`:'';
+  const aacNote=concerns.includes('aac-needed')?`\nWe also have experience supporting children who use or may benefit from AAC devices, apps, or PECS — and we will explore the best communication system for ${name} during the evaluation.`:'';
+  return `📋 ABOUT THIS QUESTIONNAIRE
+
+Thank you for completing this questionnaire, ${parent}. Please remember — this is not a clinical evaluation. All formal SLP evaluations are performed in-office by Ava's Hub's licensed Speech-Language Pathologist. This summary is based on your responses and is meant to give you a sense of what we see and how our SLP program can help.
+
+🗣️ WHAT WE NOTICED — ${name.toUpperCase()}'S COMMUNICATION PROFILE
+
+${mainConcern?`You shared that "${mainConcern}" — and we hear you. Our SLP team is specifically trained to support children with exactly these kinds of communication challenges.`:`From what you shared, our SLP team is ready to take a thorough and compassionate look at how ${name} communicates and where we can open new doors.`}
+${dx?`\nDiagnosis/area of concern noted: ${dx}.`:''}
+${commMode!=='Not answered'?`\nPrimary communication mode right now: ${commMode}.`:''}
+
+⚡ AREAS WHERE SPEECH THERAPY AT AVA'S HUB CAN HELP
+
+${supportText}
+
+${impactText}
+${aacNote}
+
+Our speech-language program at Ava's Hub addresses the full communication picture — expressive and receptive language, speech clarity, social communication, and feeding — using play-based, relationship-centered therapy.
+
+🌟 ${name.toUpperCase()}'S STRENGTHS
+
+Every child communicates in their own way, and ${name} is no exception. Even from what you shared, it is clear that ${name} has a family who is paying close attention, seeking the right support, and believing in their potential — and that investment makes a profound difference in communication outcomes.
+
+✨ HOW AVA'S HUB'S SPEECH-LANGUAGE PROGRAM WORKS
+
+At Ava's Hub, SLP sessions are individualized, meaningful, and built around your family's priorities:
+
+✓ Individualized SLP sessions (typically 45–60 minutes, 1–2x per week)
+✓ Expressive and receptive language development at ${name}'s pace
+✓ Speech clarity and articulation support if indicated
+✓ Social communication and pragmatic language skills
+✓ AAC evaluation and training if beneficial
+✓ Feeding and oral motor support if needed
+✓ Caregiver coaching and home carry-over strategies
+✓ Collaboration with school SLP and educational team
+
+🎯 WHAT ${name.toUpperCase()}'S PROGRAM MIGHT FOCUS ON
+
+${goalText}
+
+A formal in-office evaluation will give our licensed SLP the complete clinical picture to design ${name}'s personalized program — specific to their diagnosis, communication profile, and your family's vision.
+
+📞 YOUR NEXT STEP
+
+The next step is scheduling ${name}'s formal in-office evaluation with our licensed Speech-Language Pathologist.
+
+📧 hello@avashubnj.com
+🌐 www.avashubnj.com
+📍 280 S Harrison St, Suite 311, East Orange NJ 07018
+
+Our team will also reach out to you directly within 1–2 business days.
+
+Warm regards,
+Marilyn & the Ava's Hub Team`;
+}
 function restartForm(){document.getElementById('result-wrap').style.display='none';document.getElementById('form-card').style.display='block';document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(e=>e.checked=false);document.querySelectorAll('input[type=text],input[type=email],textarea').forEach(e=>e.value='');['1','2','3'].forEach(s=>{document.getElementById('step-'+s).classList.remove('active');});document.getElementById('step-1').classList.add('active');setProgress(1);window.scrollTo({top:0,behavior:'smooth'});}
 setProgress(1);
 </script>

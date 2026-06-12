@@ -842,27 +842,33 @@ async function submitForm(){
 
     clearInterval(iv);
 
-    if(resultText){
-      document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(resultText)}</div></div>`;
-      // Send email notification (non-blocking)
-      fetch('/api/intake/notify',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          formId:'ot_screener',
-          childName, parentName, parentEmail,
-          phone: document.getElementById('parent-phone').value,
-          results: resultText
-        })
-      }).catch(()=>{});
-      localStorage.removeItem(CACHE_KEY);
-    } else {
-      // Both failed — show rich built-from-answers summary
-      showRichFallback(childName, parentName, formData);
-    }
+    const finalText = resultText || buildRichFallbackText(childName, parentName, formData);
+    document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
+    fetch('/api/intake/notify',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        formId:'ot_screener',
+        childName, parentName, parentEmail,
+        phone: document.getElementById('parent-phone').value,
+        results: finalText
+      })
+    }).catch(()=>{});
+    localStorage.removeItem(CACHE_KEY);
   }catch(e){
     clearInterval(iv);
-    showRichFallback(childName, parentName, formData);
+    const fallbackText = buildRichFallbackText(childName, parentName, formData);
+    document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(fallbackText)}</div></div>`;
+    fetch('/api/intake/notify',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        formId:'ot_screener',
+        childName, parentName, parentEmail,
+        phone: document.getElementById('parent-phone').value,
+        results: fallbackText
+      })
+    }).catch(()=>{});
   }
   document.getElementById('result-actions').style.display='flex';
 }
@@ -942,9 +948,7 @@ Guidelines:
 
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-function showRichFallback(name, parent, d){
-  // Build a rich warm summary from the actual form data
-  // This shows even when the AI API is not yet connected
+function buildRichFallbackText(name, parent, d){
   d = d || {};
 
   const strengths = d.childStrengths || '';
@@ -1038,7 +1042,11 @@ Our team will also be reaching out to you directly within 1–2 business days. W
 Warm regards,
 Marilyn & the Ava's Hub Team`;
 
-  document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(summary)}</div></div>`;
+  return summary;
+}
+
+function showRichFallback(name, parent, d){
+  document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(buildRichFallbackText(name, parent, d))}</div></div>`;
 }
 
 function showFallback(name, parent){ showRichFallback(name, parent, {}); }
