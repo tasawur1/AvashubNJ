@@ -85,6 +85,22 @@ export async function POST(request: NextRequest) {
       }),
     });
 
+    // — Add to Resend Contacts (best-effort; never blocks the welcome email) —
+    try {
+      const nameParts = name.split(' ').filter(Boolean);
+      const contactResult = await resend.contacts.create({
+        email,
+        firstName: nameParts[0] ?? '',
+        lastName: nameParts.slice(1).join(' ') || undefined,
+        unsubscribed: false,
+      });
+      if (contactResult.error) {
+        console.error('[NEWSLETTER] Resend contact add failed:', email, contactResult.error);
+      }
+    } catch (contactErr) {
+      console.error('[NEWSLETTER] Resend contact add failed:', email, contactErr);
+    }
+
     return NextResponse.json({
       success: !emailResult.error,
       id: emailResult.data?.id,
