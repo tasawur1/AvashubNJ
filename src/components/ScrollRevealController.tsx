@@ -19,80 +19,75 @@ export function ScrollRevealController() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+
+    const all = Array.from(
+      document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR)
+    ).filter(
+      (el) => !el.matches(EXCLUDED_SELECTOR) && !el.closest(EXCLUDED_SELECTOR)
     );
 
-    if (reducedMotion.matches || !("IntersectionObserver" in window)) {
-      return;
-    }
+    // Keep only the outermost matched elements. Without this, a <section> and
+    // every <article> inside it all animate simultaneously — the parent
+    // translating up while each child also independently translates up,
+    // producing a chaotic double-motion effect.
+    const targets = all.filter(
+      (el) => !all.some((other) => other !== el && other.contains(el))
+    );
 
-    const targets = Array.from(
-      document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR),
-    ).filter((element, index, elements) => {
-      if (element.matches(EXCLUDED_SELECTOR) || element.closest(EXCLUDED_SELECTOR)) {
-        return false;
-      }
-
-      return elements.indexOf(element) === index;
-    });
-
-    if (!targets.length) {
-      return;
-    }
+    if (!targets.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
-
-          entry.target.classList.add("scroll-reveal-visible");
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          (entry.target as HTMLElement).classList.add("scroll-reveal-visible");
           observer.unobserve(entry.target);
-        });
+        }
       },
-      {
-        threshold: 0.08,
-        rootMargin: "0px 0px -8% 0px",
-      },
+      // Fire slightly before the element fully enters the viewport so the
+      // animation is already running smoothly when the eye reaches it.
+      { threshold: 0.08, rootMargin: "0px 0px 40px 0px" }
     );
 
-    const initiallyVisible: HTMLElement[] = [];
+    const viewportH = window.innerHeight;
 
-    targets.forEach((element) => {
-      const siblings = element.parentElement
-        ? Array.from(element.parentElement.children).filter((sibling) =>
-            sibling.matches(REVEAL_SELECTOR),
+    targets.forEach((el) => {
+      // Stagger siblings that share the same parent (e.g. cards in a grid).
+      const siblings = el.parentElement
+        ? Array.from(el.parentElement.children).filter((s) =>
+            targets.includes(s as HTMLElement)
           )
         : [];
-      const siblingIndex = siblings.indexOf(element);
-      const delayIndex = siblingIndex >= 0 ? Math.min(siblingIndex, 4) : 0;
+      const sibIdx = siblings.indexOf(el);
+      const delay = Math.min(sibIdx, 4) * 100;
 
-      element.classList.add("scroll-reveal");
-      element.style.setProperty("--scroll-reveal-delay", `${delayIndex * 70}ms`);
+      el.classList.add("scroll-reveal");
+      if (delay > 0) el.style.setProperty("--scroll-reveal-delay", `${delay}ms`);
 
-      if (element.getBoundingClientRect().top < window.innerHeight * 0.92) {
-        initiallyVisible.push(element);
+      if (el.getBoundingClientRect().top < viewportH) {
+        // Element is already in view. Mark it visible NOW — before
+        // scroll-reveal-enabled is added to <html> — so the CSS never
+        // hides it and there is no above-fold flash on page load.
+        el.classList.add("scroll-reveal-visible");
       } else {
-        observer.observe(element);
+        observer.observe(el);
       }
     });
 
+    // Enable CSS only after above-fold elements already have both classes.
+    // Elements with scroll-reveal + scroll-reveal-visible resolve to
+    // opacity:1 immediately; off-screen elements resolve to opacity:0
+    // but are invisible to the user anyway.
     document.documentElement.classList.add("scroll-reveal-enabled");
-    const initialRevealFrame = window.requestAnimationFrame(() => {
-      initiallyVisible.forEach((element) => {
-        element.classList.add("scroll-reveal-visible");
-      });
-    });
 
     return () => {
-      window.cancelAnimationFrame(initialRevealFrame);
       observer.disconnect();
       document.documentElement.classList.remove("scroll-reveal-enabled");
-      targets.forEach((element) => {
-        element.classList.remove("scroll-reveal", "scroll-reveal-visible");
-        element.style.removeProperty("--scroll-reveal-delay");
+      targets.forEach((el) => {
+        el.classList.remove("scroll-reveal", "scroll-reveal-visible");
+        el.style.removeProperty("--scroll-reveal-delay");
       });
     };
   }, [pathname]);
