@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { buildEmail, intakeFormButtonsHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
+import { upsertResendContact } from '@/lib/resendContact';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
@@ -54,6 +55,13 @@ export async function POST(request: NextRequest) {
     }
 
     const resend = new Resend(resendApiKey);
+
+    // — Upsert to Resend audience (best-effort) —
+    try {
+      await upsertResendContact(resend, { email, firstName, lastName });
+    } catch (contactErr) {
+      console.error('[CONTACT] Resend contact sync failed:', email, contactErr);
+    }
 
     const timestamp = new Date().toLocaleString('en-US', {
       timeZone: 'America/New_York',

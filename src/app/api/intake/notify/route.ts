@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { buildEmail, scheduleButtonHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
+import { upsertResendContact } from '@/lib/resendContact';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
@@ -99,6 +100,20 @@ export async function POST(request: NextRequest) {
           footerNote: "This email was sent because you completed a questionnaire at avashubnj.com.",
         }),
       });
+    }
+
+    // — Upsert parent to Resend audience (best-effort) —
+    if (parentEmail && parentEmail.includes('@')) {
+      try {
+        const nameParts = (parentName ?? '').trim().split(/\s+/).filter(Boolean);
+        await upsertResendContact(resend, {
+          email: parentEmail,
+          firstName: nameParts[0] ?? '',
+          lastName: nameParts.slice(1).join(' ') || undefined,
+        });
+      } catch (contactErr) {
+        console.error('[INTAKE] Resend contact sync failed:', parentEmail, contactErr);
+      }
     }
 
     return NextResponse.json({

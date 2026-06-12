@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { buildEmail, intakeFormButtonsHtml, esc } from '@/lib/emailTemplate';
+import { upsertResendContact } from '@/lib/resendContact';
 
 // TEMPORARY: CSV subscriber store — migrate to Klaviyo, then remove this file.
 // Set SUBSCRIBER_CSV_PATH to an absolute path OUTSIDE the app dir on Hostinger
@@ -85,20 +86,16 @@ export async function POST(request: NextRequest) {
       }),
     });
 
-    // — Add to Resend Contacts (best-effort; never blocks the welcome email) —
+    // — Upsert to Resend audience (best-effort; never blocks the welcome email) —
     try {
       const nameParts = name.split(' ').filter(Boolean);
-      const contactResult = await resend.contacts.create({
+      await upsertResendContact(resend, {
         email,
         firstName: nameParts[0] ?? '',
         lastName: nameParts.slice(1).join(' ') || undefined,
-        unsubscribed: false,
       });
-      if (contactResult.error) {
-        console.error('[NEWSLETTER] Resend contact add failed:', email, contactResult.error);
-      }
     } catch (contactErr) {
-      console.error('[NEWSLETTER] Resend contact add failed:', email, contactErr);
+      console.error('[NEWSLETTER] Resend contact sync failed:', email, contactErr);
     }
 
     return NextResponse.json({
