@@ -221,7 +221,7 @@ function FinalMobileCta() {
 
 function MobileAboutPage() {
   return (
-    <div className="lg:hidden">
+    <div className="xl:hidden">
       <MobileAboutHero />
 
       <section id="about-story-mobile" className="px-6 pb-10">
@@ -421,7 +421,7 @@ function MobileAboutPage() {
 
 function DesktopAboutPage() {
   return (
-    <div className="hidden bg-[#fffaf4] lg:block">
+    <div className="hidden bg-[#fffaf4] xl:block">
       <section className="py-10 xl:py-12">
         <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
           <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">

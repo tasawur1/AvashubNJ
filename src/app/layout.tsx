@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
+import { ScrollRevealController } from "@/components/ScrollRevealController";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -69,6 +70,7 @@ export default function RootLayout({
     <html lang="en" className={plusJakarta.variable}>
       <body className="flex min-h-screen flex-col font-sans">
         <Header />
+        <ScrollRevealController />
         {children}
       </body>
     </html>

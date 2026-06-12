@@ -283,7 +283,7 @@ function ImageTile({ src, title }: { src: string; title: string }) {
 
 function MobileResourcesPage() {
   return (
-    <div className="bg-[#fffaf4] lg:hidden">
+    <div className="bg-[#fffaf4] xl:hidden">
       <h1 className="sr-only">Ava's Hub Resources</h1>
 
       <section className="pb-8">
@@ -485,7 +485,7 @@ export default function ResourcesPage() {
   return (
     <main className="flex-1 bg-[#fffaf4]">
       <MobileResourcesPage />
-      <div className="hidden bg-[#fffaf4] lg:block">
+      <div className="hidden bg-[#fffaf4] xl:block">
         <h1 className="sr-only">Ava&apos;s Hub Resources</h1>
 
         <section className="py-9 xl:py-12">

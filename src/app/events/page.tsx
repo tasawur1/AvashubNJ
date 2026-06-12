@@ -34,7 +34,7 @@ function MobileEventsPage({
   events: Awaited<ReturnType<typeof fetchAllEvents>>;
 }) {
   return (
-    <div className="bg-[#fffaf4] lg:hidden">
+    <div className="bg-[#fffaf4] xl:hidden">
       <h1 className="sr-only">Events at Ava's Hub</h1>
 
       <section className="pb-8">
@@ -180,7 +180,7 @@ function DesktopEventsPage({
   events: Awaited<ReturnType<typeof fetchAllEvents>>;
 }) {
   return (
-    <div className="hidden bg-[#fffaf4] lg:block">
+    <div className="hidden bg-[#fffaf4] xl:block">
       <h1 className="sr-only">Events at Ava&apos;s Hub</h1>
 
       <section

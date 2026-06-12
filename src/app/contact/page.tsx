@@ -120,7 +120,7 @@ const featureItems: FeatureItem[] = [
 
 function MobileContactPage() {
   return (
-    <div className="bg-[#fffaf4] lg:hidden">
+    <div className="bg-[#fffaf4] xl:hidden">
       <h1 className="sr-only">Contact Ava&apos;s Hub</h1>
 
       <section className="pb-8">
@@ -344,7 +344,7 @@ function MobileContactPage() {
 
 function DesktopContactPage() {
   return (
-    <div className="hidden bg-[#fffaf4] lg:block">
+    <div className="hidden bg-[#fffaf4] xl:block">
       <h1 className="sr-only">Contact Ava&apos;s Hub</h1>
 
       <section

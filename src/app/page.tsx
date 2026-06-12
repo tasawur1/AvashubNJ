@@ -220,7 +220,7 @@ function TiltedHeartOutline({ className = "" }: { className?: string }) {
 
 function DesktopHomePage() {
   return (
-    <div className="hidden bg-[#fffaf4] lg:block">
+    <div className="hidden bg-[#fffaf4] xl:block">
       {/*
         HOME PAGE DESKTOP MEMORY:
         Desktop grows from the mobile homepage instead of using a separate
@@ -522,7 +522,7 @@ export default function HomePage() {
         support for children, teens, and young adults in East Orange, NJ.
       </p>
 
-      <div className="lg:hidden">
+      <div className="xl:hidden">
         <section className="px-6 pb-8 pt-5">
           <div className="rounded-[2rem] bg-[#fffaf4]">
             <div className="mx-auto w-full overflow-hidden rounded-[2rem] bg-brand-teal-light shadow-card">
