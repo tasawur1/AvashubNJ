@@ -18,9 +18,40 @@ const EXCLUDED_SELECTOR = [
 export function ScrollRevealController() {
   const pathname = usePathname();
 
+  // Lenis smooth scroll — single instance, lives for the whole session.
+  // Dynamic import avoids any SSR module-level browser-API access.
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reducedMotion.matches || !("IntersectionObserver" in window)) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) return;
+
+    let destroyed = false;
+    let lenis: { raf: (t: number) => void; destroy: () => void } | null = null;
+    let rafId = 0;
+
+    import("lenis").then(({ default: Lenis }) => {
+      if (destroyed) return;
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      const tick = (time: number) => {
+        lenis!.raf(time);
+        rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(tick);
+    });
+
+    return () => {
+      destroyed = true;
+      cancelAnimationFrame(rafId);
+      lenis?.destroy();
+    };
+  }, []);
+
+  // Scroll reveals — re-run on each route change.
+  // Outermost-element filter prevents parent+child double-animation.
+  // Above-fold elements get [data-revealed] before [data-reveal-ready] lands
+  // on <html>, so the CSS never hides them (no above-fold flash).
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches || !("IntersectionObserver" in window)) return;
 
     const all = Array.from(
       document.querySelectorAll<HTMLElement>(REVEAL_SELECTOR)
@@ -28,10 +59,6 @@ export function ScrollRevealController() {
       (el) => !el.matches(EXCLUDED_SELECTOR) && !el.closest(EXCLUDED_SELECTOR)
     );
 
-    // Keep only the outermost matched elements. Without this, a <section> and
-    // every <article> inside it all animate simultaneously — the parent
-    // translating up while each child also independently translates up,
-    // producing a chaotic double-motion effect.
     const targets = all.filter(
       (el) => !all.some((other) => other !== el && other.contains(el))
     );
@@ -42,52 +69,42 @@ export function ScrollRevealController() {
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
-          (entry.target as HTMLElement).classList.add("scroll-reveal-visible");
+          (entry.target as HTMLElement).dataset.revealed = "";
           observer.unobserve(entry.target);
         }
       },
-      // Fire slightly before the element fully enters the viewport so the
-      // animation is already running smoothly when the eye reaches it.
-      { threshold: 0.08, rootMargin: "0px 0px 40px 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px 60px 0px" }
     );
 
-    const viewportH = window.innerHeight;
+    const vh = window.innerHeight;
 
     targets.forEach((el) => {
-      // Stagger siblings that share the same parent (e.g. cards in a grid).
       const siblings = el.parentElement
         ? Array.from(el.parentElement.children).filter((s) =>
             targets.includes(s as HTMLElement)
           )
         : [];
-      const sibIdx = siblings.indexOf(el);
-      const delay = Math.min(sibIdx, 4) * 100;
+      const delay = Math.min(siblings.indexOf(el), 4) * 80;
 
-      el.classList.add("scroll-reveal");
-      if (delay > 0) el.style.setProperty("--scroll-reveal-delay", `${delay}ms`);
+      el.dataset.reveal = "";
+      if (delay > 0) el.style.setProperty("--reveal-delay", `${delay}ms`);
 
-      if (el.getBoundingClientRect().top < viewportH) {
-        // Element is already in view. Mark it visible NOW — before
-        // scroll-reveal-enabled is added to <html> — so the CSS never
-        // hides it and there is no above-fold flash on page load.
-        el.classList.add("scroll-reveal-visible");
+      if (el.getBoundingClientRect().top < vh) {
+        el.dataset.revealed = "";
       } else {
         observer.observe(el);
       }
     });
 
-    // Enable CSS only after above-fold elements already have both classes.
-    // Elements with scroll-reveal + scroll-reveal-visible resolve to
-    // opacity:1 immediately; off-screen elements resolve to opacity:0
-    // but are invisible to the user anyway.
-    document.documentElement.classList.add("scroll-reveal-enabled");
+    document.documentElement.dataset.revealReady = "";
 
     return () => {
       observer.disconnect();
-      document.documentElement.classList.remove("scroll-reveal-enabled");
+      delete document.documentElement.dataset.revealReady;
       targets.forEach((el) => {
-        el.classList.remove("scroll-reveal", "scroll-reveal-visible");
-        el.style.removeProperty("--scroll-reveal-delay");
+        delete el.dataset.reveal;
+        delete el.dataset.revealed;
+        el.style.removeProperty("--reveal-delay");
       });
     };
   }, [pathname]);
