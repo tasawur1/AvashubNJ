@@ -23,26 +23,10 @@ export async function upsertResendContact(
       unsubscribed: false,
     });
 
-    if (!createResult.error) return;
-
-    // Contact likely already exists — if we have name data, find and update it.
-    if (!firstName && !lastName) return;
-
-    const listResult = await resend.contacts.list({ audienceId });
-    const all: Array<{ id: string; email: string }> = (listResult.data as { data: Array<{ id: string; email: string }> } | null)?.data ?? [];
-    const match = all.find(c => c.email?.toLowerCase() === email.toLowerCase());
-
-    if (!match?.id) {
-      console.error('[RESEND] Contact upsert failed (create errored, not found in list):', email, createResult.error);
-      return;
+    if (createResult.error) {
+      // Contact already exists — not a duplicate, not an error.
+      console.warn('[RESEND] Contact already exists (not duplicated):', email);
     }
-
-    await resend.contacts.update({
-      audienceId,
-      id: match.id,
-      ...(firstName ? { firstName } : {}),
-      ...(lastName ? { lastName } : {}),
-    });
   } catch (err) {
     console.error('[RESEND] upsertResendContact failed for:', email, err);
   }
