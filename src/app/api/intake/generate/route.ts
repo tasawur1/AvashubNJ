@@ -13,8 +13,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'API key not configured' }, { status: 500 });
     }
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25_000);
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
@@ -26,7 +30,7 @@ export async function POST(request: NextRequest) {
         system: `You are the clinical director of Ava's Hub in East Orange, NJ — Essex County's premier pediatric therapy clinic for children and young adults ages 18 months to 21 years. You use PEO, MOHO, and CMOP-E frameworks. You write warm, hopeful, strength-based results that make families feel seen and give them a clear picture of how Ava's Hub can help their child. Plain text only — no markdown bold (**). Always disclaim this is not a clinical evaluation.`,
         messages: [{ role: 'user', content: prompt }],
       }),
-    });
+    }).finally(() => clearTimeout(timeoutId));
 
     if (!response.ok) {
       const errorBody = await response.text();
