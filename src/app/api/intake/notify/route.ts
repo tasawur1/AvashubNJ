@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { buildEmail, scheduleButtonHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
-import { upsertResendContact } from '@/lib/resendContact';
+import { trackKlaviyoEvent } from '@/lib/klaviyo';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
@@ -102,17 +102,18 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // — Upsert parent to Resend audience (best-effort) —
+    // — Track intake submission in Klaviyo (best-effort; PHI-light: name + service only) —
     if (parentEmail && parentEmail.includes('@')) {
       try {
-        const nameParts = (parentName ?? '').trim().split(/\s+/).filter(Boolean);
-        await upsertResendContact(resend, {
-          email: parentEmail,
-          firstName: nameParts[0] ?? '',
-          lastName: nameParts.slice(1).join(' ') || undefined,
+        const childFirstName = (childName ?? '').trim().split(/\s+/)[0] ?? '';
+        await trackKlaviyoEvent(parentEmail, 'Intake Form Submitted', {
+          service,
+          child_name: childFirstName,
+          source: 'intake_form',
         });
-      } catch (contactErr) {
-        console.error('[INTAKE] Resend contact sync failed:', parentEmail, contactErr);
+        console.log('[KLAVIYO] Intake event tracked:', parentEmail);
+      } catch (klaviyoErr) {
+        console.error('[KLAVIYO] Intake event failed:', parentEmail, klaviyoErr);
       }
     }
 

@@ -5,6 +5,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { ScrollRevealController } from "@/components/ScrollRevealController";
+import Script from "next/script";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -69,6 +70,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={plusJakarta.variable}>
       <body className="flex min-h-screen flex-col font-sans">
+        <Script
+          src={`https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=${process.env.NEXT_PUBLIC_KLAVIYO_SITE_ID}`}
+          strategy="afterInteractive"
+        />
         <Header />
         <ScrollRevealController />
         {children}

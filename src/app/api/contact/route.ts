@@ -1,17 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { promises as fs } from 'fs';
-import path from 'path';
 import { buildEmail, intakeFormButtonsHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
-import { upsertResendContact } from '@/lib/resendContact';
+import { trackKlaviyoEvent } from '@/lib/klaviyo';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
-
-// Same CSV as newsletter subscribers — contact form adds the person's entry
-// if their email isn't already on file.
-const CSV_PATH =
-  process.env.SUBSCRIBER_CSV_PATH ??
-  path.join(process.cwd(), 'data', 'newsletter-subscribers.csv');
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,28 +32,7 @@ export async function POST(request: NextRequest) {
 
     const fullName = [firstName, lastName].filter(Boolean).join(' ');
 
-    // — Append to shared subscriber CSV (best-effort) —
-    try {
-      await fs.mkdir(path.dirname(CSV_PATH), { recursive: true });
-      let existing = '';
-      try { existing = await fs.readFile(CSV_PATH, 'utf-8'); } catch { /* new file */ }
-      if (!existing.toLowerCase().includes(email)) {
-        const header = existing ? '' : 'email,name,source_page,timestamp\n';
-        const row = `${cell(email)},${cell(fullName)},contact-form,${new Date().toISOString()}\n`;
-        await fs.appendFile(CSV_PATH, header + row, 'utf-8');
-      }
-    } catch (csvErr) {
-      console.warn('Contact CSV write failed (filesystem may be read-only on this host):', csvErr);
-    }
-
     const resend = new Resend(resendApiKey);
-
-    // — Upsert to Resend audience (best-effort) —
-    try {
-      await upsertResendContact(resend, { email, firstName, lastName });
-    } catch (contactErr) {
-      console.error('[CONTACT] Resend contact sync failed:', email, contactErr);
-    }
 
     const timestamp = new Date().toLocaleString('en-US', {
       timeZone: 'America/New_York',
@@ -124,6 +95,14 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // — Track contact form submission in Klaviyo (best-effort) —
+    try {
+      await trackKlaviyoEvent(email, 'Contact Form Submitted', { source: 'contact_form' });
+      console.log('[KLAVIYO] Contact event tracked:', email);
+    } catch (klaviyoErr) {
+      console.error('[KLAVIYO] Contact event failed:', email, klaviyoErr);
+    }
+
     return NextResponse.json({
       success: !clinicResult.error,
       clinicEmail: clinicResult,
@@ -134,13 +113,6 @@ export async function POST(request: NextRequest) {
     console.error('Contact route error:', error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }
-}
-
-function cell(value: string): string {
-  if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-    return `"${value.replace(/"/g, '""')}"`;
-  }
-  return value;
 }
 
 function row(label: string, value: string): string {
