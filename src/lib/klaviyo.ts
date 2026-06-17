@@ -20,6 +20,7 @@ export async function addToKlaviyoList(
       return;
     }
 
+    // Step 1: Subscribe the profile (email + consent only — name fields not supported here)
     const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
       method: 'POST',
       headers: klaviyoHeaders(apiKey),
@@ -32,8 +33,6 @@ export async function addToKlaviyoList(
                 type: 'profile',
                 attributes: {
                   email,
-                  first_name: firstName || '',
-                  last_name: lastName || '',
                   subscriptions: {
                     email: { marketing: { consent: 'SUBSCRIBED' } },
                   },
@@ -56,6 +55,35 @@ export async function addToKlaviyoList(
     }
 
     console.log('[KLAVIYO] Contact added:', email);
+
+    // Step 2: Upsert name on the profile (non-fatal if this fails)
+    if (firstName || lastName) {
+      try {
+        const nameAttributes: Record<string, string> = { email };
+        if (firstName) nameAttributes.first_name = firstName;
+        if (lastName) nameAttributes.last_name = lastName;
+
+        const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
+          method: 'POST',
+          headers: klaviyoHeaders(apiKey),
+          body: JSON.stringify({
+            data: {
+              type: 'profile',
+              attributes: nameAttributes,
+            },
+          }),
+        });
+
+        if (!profileRes.ok) {
+          const text = await profileRes.text();
+          console.warn('[KLAVIYO] Failed to update profile name for:', email, profileRes.status, text);
+        } else {
+          console.log('[KLAVIYO] Profile name updated:', email);
+        }
+      } catch (nameErr) {
+        console.warn('[KLAVIYO] Failed to update profile name for:', email, nameErr);
+      }
+    }
   } catch (err) {
     console.error('[KLAVIYO] Failed to add contact:', email, err);
   }
