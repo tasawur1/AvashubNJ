@@ -1,4 +1,5 @@
 const KLAVIYO_LIST_ID = 'QYbPhK';
+const KLAVIYO_TIMEOUT_MS = 10_000;
 
 function klaviyoHeaders(apiKey: string) {
   return {
@@ -6,6 +7,10 @@ function klaviyoHeaders(apiKey: string) {
     'revision': '2024-02-15',
     'Content-Type': 'application/json',
   };
+}
+
+function klaviyoSignal(): AbortSignal {
+  return AbortSignal.timeout(KLAVIYO_TIMEOUT_MS);
 }
 
 export async function addToKlaviyoList(
@@ -24,6 +29,7 @@ export async function addToKlaviyoList(
     const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
       method: 'POST',
       headers: klaviyoHeaders(apiKey),
+      signal: klaviyoSignal(),
       body: JSON.stringify({
         data: {
           type: 'profile-subscription-bulk-create-job',
@@ -39,7 +45,6 @@ export async function addToKlaviyoList(
                 },
               }],
             },
-            historical_import: false,
           },
           relationships: {
             list: { data: { type: 'list', id: KLAVIYO_LIST_ID } },
@@ -66,6 +71,7 @@ export async function addToKlaviyoList(
         const profileRes = await fetch('https://a.klaviyo.com/api/profiles/', {
           method: 'POST',
           headers: klaviyoHeaders(apiKey),
+          signal: klaviyoSignal(),
           body: JSON.stringify({
             data: {
               type: 'profile',
@@ -104,6 +110,7 @@ export async function trackKlaviyoEvent(
     const res = await fetch('https://a.klaviyo.com/api/events/', {
       method: 'POST',
       headers: klaviyoHeaders(apiKey),
+      signal: klaviyoSignal(),
       body: JSON.stringify({
         data: {
           type: 'event',
