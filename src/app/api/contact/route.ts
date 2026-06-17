@@ -137,6 +137,8 @@ export async function POST(request: NextRequest) {
     // — Klaviyo: track rich contact form event —
     try {
       await trackKlaviyoEvent(email, 'Contact Form Submitted', {
+        first_name: firstName || '',
+        last_name: lastName || '',
         phone: phone || '',
         message: message || '',
         source: 'contact_form',

@@ -108,30 +108,38 @@ export async function upsertKlaviyoProfile(
       return;
     }
 
-    const res = await fetch('https://a.klaviyo.com/api/profiles/', {
-      method: 'POST',
-      headers: klaviyoHeaders(apiKey),
-      signal: klaviyoSignal(),
-      body: JSON.stringify({
-        data: {
-          type: 'profile',
-          attributes: {
-            email,
-            ...(firstName && { first_name: firstName }),
-            ...(lastName && { last_name: lastName }),
-            ...(phone && { phone_number: phone }),
-          },
+    const body = JSON.stringify({
+      data: {
+        type: 'profile',
+        attributes: {
+          email,
+          ...(firstName && { first_name: firstName }),
+          ...(lastName && { last_name: lastName }),
+          ...(phone && { phone_number: phone }),
         },
-      }),
+      },
     });
 
+    console.log('[KLAVIYO] Profile upsert payload:', body);
+
+    const res = await fetch('https://a.klaviyo.com/api/profiles/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Klaviyo-API-Key ${apiKey}`,
+        'revision': '2024-10-15',
+        'Content-Type': 'application/json',
+      },
+      signal: klaviyoSignal(),
+      body,
+    });
+
+    const text = await res.text();
     if (!res.ok) {
-      const text = await res.text();
-      console.error('[KLAVIYO] Profile upsert failed:', email, res.status, text);
+      console.error('[KLAVIYO] Profile upsert failed:', res.status, text);
       return;
     }
 
-    console.log('[KLAVIYO] Profile upserted:', email);
+    console.log('[KLAVIYO] Profile upsert success:', res.status);
   } catch (err) {
     console.error('[KLAVIYO] Profile upsert failed:', email, err);
   }
