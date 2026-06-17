@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { buildEmail, intakeFormButtonsHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
-import { trackKlaviyoEvent } from '@/lib/klaviyo';
-
-const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
+import { buildEmail, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
+import { addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,11 +38,11 @@ export async function POST(request: NextRequest) {
       timeStyle: 'short',
     });
 
-    // — EMAIL 1: Full submission to Marilyn —
+    // — Internal notification to hello@avashubnj.com —
     const clinicResult = await resend.emails.send({
       from: "Ava's Hub <forms@avashubnj.com>",
-      replyTo: email,          // replies go straight back to the person who wrote in
-      to: NOTIFY_EMAIL,
+      replyTo: email,
+      to: 'hello@avashubnj.com',
       subject: `📬 New Contact Form Message — ${fullName || email} | Ava's Hub`,
       html: buildEmail({
         heading: `📬 New Contact Form — ${esc(fullName || email)}`,
@@ -64,49 +62,59 @@ export async function POST(request: NextRequest) {
       }),
     });
 
-    // — EMAIL 2: Warm confirmation to the person who wrote in —
-    let confirmResult = null;
-    if (email) {
-      confirmResult = await resend.emails.send({
-        from: "Ava's Hub <forms@avashubnj.com>",
-        replyTo: 'marilyn@avashubnj.com',
-        to: email,
-        subject: "We got your message! | Ava's Hub",
-        html: buildEmail({
-          heading: `Hi ${esc(firstName || 'there')} — we got your message! 💚`,
-          bodyHtml: `
-            <p style="margin:0 0 14px;font-size:15px;line-height:1.75;color:#3a3a3a;">
-              Thank you for reaching out to Ava's Hub. Our team has received your message and will personally review it.
-            </p>
-            <p style="margin:0 0 14px;font-size:15px;line-height:1.75;color:#3a3a3a;">
-              We'll be in touch within <strong>1–2 business days</strong>. In the meantime, feel free to reply
-              to this email if you have anything to add — it goes straight to Marilyn.
-            </p>
-            <p style="margin:0;font-size:15px;line-height:1.75;color:#3a3a3a;">
-              We look forward to connecting with your family.
-            </p>`,
-          ctaHtml: `
-            <p style="margin:0 0 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#888;">
-              While you wait, explore what we offer:
-            </p>
-            ${intakeFormButtonsHtml()}`,
-          footerNote: 'You received this because you submitted the contact form at avashubnj.com.',
-        }),
-      });
+    // — Klaviyo: upsert profile name —
+    try {
+      await addToKlaviyoList(email, firstName, lastName);
+    } catch (err) {
+      console.warn('[KLAVIYO] addToKlaviyoList failed for contact form:', email, err);
     }
 
-    // — Track contact form submission in Klaviyo (best-effort) —
+    // — Klaviyo: upsert phone number (if provided) —
+    if (phone) {
+      try {
+        const klaviyoApiKey = process.env.KLAVIYO_PRIVATE_API_KEY;
+        if (klaviyoApiKey) {
+          const phoneRes = await fetch('https://a.klaviyo.com/api/profiles/', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
+              'revision': '2024-02-15',
+              'Content-Type': 'application/json',
+            },
+            signal: AbortSignal.timeout(10_000),
+            body: JSON.stringify({
+              data: {
+                type: 'profile',
+                attributes: { email, phone_number: phone },
+              },
+            }),
+          });
+          if (!phoneRes.ok) {
+            const text = await phoneRes.text();
+            console.warn('[KLAVIYO] Failed to upsert phone for:', email, phoneRes.status, text);
+          } else {
+            console.log('[KLAVIYO] Phone upserted:', email);
+          }
+        }
+      } catch (phoneErr) {
+        console.warn('[KLAVIYO] Phone upsert failed for:', email, phoneErr);
+      }
+    }
+
+    // — Klaviyo: track rich contact form event —
     try {
-      await trackKlaviyoEvent(email, 'Contact Form Submitted', { source: 'contact_form' });
-      console.log('[KLAVIYO] Contact event tracked:', email);
-    } catch (klaviyoErr) {
-      console.error('[KLAVIYO] Contact event failed:', email, klaviyoErr);
+      await trackKlaviyoEvent(email, 'Contact Form Submitted', {
+        phone: phone || '',
+        message: message || '',
+        source: 'contact_form',
+      });
+    } catch (err) {
+      console.warn('[KLAVIYO] trackKlaviyoEvent failed for contact form:', email, err);
     }
 
     return NextResponse.json({
       success: !clinicResult.error,
       clinicEmail: clinicResult,
-      confirmEmail: confirmResult,
     });
 
   } catch (error) {
