@@ -95,6 +95,48 @@ export async function addToKlaviyoList(
   }
 }
 
+export async function upsertKlaviyoProfile(
+  email: string,
+  firstName?: string,
+  lastName?: string,
+  phone?: string
+): Promise<void> {
+  try {
+    const apiKey = process.env.KLAVIYO_PRIVATE_API_KEY;
+    if (!apiKey) {
+      console.error('[KLAVIYO] KLAVIYO_PRIVATE_API_KEY not configured — skipping profile upsert for:', email);
+      return;
+    }
+
+    const res = await fetch('https://a.klaviyo.com/api/profiles/', {
+      method: 'POST',
+      headers: klaviyoHeaders(apiKey),
+      signal: klaviyoSignal(),
+      body: JSON.stringify({
+        data: {
+          type: 'profile',
+          attributes: {
+            email,
+            ...(firstName && { first_name: firstName }),
+            ...(lastName && { last_name: lastName }),
+            ...(phone && { phone_number: phone }),
+          },
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error('[KLAVIYO] Profile upsert failed:', email, res.status, text);
+      return;
+    }
+
+    console.log('[KLAVIYO] Profile upserted:', email);
+  } catch (err) {
+    console.error('[KLAVIYO] Profile upsert failed:', email, err);
+  }
+}
+
 export async function trackKlaviyoEvent(
   email: string,
   eventName: string,

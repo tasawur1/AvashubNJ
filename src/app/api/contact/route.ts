@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { esc } from '@/lib/emailTemplate';
-import { addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
+import { upsertKlaviyoProfile, trackKlaviyoEvent } from '@/lib/klaviyo';
 
 export async function POST(request: NextRequest) {
   try {
@@ -127,43 +127,11 @@ export async function POST(request: NextRequest) {
       ),
     ]);
 
-    // — Klaviyo: upsert profile name —
+    // — Klaviyo: upsert full profile (name + phone, no list subscription) —
     try {
-      await addToKlaviyoList(email, firstName, lastName);
+      await upsertKlaviyoProfile(email, firstName, lastName, phone);
     } catch (err) {
-      console.warn('[KLAVIYO] addToKlaviyoList failed for contact form:', email, err);
-    }
-
-    // — Klaviyo: upsert phone number (if provided) —
-    if (phone) {
-      try {
-        const klaviyoApiKey = process.env.KLAVIYO_PRIVATE_API_KEY;
-        if (klaviyoApiKey) {
-          const phoneRes = await fetch('https://a.klaviyo.com/api/profiles/', {
-            method: 'POST',
-            headers: {
-              'Authorization': `Klaviyo-API-Key ${klaviyoApiKey}`,
-              'revision': '2024-02-15',
-              'Content-Type': 'application/json',
-            },
-            signal: AbortSignal.timeout(10_000),
-            body: JSON.stringify({
-              data: {
-                type: 'profile',
-                attributes: { email, phone_number: phone },
-              },
-            }),
-          });
-          if (!phoneRes.ok) {
-            const text = await phoneRes.text();
-            console.warn('[KLAVIYO] Failed to upsert phone for:', email, phoneRes.status, text);
-          } else {
-            console.log('[KLAVIYO] Phone upserted:', email);
-          }
-        }
-      } catch (phoneErr) {
-        console.warn('[KLAVIYO] Phone upsert failed for:', email, phoneErr);
-      }
+      console.warn('[KLAVIYO] upsertKlaviyoProfile failed for contact form:', email, err);
     }
 
     // — Klaviyo: track rich contact form event —
