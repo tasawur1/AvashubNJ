@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
     });
 
     // — Internal notification to hello@avashubnj.com —
-    const clinicResult = await resend.emails.send({
+    const clinicResult = await Promise.race([
+      resend.emails.send({
       from: "Ava's Hub <forms@avashubnj.com>",
       replyTo: email,
       to: 'hello@avashubnj.com',
@@ -60,7 +61,11 @@ export async function POST(request: NextRequest) {
           </div>`,
         ctaHtml: replyPromptHtml(),
       }),
-    });
+      }),
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Resend timed out after 10s')), 10_000)
+      ),
+    ]);
 
     // — Klaviyo: upsert profile name —
     try {
