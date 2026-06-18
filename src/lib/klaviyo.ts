@@ -145,13 +145,11 @@ export async function upsertKlaviyoProfile(
       body,
     });
 
-    const text = await res.text();
+    console.log('[KLAVIYO] Profile upsert response:', res.status);
     if (!res.ok) {
-      console.error('[KLAVIYO] Profile upsert failed:', res.status, text);
+      console.error('[KLAVIYO] Profile upsert error body:', await res.text());
       return;
     }
-
-    console.log('[KLAVIYO] Profile upsert success:', res.status);
   } catch (err) {
     console.error('[KLAVIYO] Profile upsert failed:', email, err);
   }
