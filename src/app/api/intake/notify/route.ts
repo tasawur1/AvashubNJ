@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { buildEmail, scheduleButtonHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
-import { trackKlaviyoEvent } from '@/lib/klaviyo';
+import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // — Track intake submission in Klaviyo (best-effort; PHI-light: name + service only) —
+    // — Klaviyo: track event + upsert profile + add to list (all best-effort) —
     if (parentEmail && parentEmail.includes('@')) {
       try {
         const childFirstName = (childName ?? '').trim().split(/\s+/)[0] ?? '';
@@ -114,6 +114,35 @@ export async function POST(request: NextRequest) {
         console.log('[KLAVIYO] Intake event tracked:', parentEmail);
       } catch (klaviyoErr) {
         console.error('[KLAVIYO] Intake event failed:', parentEmail, klaviyoErr);
+      }
+
+      try {
+        await upsertKlaviyoProfile(
+          parentEmail,
+          parentName,
+          undefined,
+          phone || undefined,
+          {
+            child_name: childName || '',
+            intake_form: formId || '',
+            intake_source: 'intake_form',
+          }
+        );
+        console.log('[KLAVIYO INTAKE] Profile upserted:', parentEmail);
+      } catch (err) {
+        console.error('[KLAVIYO INTAKE] Profile upsert failed:', parentEmail, err);
+      }
+
+      try {
+        await addToKlaviyoList(
+          parentEmail,
+          parentName,
+          undefined,
+          process.env.KLAVIYO_INTAKE_LIST_ID
+        );
+        console.log('[KLAVIYO INTAKE] Added to list:', parentEmail);
+      } catch (err) {
+        console.error('[KLAVIYO INTAKE] List add failed:', parentEmail, err);
       }
     }
 
