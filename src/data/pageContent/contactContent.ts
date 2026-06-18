@@ -6,7 +6,7 @@ export const contactHero: PageIntroContent = {
   subheading: "Simple, friendly, and responsive.",
   description:
     "Whether you\u2019re ready to enroll, schedule a tour, or ask a question about programs and insurance, our team is happy to connect with you.",
-  cta: { label: "Call (908) 758-4692", href: "tel:+19087584692" },
+  cta: { label: "Call (973) 905-5255", href: "tel:+19739055255" },
 };
 
 export const contactCards: {
@@ -18,14 +18,14 @@ export const contactCards: {
   {
     icon: "phone",
     title: "Phone",
-    detail: "(908) 758-4692",
-    href: "tel:+19087584692",
+    detail: "(973) 905-5255",
+    href: "tel:+19739055255",
   },
   {
     icon: "email",
     title: "Email",
-    detail: "info@avashub.com",
-    href: "mailto:info@avashub.com",
+    detail: "hello@avashubnj.com",
+    href: "mailto:hello@avashubnj.com",
   },
   {
     icon: "location",

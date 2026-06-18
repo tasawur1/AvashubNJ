@@ -68,19 +68,19 @@ export function Footer() {
               <p className="flex items-center gap-2.5">
                 <Icon name="phone" className="shrink-0 text-brand-gold" />
                 <a
-                  href="tel:+19087584692"
+                  href="tel:+19739055255"
                   className="font-semibold underline decoration-brand-gold decoration-2 underline-offset-4 hover:text-brand-gold"
                 >
-                  (908) 758-4692
+                  (973) 905-5255
                 </a>
               </p>
               <p className="flex items-center gap-2.5">
                 <Icon name="email" className="shrink-0 text-brand-gold" />
                 <a
-                  href="mailto:info@avashub.com"
+                  href="mailto:hello@avashubnj.com"
                   className="underline decoration-brand-gold/80 decoration-1 underline-offset-4 hover:text-brand-gold"
                 >
-                  info@avashub.com
+                  hello@avashubnj.com
                 </a>
               </p>
             </div>

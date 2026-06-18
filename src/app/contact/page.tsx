@@ -64,13 +64,19 @@ const contactItems: ContactItem[] = [
     icon: "phone",
     title: "Call Us",
     tone: "purple",
-    lines: ["(908) 758-4692"],
+    lines: ["(973) 905-5255"],
   },
   {
     icon: "email",
     title: "Email Us",
     tone: "teal",
-    lines: ["info@avashub.com"],
+    lines: ["hello@avashubnj.com"],
+  },
+  {
+    icon: "fax",
+    title: "Fax",
+    tone: "purple",
+    lines: ["(973) 567-7700"],
   },
   {
     icon: "location",
@@ -406,11 +412,11 @@ function DesktopContactPage() {
               </span>
             </h2>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
             {contactItems.map((item) => (
               <article
                 key={item.title}
-                className="rounded-[1.75rem] bg-white/95 p-6 shadow-card ring-1 ring-brand-teal/10"
+                className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10"
               >
                 <span
                   className={`flex h-14 w-14 items-center justify-center rounded-full ${toneStyles[item.tone].icon}`}

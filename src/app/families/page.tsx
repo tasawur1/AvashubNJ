@@ -206,13 +206,13 @@ const actionItems: ActionItem[] = [
   {
     icon: "phone",
     title: "Call or Text Us",
-    description: "(908) 758-4692",
+    description: "(973) 905-5255",
     tone: "purple",
   },
   {
     icon: "email",
     title: "Email Us",
-    description: "info@avashub.com",
+    description: "hello@avashubnj.com",
     tone: "gold",
   },
   {
