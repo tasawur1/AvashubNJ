@@ -92,8 +92,11 @@ export function ContactForm({ variant = "desktop" }: { variant?: "mobile" | "des
         <>
           <input name="email" type="email" autoComplete="email" required
             placeholder="Email Address *" className={cls} aria-label="Email Address" />
-          <input name="phone" type="tel" autoComplete="tel"
-            placeholder="Phone Number *" className={cls} aria-label="Phone Number" />
+          <div>
+            <input name="phone" type="tel" autoComplete="tel"
+              placeholder="+1 555 000 0000" className={cls} aria-label="Phone Number" />
+            <p className="mt-1 px-1 text-xs text-brand-navy/50">Include your country code (e.g. +1 for US, +44 for UK)</p>
+          </div>
         </>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2">
@@ -105,7 +108,8 @@ export function ContactForm({ variant = "desktop" }: { variant?: "mobile" | "des
           <div>
             <label htmlFor="cf-phone" className="sr-only">Phone Number</label>
             <input id="cf-phone" name="phone" type="tel" autoComplete="tel"
-              placeholder="Phone Number *" className={cls} />
+              placeholder="+1 555 000 0000" className={cls} />
+            <p className="mt-1 px-1 text-xs text-brand-navy/50">Include your country code (e.g. +1 for US, +44 for UK)</p>
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { esc } from '@/lib/emailTemplate';
-import { upsertKlaviyoProfile, trackKlaviyoEvent } from '@/lib/klaviyo';
+import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
 
 export async function POST(request: NextRequest) {
   try {
@@ -127,11 +127,21 @@ export async function POST(request: NextRequest) {
       ),
     ]);
 
-    // — Klaviyo: upsert full profile (name + phone, no list subscription) —
+    // — Klaviyo: upsert full profile (name + phone + custom properties) —
     try {
-      await upsertKlaviyoProfile(email, firstName, lastName, phone);
+      await upsertKlaviyoProfile(email, firstName, lastName, phone, {
+        last_message: message || '',
+        last_contact_source: 'contact_form',
+      });
     } catch (err) {
       console.warn('[KLAVIYO] upsertKlaviyoProfile failed for contact form:', email, err);
+    }
+
+    // — Klaviyo: add to Contact Form Leads list —
+    try {
+      await addToKlaviyoList(email, firstName, lastName, process.env.KLAVIYO_CONTACT_LIST_ID);
+    } catch (err) {
+      console.warn('[KLAVIYO] addToKlaviyoList failed for contact form:', email, err);
     }
 
     // — Klaviyo: track rich contact form event —

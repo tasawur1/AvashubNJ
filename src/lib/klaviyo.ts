@@ -4,7 +4,7 @@ const KLAVIYO_TIMEOUT_MS = 10_000;
 function klaviyoHeaders(apiKey: string) {
   return {
     'Authorization': `Klaviyo-API-Key ${apiKey}`,
-    'revision': '2024-02-15',
+    'revision': '2024-10-15',
     'Content-Type': 'application/json',
   };
 }
@@ -13,10 +13,20 @@ function klaviyoSignal(): AbortSignal {
   return AbortSignal.timeout(KLAVIYO_TIMEOUT_MS);
 }
 
+function normalizePhone(phone: string): string | undefined {
+  if (!phone?.trim()) return undefined;
+  const cleaned = phone.replace(/[^\d+]/g, '');
+  if (cleaned.startsWith('+')) return cleaned.length > 7 ? cleaned : undefined;
+  if (cleaned.startsWith('00')) return '+' + cleaned.slice(2);
+  if (cleaned.length >= 10) return '+' + cleaned;
+  return undefined;
+}
+
 export async function addToKlaviyoList(
   email: string,
   firstName?: string,
-  lastName?: string
+  lastName?: string,
+  listId?: string
 ): Promise<void> {
   try {
     const apiKey = process.env.KLAVIYO_PRIVATE_API_KEY;
@@ -24,6 +34,8 @@ export async function addToKlaviyoList(
       console.error('[KLAVIYO] KLAVIYO_PRIVATE_API_KEY not configured — skipping for:', email);
       return;
     }
+
+    const resolvedListId = listId ?? process.env.KLAVIYO_LIST_ID ?? KLAVIYO_LIST_ID;
 
     // Step 1: Subscribe the profile (email + consent only — name fields not supported here)
     const res = await fetch('https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs/', {
@@ -47,7 +59,7 @@ export async function addToKlaviyoList(
             },
           },
           relationships: {
-            list: { data: { type: 'list', id: KLAVIYO_LIST_ID } },
+            list: { data: { type: 'list', id: resolvedListId } },
           },
         },
       }),
@@ -99,7 +111,8 @@ export async function upsertKlaviyoProfile(
   email: string,
   firstName?: string,
   lastName?: string,
-  phone?: string
+  phone?: string,
+  properties?: Record<string, string>
 ): Promise<void> {
   try {
     const apiKey = process.env.KLAVIYO_PRIVATE_API_KEY;
@@ -108,6 +121,8 @@ export async function upsertKlaviyoProfile(
       return;
     }
 
+    const normalizedPhone = phone ? normalizePhone(phone) : undefined;
+
     const body = JSON.stringify({
       data: {
         type: 'profile',
@@ -115,7 +130,8 @@ export async function upsertKlaviyoProfile(
           email,
           ...(firstName && { first_name: firstName }),
           ...(lastName && { last_name: lastName }),
-          ...(phone && { phone_number: phone }),
+          ...(normalizedPhone && { phone_number: normalizedPhone }),
+          ...(properties && { properties }),
         },
       },
     });
@@ -124,11 +140,7 @@ export async function upsertKlaviyoProfile(
 
     const res = await fetch('https://a.klaviyo.com/api/profiles/', {
       method: 'POST',
-      headers: {
-        'Authorization': `Klaviyo-API-Key ${apiKey}`,
-        'revision': '2024-10-15',
-        'Content-Type': 'application/json',
-      },
+      headers: klaviyoHeaders(apiKey),
       signal: klaviyoSignal(),
       body,
     });
