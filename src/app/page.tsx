@@ -591,11 +591,11 @@ export default function HomePage() {
 
         <section className="pb-8">
           <div className="overflow-x-auto px-6 pb-2">
-            <div className="flex min-w-max gap-4">
+            <div className="flex min-w-max snap-x snap-mandatory gap-4">
               {valueCards.map((card) => (
                 <article
                   key={card.title}
-                  className="w-36 rounded-3xl bg-white/90 p-5 text-center shadow-card ring-1 ring-brand-purple-deep/10"
+                  className="w-36 snap-start rounded-3xl bg-white/90 p-5 text-center shadow-card ring-1 ring-brand-purple-deep/10"
                 >
                   <Icon
                     name={card.icon}

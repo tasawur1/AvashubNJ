@@ -260,11 +260,11 @@ function MobileAboutPage() {
           </p>
         </div>
         <div className="mt-6 overflow-x-auto px-6 pb-2">
-          <div className="flex min-w-max gap-4">
+          <div className="flex min-w-max snap-x snap-mandatory gap-4">
             {beliefCards.map((card) => (
               <article
                 key={card.title}
-                className="w-64 rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
+                className="w-64 snap-start rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10"
               >
                 <Icon name={card.icon} className="text-brand-purple-bright" size="2x" />
                 <h3 className="mt-5 text-xl font-extrabold text-brand-navy">

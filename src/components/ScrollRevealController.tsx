@@ -30,7 +30,7 @@ export function ScrollRevealController() {
 
     import("lenis").then(({ default: Lenis }) => {
       if (destroyed) return;
-      lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: true });
+      lenis = new Lenis({ lerp: 0.1, smoothWheel: true, syncTouch: false });
       const tick = (time: number) => {
         lenis!.raf(time);
         rafId = requestAnimationFrame(tick);
