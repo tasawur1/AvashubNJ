@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         subject: `🆕 New ${service} Intake — ${childName} | Ava's Hub`,
         html: buildEmail({
           heading: `🆕 New ${esc(service)} Intake — ${esc(childName)}`,
+          headerEmail: 'marilyn@avashubnj.com',
           bodyHtml: `
           <p style="margin:0 0 14px;font-size:13px;color:#888;">
             Submitted: <strong>${esc(timestamp)}</strong> &nbsp;·&nbsp; Form: <code style="font-size:12px;background:#f3f0f9;padding:2px 6px;border-radius:4px;">${esc(formId)}</code>
@@ -81,6 +82,7 @@ export async function POST(request: NextRequest) {
           subject: `Your Ava's Hub ${service} Results — ${childName}`,
           html: buildEmail({
             heading: `Your ${esc(service)} Results — ${esc(childName)}`,
+            headerEmail: 'marilyn@avashubnj.com',
             bodyHtml: `
             <p style="margin:0 0 14px;font-size:15px;line-height:1.75;color:#3a3a3a;">
               Dear ${esc(parentName)},

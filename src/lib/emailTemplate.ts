@@ -35,9 +35,10 @@ export type EmailOptions = {
   bodyHtml: string;
   ctaHtml: string;
   footerNote?: string;
+  headerEmail?: string;
 };
 
-export function buildEmail({ heading, bodyHtml, ctaHtml, footerNote }: EmailOptions): string {
+export function buildEmail({ heading, bodyHtml, ctaHtml, footerNote, headerEmail = 'hello@avashubnj.com' }: EmailOptions): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +53,7 @@ export function buildEmail({ heading, bodyHtml, ctaHtml, footerNote }: EmailOpti
   <!-- Header -->
   <tr><td style="background:${C.lavender};padding:22px 28px 18px;border-bottom:2px solid ${C.purpleBright}55;">
     <img src="${LOGO_URL}" alt="Ava's Hub" height="46" style="display:block;max-width:160px;height:auto;">
-    <p style="margin:8px 0 0;font-size:11px;color:${C.purpleDeep};">East Orange, NJ &nbsp;·&nbsp; hello@avashubnj.com</p>
+    <p style="margin:8px 0 0;font-size:11px;color:${C.purpleDeep};">East Orange, NJ &nbsp;·&nbsp; ${headerEmail}</p>
   </td></tr>
   <!-- Body -->
   <tr><td style="padding:28px 28px 24px;">
