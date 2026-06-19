@@ -800,150 +800,80 @@ async function submitForm(){
     anythingElse: document.getElementById('anything-else').value,
   });
 
-  try{
-    // Try Next.js API route first (production)
-    let resultText = null;
-
-    try {
-      const res = await fetch('/api/intake/generate',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({prompt, formId:'ot_screener'})
-      });
-      if(res.ok){
-        const result = await res.json();
-        if(result.text) resultText = result.text;
-      }
-    } catch(routeErr){
-      console.warn('API route not available, trying direct:', routeErr);
-    }
-
-    // Fallback: call Anthropic directly (dev/testing only — needs CORS proxy in prod)
-    if(!resultText){
-      try {
-        const directRes = await fetch('https://api.anthropic.com/v1/messages',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            model:'claude-sonnet-4-6',
-            max_tokens:1400,
-            system:`You are the clinical director of Ava's Hub in East Orange, NJ — Essex County's premier pediatric therapy clinic. You use PEO, MOHO, and CMOP-E frameworks. Write warm, hopeful, strength-based results. Plain text only, no ** markdown.`,
-            messages:[{role:'user',content:prompt}]
-          })
-        });
-        if(directRes.ok){
-          const directResult = await directRes.json();
-          if(directResult.content?.[0]?.text) resultText = directResult.content[0].text;
-        }
-      } catch(directErr){
-        console.warn('Direct API also failed:', directErr);
-      }
-    }
-
-    clearInterval(iv);
-
-    const finalText = resultText || buildRichFallbackText(childName, parentName, formData);
-    document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
-    fetch('/api/intake/notify',{
+  let resultText = null;
+  try {
+    const res = await fetch('/api/intake/generate',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        formId:'ot_screener',
-        childName, parentName, parentEmail,
-        phone: document.getElementById('parent-phone').value,
-        results: finalText
-      })
-    }).catch(()=>{});
-    localStorage.removeItem(CACHE_KEY);
-  }catch(e){
-    clearInterval(iv);
-    const fallbackText = buildRichFallbackText(childName, parentName, formData);
-    document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(fallbackText)}</div></div>`;
-    fetch('/api/intake/notify',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        formId:'ot_screener',
-        childName, parentName, parentEmail,
-        phone: document.getElementById('parent-phone').value,
-        results: fallbackText
-      })
-    }).catch(()=>{});
+      body:JSON.stringify({prompt, formId:'ot_screener'})
+    });
+    if(res.ok){
+      const result = await res.json();
+      if(result.text) resultText = result.text;
+    }
+  } catch(e){
+    console.warn('OT generate route error:', e);
   }
+
+  clearInterval(iv);
+  const finalText = resultText || buildRichFallbackText(childName, parentName, formData);
+  document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
+  fetch('/api/intake/notify',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      formId:'ot_screener',service:'Occupational Therapy',
+      childName, parentName, parentEmail,
+      phone: document.getElementById('parent-phone').value || '',
+      bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
+      insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
+      results: finalText
+    })
+  }).catch(()=>{});
+  localStorage.removeItem(CACHE_KEY);
   document.getElementById('result-actions').style.display='flex';
 }
 
 function buildPrompt(d){
-  return `You are the clinical director of Ava's Hub in East Orange, NJ — Essex County's premier pediatric therapy clinic for children and young adults ages 18 months to 21 years. You use three overlapping clinical frameworks: PEO (Person-Environment-Occupation), MOHO (Model of Human Occupation — Volition, Habituation, Performance), and CMOP-E (Canadian Model of Occupational Performance & Engagement — meaning, family priorities, participation vision).
+  return `You are the clinical director of Ava's Hub in East Orange, NJ. You use PEO, MOHO, and CMOP-E frameworks for pediatric OT.
 
-IMPORTANT: This is NOT a clinical evaluation. Clearly acknowledge this at the very start. All formal evaluations are performed in-office by Ava's Hub's licensed Occupational Therapist.
+IMPORTANT: This is NOT a clinical evaluation. State this clearly at the start.
 
-CHILD: ${d.childName}, age ${d.childAge}
-PARENT: ${d.parentName} (${d.parentEmail})
-DIAGNOSIS / CONCERNS: ${d.dx.join(', ')||'Not specified'}
-PERSONALITY: ${d.personality.join(', ')||'Not specified'}
-CHILD STRENGTHS: "${d.childStrengths||'Not provided'}"
+CHILD: ${d.childName}, age ${d.childAge} | PARENT: ${d.parentName} | DIAGNOSIS: ${d.dx.join(', ')||'Not specified'}
+PERSONALITY: ${d.personality.join(', ')||'Not specified'} | STRENGTHS: "${d.childStrengths||'Not provided'}"
 MAIN CONCERN: "${d.mainConcern||'Not provided'}"
 
 OT SKILLS (1=hardest, 5=age-appropriate):
-Fine motor / handwriting: ${d.fineMotor}/5 | Handwriting: ${d.handwriting}/5
-Dressing: ${d.dressing}/5 | Grooming: ${d.grooming}/5 | Feeding: ${d.feeding}/5
+Fine motor: ${d.fineMotor}/5 | Handwriting: ${d.handwriting}/5 | Dressing: ${d.dressing}/5 | Grooming: ${d.grooming}/5 | Feeding: ${d.feeding}/5
+MOHO — Volition: ${d.mohoVolition}/5 | Habituation: ${d.mohoHabituation}/5 | Interests: "${d.mohoInterests||'Not provided'}"
 
-MOHO:
-Volition (motivation): ${d.mohoVolition}/5
-Habituation (routines): ${d.mohoHabituation}/5
-Interests / what brings joy: "${d.mohoInterests||'Not provided'}"
+SENSORY: Touch: ${d.senTouch} | Sound: ${d.senSound} | Movement: ${d.senMovement} | Overload (1=daily, 5=rarely): ${d.senOverload}
+Hard environments: ${d.envHard.join(', ')||'none'} | Helps: ${d.envHelps.join(', ')||'nothing consistent'}
 
-SENSORY:
-Touch: ${d.senTouch} | Sound: ${d.senSound} | Movement: ${d.senMovement}
-Overload frequency (1=daily, 5=rarely): ${d.senOverload}
-Challenging environments: ${d.envHard.join(', ')||'none'}
-What currently helps: ${d.envHelps.join(', ')||'nothing consistent'}
+PEO FIT: Person: ${d.peoP}/5 | Environment: ${d.peoE}/5 | Occupation: ${d.peoO}/5
+Activities affected: ${d.occAffected.join(', ')||'none'}
 
-PEO FIT:
-Person fit: ${d.peoP}/5 | Environment fit: ${d.peoE}/5 | Occupation fit: ${d.peoO}/5
-Daily activities most affected: ${d.occAffected.join(', ')||'none selected'}
+CMOP-E: Hope: ${d.cmopHope.join(', ')||'not specified'} | #1 priority: "${d.cmopPriority||'Not provided'}"
+2–3yr vision: ${d.cmopVision.join(', ')||'not specified'} | Parent worry: ${d.parentWorry.join(', ')||'not specified'}
+Previous services: ${d.prevServices} | Insurance: ${d.insurance} | Notes: "${d.anythingElse||'none'}"
 
-CMOP-E — FAMILY PRIORITIES:
-What gives family hope: ${d.cmopHope.join(', ')||'not specified'}
-#1 priority in 6 months: "${d.cmopPriority||'Not provided'}"
-Participation vision (2–3 years): ${d.cmopVision.join(', ')||'not specified'}
-Parent's biggest worry: ${d.parentWorry.join(', ')||'not specified'}
-
-Previous services: ${d.prevServices}
-Insurance: ${d.insurance}
-Additional notes: "${d.anythingElse||'none'}"
-
-Write a warm, personalized OT results letter using all three frameworks. Use these exact section headers:
+Write a warm, personalized OT results summary with these exact section headers:
 
 🔍 ABOUT THIS QUESTIONNAIRE
 
-🌟 ABOUT ${d.childName.toUpperCase()} — WHAT WE SEE
+🌟 ABOUT ${d.childName.toUpperCase()} — STRENGTHS & PERSONALITY
 
-🤝 PERSON PROFILE (PEO + MOHO)
+🤝 SKILLS & SENSORY PROFILE (PEO + MOHO)
 
-🏫 ENVIRONMENT ANALYSIS (PEO)
-
-🎯 OCCUPATION & PARTICIPATION (PEO + CMOP-E)
-
-💛 WHAT MATTERS MOST TO YOUR FAMILY (CMOP-E)
+🏫 ENVIRONMENT & DAILY LIFE (PEO + CMOP-E)
 
 ✨ HOW AVA'S HUB'S OT PROGRAM CAN HELP ${d.childName.toUpperCase()}
 
-📋 WHAT ${d.childName.toUpperCase()}'S PROGRAM AT AVA'S HUB MIGHT LOOK LIKE
+📋 WHAT ${d.childName.toUpperCase()}'S PROGRAM MIGHT LOOK LIKE
 
 📞 YOUR NEXT STEP
 
-Guidelines:
-- Under ABOUT THIS QUESTIONNAIRE: clearly state this is NOT an evaluation and all formal OT evaluations are performed in-office by Ava's Hub's licensed OT. Warm but unambiguous.
-- Under PERSON PROFILE: always lead with ${d.childName}'s STRENGTHS before any challenges. Reference MOHO volition and habituation scores specifically.
-- Under ENVIRONMENT ANALYSIS: identify which environments create barriers and which support ${d.childName}. Be specific to what they shared.
-- Under OCCUPATION: connect their affected daily activities and roles to meaningful participation goals.
-- Under FAMILY PRIORITIES: this section is for ${d.parentName}. Directly reference their #1 priority, their vision, and their biggest worry. Make them feel heard as a parent, not just a caregiver. Use CMOP-E language naturally (meaning, occupational performance, engagement).
-- Under HOW AVA'S HUB CAN HELP: be specific. Match each identified need to a real Ava's Hub OT service — sensory integration, fine motor, ADL training, life skills, social skills, vocational readiness, caregiver coaching. Never be generic.
-- Under PROGRAM: give a concrete picture of what OT sessions at Ava's Hub look like for ${d.childName} — frequency, types of sessions, what a typical week might include, how parent coaching is integrated.
-- Under NEXT STEP: warm, clear, one ask — come in for a formal evaluation at Ava's Hub. Contact: hello@avashubnj.com | www.avashubnj.com | 280 S Harrison St, Suite 311, East Orange NJ 07018.
-- Use ${d.childName} and ${d.parentName} by name throughout. Never clinical jargon. Never cold. Plain text only — no ** markdown. Total ~700–800 words.`;
+Lead with ${d.childName}'s strengths. Reference MOHO scores, sensory profile, PEO fit, and ${d.parentName}'s #1 priority by name. Match needs to specific Ava's Hub OT services. Next step = in-office evaluation at hello@avashubnj.com | 280 S Harrison St, Suite 311, East Orange NJ. Plain text only — no ** markdown. ~600–700 words.`;
 }
 
 function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -995,21 +925,21 @@ function buildRichFallbackText(name, parent, d){
 
 Thank you for completing this questionnaire. Please remember — this is not a clinical evaluation. All formal OT evaluations are performed in-office by Ava's Hub's licensed Occupational Therapist. This summary is based on your responses and is meant to give you a sense of what we see and how we can help.
 
-🌟 WHAT WE SEE IN ${name.toUpperCase()}
+🌟 ABOUT ${name.toUpperCase()} — STRENGTHS & PERSONALITY
 
 ${strengths ? `You described ${name} as someone who is ${strengths}. That tells us so much — and at Ava's Hub, we always start with who your child already is. Their strengths are the foundation we build every goal on.` : `Even from the basics you shared, it is clear that ${name} has a family who advocates deeply for them — and that is one of the most powerful factors in a child's progress.`}
 
 ${concern ? `You shared that "${concern}" — and we hear you. This is exactly the kind of concern our OT team is trained to address.` : ''}
 
-⚡ AREAS WHERE OT AT AVA'S HUB CAN HELP
+🤝 SKILLS & SENSORY PROFILE (PEO + MOHO)
 
 ${supportText}
 
-${envText}
-
 Our occupational therapy program at Ava's Hub is built around the whole child — not just isolated skills. We use sensory integration, fine motor development, self-care training, life skills, and social participation to help children like ${name} show up more fully in every area of their life.
 
-💛 WHAT MATTERS MOST TO YOUR FAMILY
+🏫 ENVIRONMENT & DAILY LIFE (PEO + CMOP-E)
+
+${envText}
 
 ${hopeText}
 
@@ -1017,9 +947,11 @@ ${priorityText}
 
 At Ava's Hub, we believe that when families are heard and their priorities are centered, children thrive. The CMOP-E framework we use puts your family's vision at the heart of everything — not what a standardized test says your child needs, but what a good life looks like for ${name} in your eyes.
 
-✨ WHAT ${name.toUpperCase()}'S PROGRAM AT AVA'S HUB MIGHT LOOK LIKE
+✨ HOW AVA'S HUB'S OT PROGRAM CAN HELP ${name.toUpperCase()}
 
-Every child's program is different, but for a child with ${name}'s profile, you might expect:
+Every child's program at Ava's Hub is built around their unique profile. For a child with ${name}'s strengths and areas of growth, our OT team draws on sensory integration therapy, fine motor and handwriting support, ADL and self-care training, life skills coaching, social participation strategies, and caregiver coaching between sessions.
+
+📋 WHAT ${name.toUpperCase()}'S PROGRAM MIGHT LOOK LIKE
 
 ✓ Individualized OT sessions (typically 45–60 minutes, 1–2x per week to start)
 ✓ Sensory integration activities woven into every session

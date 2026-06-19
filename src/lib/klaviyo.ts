@@ -101,12 +101,30 @@ export async function addToKlaviyoList(
               const existingId = errorJson?.errors?.[0]?.meta?.duplicate_profile_id;
 
               if (existingId) {
+                // GET existing profile to avoid overwriting names already on file
+                let profileFirstName = '';
+                let profileLastName = '';
+                try {
+                  const getRes = await fetch(
+                    `https://a.klaviyo.com/api/profiles/${existingId}/?fields[profile]=first_name,last_name`,
+                    { method: 'GET', headers: klaviyoHeaders(apiKey), signal: klaviyoSignal() }
+                  );
+                  if (getRes.ok) {
+                    const profileData = await getRes.json();
+                    profileFirstName = profileData?.data?.attributes?.first_name ?? '';
+                    profileLastName = profileData?.data?.attributes?.last_name ?? '';
+                  }
+                } catch (getErr) {
+                  console.warn('[KLAVIYO] Could not GET profile before name PATCH:', getErr);
+                }
+
+                if (profileFirstName || profileLastName) {
+                  console.log('[KLAVIYO] Profile name already set — skipping name PATCH:', email);
+                  return;
+                }
+
                 const patchBody = JSON.stringify({
-                  data: {
-                    type: 'profile',
-                    id: existingId,
-                    attributes: nameAttributes,
-                  },
+                  data: { type: 'profile', id: existingId, attributes: nameAttributes },
                 });
 
                 const patchRes = await fetch(
@@ -192,18 +210,38 @@ export async function upsertKlaviyoProfile(
           const existingId = errorJson?.errors?.[0]?.meta?.duplicate_profile_id;
 
           if (existingId) {
-            const patchBody = JSON.stringify({
-              data: {
-                type: 'profile',
-                id: existingId,
-                attributes: {
+            // GET existing profile to check if names are already set
+            let profileFirstName = '';
+            let profileLastName = '';
+            try {
+              const getRes = await fetch(
+                `https://a.klaviyo.com/api/profiles/${existingId}/?fields[profile]=first_name,last_name`,
+                { method: 'GET', headers: klaviyoHeaders(apiKey), signal: klaviyoSignal() }
+              );
+              if (getRes.ok) {
+                const profileData = await getRes.json();
+                profileFirstName = profileData?.data?.attributes?.first_name ?? '';
+                profileLastName = profileData?.data?.attributes?.last_name ?? '';
+              }
+            } catch (getErr) {
+              console.warn('[KLAVIYO] Could not GET profile before PATCH:', getErr);
+            }
+
+            const namesAlreadySet = !!profileFirstName || !!profileLastName;
+
+            // If names exist, only patch custom properties; otherwise patch everything
+            const patchAttributes = namesAlreadySet
+              ? { ...(properties && { properties }) }
+              : {
                   email,
                   ...(firstName && { first_name: firstName }),
                   ...(lastName && { last_name: lastName }),
                   ...(normalizedPhone && { phone_number: normalizedPhone }),
                   ...(properties && { properties }),
-                },
-              },
+                };
+
+            const patchBody = JSON.stringify({
+              data: { type: 'profile', id: existingId, attributes: patchAttributes },
             });
 
             const patchRes = await fetch(
@@ -217,7 +255,7 @@ export async function upsertKlaviyoProfile(
             );
 
             if (patchRes.ok) {
-              console.log('[KLAVIYO] Profile updated via PATCH:', email);
+              console.log('[KLAVIYO] Profile updated via PATCH:', email, namesAlreadySet ? '(properties only — names preserved)' : '(full update)');
             } else {
               console.error('[KLAVIYO] Profile PATCH failed:', email, patchRes.status, await patchRes.text());
             }

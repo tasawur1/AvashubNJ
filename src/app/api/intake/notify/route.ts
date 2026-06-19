@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
           parentEmail,
           parentName,
           undefined,
-          phone || undefined,
+          undefined,
           {
             child_name: childName || '',
             intake_form: formId || '',

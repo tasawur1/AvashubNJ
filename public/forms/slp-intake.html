@@ -224,6 +224,32 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--dark);fon
     </div>
     <div class="field"><label class="field-label">What is your single most important goal for speech therapy at Ava's Hub?</label><textarea class="textarea" id="slp-top-goal" placeholder="e.g. I want her to be able to ask for what she needs. / I want him to be understood by his teacher..."></textarea></div>
     <div class="field"><label class="field-label">Anything else you want our team to know?</label><textarea class="textarea" id="slp-anything" placeholder="Any additional context — family history, school reports, previous evaluations..."></textarea></div>
+    <div class="divider"></div>
+    <div class="sub-head">Contact Preferences</div>
+    <div class="field"><label class="field-label">Insurance provider <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+      <div class="chip-row">
+        <label class="fc"><input type="radio" name="insurance" value="aetna"><span>Aetna</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="uhc"><span>UnitedHealthcare</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="horizon"><span>Horizon NJ Health</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="amerihealth"><span>AmeriHealth NJ</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="nj-familycare"><span>NJ FamilyCare / Medicaid</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="bcbs"><span>BCBS</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="cigna"><span>Cigna</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="private-pay"><span>Private pay</span></label>
+        <label class="fc"><input type="radio" name="insurance" value="unsure"><span>Not sure yet</span></label>
+      </div>
+    </div>
+    <div class="row2">
+      <div class="field"><label class="field-label">Best phone number to reach you</label><input class="text-input" id="parent-phone" type="tel" placeholder="(xxx) xxx-xxxx"></div>
+      <div class="field"><label class="field-label">Best time to call</label>
+        <div class="chip-row" style="margin-top:8px;">
+          <label class="fc"><input type="radio" name="best-time" value="morning"><span>Morning</span></label>
+          <label class="fc"><input type="radio" name="best-time" value="afternoon"><span>Afternoon</span></label>
+          <label class="fc"><input type="radio" name="best-time" value="evening"><span>Evening</span></label>
+          <label class="fc"><input type="radio" name="best-time" value="text"><span>Text is best</span></label>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="nav-row"><button class="btn btn-back" onclick="goBack(3)">← Back</button><button class="btn btn-submit" onclick="submitForm()">✨ Generate My Results</button></div>
 </div>
@@ -331,7 +357,10 @@ Guidelines: Lead with strengths always. Be specific to their responses. Referenc
   document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
   fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
     formId:'slp_screener',service:'Speech-Language Therapy',
-    childName,parentName,parentEmail,phone:'',
+    childName,parentName,parentEmail,
+    phone: document.getElementById('parent-phone').value || '',
+    bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
+    insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
     results:finalText
   })}).catch(()=>{});
   document.getElementById('result-actions').style.display='flex';
