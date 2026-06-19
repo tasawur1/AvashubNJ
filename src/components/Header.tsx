@@ -34,9 +34,26 @@ function MenuIcon({ open }: { open: boolean }) {
   );
 }
 
+function AdminPersonIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // Hide on all admin routes — admin has its own layout
+  if (pathname.startsWith("/admin")) return null;
 
   const desktopLinkClass = (active: boolean) =>
     [
@@ -101,6 +118,13 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+          <Link
+            href="/admin/login"
+            aria-label="Admin login"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-purple-bright"
+          >
+            <AdminPersonIcon />
+          </Link>
           <CTAButton
             href="/contact"
             className="whitespace-nowrap !px-3.5 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:text-sm xl:!px-4 xl:!py-2.5 xl:text-xs 2xl:!px-6 2xl:!py-3 2xl:text-sm"

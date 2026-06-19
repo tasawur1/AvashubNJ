@@ -21,6 +21,7 @@ export function ScrollRevealController() {
   // Lenis smooth scroll — single instance, lives for the whole session.
   // Dynamic import avoids any SSR module-level browser-API access.
   useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches) return;
 
@@ -50,6 +51,7 @@ export function ScrollRevealController() {
   // Above-fold elements get [data-revealed] before [data-reveal-ready] lands
   // on <html>, so the CSS never hides them (no above-fold flash).
   useEffect(() => {
+    if (pathname.startsWith("/admin")) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mq.matches || !("IntersectionObserver" in window)) return;
 
