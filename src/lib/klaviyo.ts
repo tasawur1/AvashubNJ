@@ -93,8 +93,45 @@ export async function addToKlaviyoList(
         });
 
         if (!profileRes.ok) {
-          const text = await profileRes.text();
-          console.warn('[KLAVIYO] Failed to update profile name for:', email, profileRes.status, text);
+          const errorText = await profileRes.text();
+
+          if (profileRes.status === 409) {
+            try {
+              const errorJson = JSON.parse(errorText);
+              const existingId = errorJson?.errors?.[0]?.meta?.duplicate_profile_id;
+
+              if (existingId) {
+                const patchBody = JSON.stringify({
+                  data: {
+                    type: 'profile',
+                    id: existingId,
+                    attributes: nameAttributes,
+                  },
+                });
+
+                const patchRes = await fetch(
+                  `https://a.klaviyo.com/api/profiles/${existingId}/`,
+                  {
+                    method: 'PATCH',
+                    headers: klaviyoHeaders(apiKey),
+                    signal: klaviyoSignal(),
+                    body: patchBody,
+                  }
+                );
+
+                if (patchRes.ok) {
+                  console.log('[KLAVIYO] Profile name updated via PATCH:', email);
+                } else {
+                  console.error('[KLAVIYO] Profile name PATCH failed:', email, patchRes.status, await patchRes.text());
+                }
+                return;
+              }
+            } catch (parseErr) {
+              console.error('[KLAVIYO] Failed to parse 409 error body:', parseErr);
+            }
+          }
+
+          console.warn('[KLAVIYO] Failed to update profile name for:', email, profileRes.status, errorText);
         } else {
           console.log('[KLAVIYO] Profile name updated:', email);
         }
@@ -147,7 +184,51 @@ export async function upsertKlaviyoProfile(
 
     console.log('[KLAVIYO] Profile upsert response:', res.status);
     if (!res.ok) {
-      console.error('[KLAVIYO] Profile upsert error body:', await res.text());
+      const errorText = await res.text();
+
+      if (res.status === 409) {
+        try {
+          const errorJson = JSON.parse(errorText);
+          const existingId = errorJson?.errors?.[0]?.meta?.duplicate_profile_id;
+
+          if (existingId) {
+            const patchBody = JSON.stringify({
+              data: {
+                type: 'profile',
+                id: existingId,
+                attributes: {
+                  email,
+                  ...(firstName && { first_name: firstName }),
+                  ...(lastName && { last_name: lastName }),
+                  ...(normalizedPhone && { phone_number: normalizedPhone }),
+                  ...(properties && { properties }),
+                },
+              },
+            });
+
+            const patchRes = await fetch(
+              `https://a.klaviyo.com/api/profiles/${existingId}/`,
+              {
+                method: 'PATCH',
+                headers: klaviyoHeaders(apiKey),
+                signal: klaviyoSignal(),
+                body: patchBody,
+              }
+            );
+
+            if (patchRes.ok) {
+              console.log('[KLAVIYO] Profile updated via PATCH:', email);
+            } else {
+              console.error('[KLAVIYO] Profile PATCH failed:', email, patchRes.status, await patchRes.text());
+            }
+            return;
+          }
+        } catch (parseErr) {
+          console.error('[KLAVIYO] Failed to parse 409 error body:', parseErr);
+        }
+      }
+
+      console.error('[KLAVIYO] Profile upsert error body:', errorText);
       return;
     }
   } catch (err) {

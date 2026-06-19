@@ -38,14 +38,15 @@ export async function POST(request: NextRequest) {
     });
 
     // EMAIL 1 — Marilyn's copy (clinical summary)
-    const clinicEmailResult = await resend.emails.send({
-      from: "Ava's Hub <forms@avashubnj.com>",
-      replyTo: parentEmail || 'marilyn@avashubnj.com',
-      to: NOTIFY_EMAIL,
-      subject: `🆕 New ${service} Intake — ${childName} | Ava's Hub`,
-      html: buildEmail({
-        heading: `🆕 New ${esc(service)} Intake — ${esc(childName)}`,
-        bodyHtml: `
+    const clinicEmailResult = await Promise.race([
+      resend.emails.send({
+        from: "Ava's Hub <forms@avashubnj.com>",
+        replyTo: parentEmail || 'marilyn@avashubnj.com',
+        to: NOTIFY_EMAIL,
+        subject: `🆕 New ${service} Intake — ${childName} | Ava's Hub`,
+        html: buildEmail({
+          heading: `🆕 New ${esc(service)} Intake — ${esc(childName)}`,
+          bodyHtml: `
           <p style="margin:0 0 14px;font-size:13px;color:#888;">
             Submitted: <strong>${esc(timestamp)}</strong> &nbsp;·&nbsp; Form: <code style="font-size:12px;background:#f3f0f9;padding:2px 6px;border-radius:4px;">${esc(formId)}</code>
           </p>
@@ -61,21 +62,26 @@ export async function POST(request: NextRequest) {
             <p style="margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#6B4DB8;">AI-generated results</p>
             ${nl2p(results || '(no results)')}
           </div>`,
-        ctaHtml: replyPromptHtml(),
+          ctaHtml: replyPromptHtml(),
+        }),
       }),
-    });
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Resend clinic email timed out')), 10_000)
+      ),
+    ]);
 
     // EMAIL 2 — Parent's copy (their results)
     let parentEmailResult = null;
     if (parentEmail && parentEmail.includes('@')) {
-      parentEmailResult = await resend.emails.send({
-        from: "Ava's Hub <forms@avashubnj.com>",
-        replyTo: 'marilyn@avashubnj.com',
-        to: parentEmail,
-        subject: `Your Ava's Hub ${service} Results — ${childName}`,
-        html: buildEmail({
-          heading: `Your ${esc(service)} Results — ${esc(childName)}`,
-          bodyHtml: `
+      parentEmailResult = await Promise.race([
+        resend.emails.send({
+          from: "Ava's Hub <forms@avashubnj.com>",
+          replyTo: 'marilyn@avashubnj.com',
+          to: parentEmail,
+          subject: `Your Ava's Hub ${service} Results — ${childName}`,
+          html: buildEmail({
+            heading: `Your ${esc(service)} Results — ${esc(childName)}`,
+            bodyHtml: `
             <p style="margin:0 0 14px;font-size:15px;line-height:1.75;color:#3a3a3a;">
               Dear ${esc(parentName)},
             </p>
@@ -96,10 +102,14 @@ export async function POST(request: NextRequest) {
               <strong>1–2 business days</strong> to schedule ${esc(childName)}'s in-office evaluation.
               We can't wait to meet your family.
             </p>`,
-          ctaHtml: scheduleButtonHtml(),
-          footerNote: "This email was sent because you completed a questionnaire at avashubnj.com.",
+            ctaHtml: scheduleButtonHtml(),
+            footerNote: "This email was sent because you completed a questionnaire at avashubnj.com.",
+          }),
         }),
-      });
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Resend parent email timed out')), 10_000)
+        ),
+      ]);
     }
 
     // — Klaviyo: track event + upsert profile + add to list (all best-effort) —
