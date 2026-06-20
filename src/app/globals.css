@@ -133,3 +133,12 @@ body {
   color: rgba(23,19,71,0.65);
   font-style: italic;
 }
+.ProseMirror img { border-radius: 0.5rem; height: auto; }
+.ProseMirror img[data-align="center"] { display: block; margin: 1rem auto; max-width: 100%; }
+.ProseMirror img[data-align="left"]   { float: left;  margin: 0 1.25rem 0.75rem 0; max-width: 50%; }
+.ProseMirror img[data-align="right"]  { float: right; margin: 0 0 0.75rem 1.25rem; max-width: 50%; }
+.ProseMirror::after { content: ""; display: table; clear: both; }
+
+/* Blog detail page body content */
+.blog-content img { border-radius: 0.5rem; height: auto; }
+.blog-content::after { content: ""; display: table; clear: both; }

@@ -72,11 +72,10 @@ export function BlogsContent({ initialPosts }: { initialPosts: BlogPost[] }) {
       <section className="pb-10 pt-6 text-center lg:pb-12 lg:pt-8">
         <SectionContainer>
           <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold leading-tight text-brand-navy">
-            Our Blog
+            Our Blogs
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-brand-navy/75 lg:text-lg">
-            Practical guidance, therapy insights, and family resources to help
-            your child and family thrive every day.
+          <p className="mt-2 text-sm font-medium text-brand-navy/45">
+            Practical guidance, therapy insights, and family resources to help your family thrive.
           </p>
         </SectionContainer>
       </section>

@@ -20,6 +20,7 @@ export default async function BlogsPage() {
     const { data, error } = await supabase
       .from("blogs")
       .select("*")
+      .or("hidden.is.null,hidden.eq.false")
       .order("created_at", { ascending: false });
 
     if (error) throw error;

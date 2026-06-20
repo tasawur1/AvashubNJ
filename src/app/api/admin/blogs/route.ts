@@ -86,6 +86,7 @@ export async function POST(request: NextRequest) {
         image_desktop: image_desktop ?? "",
         image_mobile: image_mobile ?? "",
         tone: tone ?? "teal",
+        hidden: false,
       })
       .select()
       .single();

@@ -24,6 +24,7 @@ type Blog = {
   image_desktop: string;
   image_mobile: string;
   tone: "teal" | "purple" | "gold";
+  hidden: boolean;
   created_at: string;
 };
 
@@ -35,7 +36,7 @@ const TONE_OPTIONS: { value: Blog["tone"]; label: string; color: string }[] = [
   { value: "gold", label: "Gold", color: "bg-brand-gold/20 text-yellow-700" },
 ];
 
-function emptyForm(): Omit<Blog, "id" | "slug" | "created_at"> {
+function emptyForm(): Omit<Blog, "id" | "slug" | "created_at" | "hidden"> {
   return {
     title: "",
     date: "",
@@ -75,7 +76,7 @@ export function BlogManager({ initialBlogs }: Props) {
       image_desktop: blog.image_desktop,
       image_mobile: blog.image_mobile,
       tone: blog.tone,
-    });
+    } satisfies Omit<Blog, "id" | "slug" | "created_at" | "hidden">);
     setError("");
     setView("form");
   }
@@ -120,6 +121,23 @@ export function BlogManager({ initialBlogs }: Props) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleToggleHidden(id: string, currentlyHidden: boolean) {
+    try {
+      const res = await fetch(`/api/admin/blogs/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ hidden: !currentlyHidden }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      setBlogs((prev) =>
+        prev.map((b) => (b.id === id ? { ...b, hidden: !currentlyHidden } : b))
+      );
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Failed to update visibility.");
     }
   }
 
@@ -168,10 +186,20 @@ export function BlogManager({ initialBlogs }: Props) {
             {blogs.map((blog) => (
               <div
                 key={blog.id}
-                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:flex-nowrap"
+                className={
+                  "flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:flex-nowrap " +
+                  (blog.hidden ? "opacity-55" : "")
+                }
               >
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-extrabold text-brand-navy">{blog.title}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="truncate font-extrabold text-brand-navy">{blog.title}</p>
+                    {blog.hidden && (
+                      <span className="shrink-0 rounded-full bg-brand-navy/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-navy/50">
+                        Hidden
+                      </span>
+                    )}
+                  </div>
                   <p className="mt-0.5 text-xs text-brand-navy/50">
                     {blog.date || "No date"} · {blog.author || "No author"}
                   </p>
@@ -184,6 +212,26 @@ export function BlogManager({ initialBlogs }: Props) {
                   {blog.tone}
                 </span>
                 <div className="flex shrink-0 gap-2">
+                  {/* Hide / unhide */}
+                  <button
+                    onClick={() => handleToggleHidden(blog.id, blog.hidden)}
+                    title={blog.hidden ? "Unhide blog" : "Hide blog"}
+                    className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy"
+                  >
+                    {blog.hidden ? (
+                      // Eye-off icon
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                      </svg>
+                    ) : (
+                      // Eye icon
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                      </svg>
+                    )}
+                  </button>
                   <button
                     onClick={() => openEdit(blog)}
                     className="rounded-full border border-brand-purple-deep/20 px-3 py-1.5 text-xs font-bold text-brand-navy transition hover:bg-brand-lavender"
@@ -259,18 +307,31 @@ export function BlogManager({ initialBlogs }: Props) {
           </div>
 
           {/* Summary */}
-          <div className="grid gap-1.5">
-            <label className="text-sm font-extrabold text-brand-navy">
-              Summary <span className="font-normal text-brand-navy/45">(shown on Blogs listing card)</span>
-            </label>
-            <textarea
-              rows={3}
-              value={form.summary}
-              onChange={(e) => set("summary", e.target.value)}
-              placeholder="A short summary of this blog post…"
-              className="w-full resize-y rounded-xl border border-brand-purple-deep/15 bg-white px-4 py-3 text-sm leading-relaxed text-brand-navy outline-none transition placeholder:text-brand-navy/35 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/15"
-            />
-          </div>
+          {(() => {
+            const SUMMARY_LIMIT = 300;
+            const remaining = SUMMARY_LIMIT - form.summary.length;
+            return (
+              <div className="grid gap-1.5">
+                <div className="flex items-baseline justify-between gap-2">
+                  <label className="text-sm font-extrabold text-brand-navy">
+                    Summary <span className="font-normal text-brand-navy/45">(shown on blog card)</span>
+                  </label>
+                  <span className={`text-xs font-semibold tabular-nums ${remaining < 20 ? "text-red-500" : "text-brand-navy/40"}`}>
+                    {remaining} left
+                  </span>
+                </div>
+                <textarea
+                  rows={3}
+                  maxLength={SUMMARY_LIMIT}
+                  value={form.summary}
+                  onChange={(e) => set("summary", e.target.value)}
+                  placeholder="A short summary of this blog post…"
+                  className="w-full resize-none rounded-xl border border-brand-purple-deep/15 bg-white px-4 py-3 text-sm leading-relaxed text-brand-navy outline-none transition placeholder:text-brand-navy/35 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/15"
+                />
+              </div>
+            );
+          })()}
+
 
           {/* Blog content */}
           <div className="grid gap-1.5">

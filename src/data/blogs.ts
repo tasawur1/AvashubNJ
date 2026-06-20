@@ -9,5 +9,6 @@ export type BlogPost = {
   image_desktop: string;
   image_mobile: string;
   tone: "teal" | "purple" | "gold";
+  hidden: boolean;
   created_at: string;
 };

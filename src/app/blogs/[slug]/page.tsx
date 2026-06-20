@@ -51,7 +51,7 @@ export default async function BlogDetailPage({
 }) {
   const { slug } = await params;
   const post = await getBlog(slug);
-  if (!post) notFound();
+  if (!post || post.hidden) notFound();
 
   return (
     <main className="flex-1 bg-[#fffaf4]">
@@ -78,34 +78,18 @@ export default async function BlogDetailPage({
         <SectionContainer>
           <article className="rounded-[2.25rem] bg-white/95 p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2.75rem] lg:p-6">
             <div className="grid gap-6 lg:grid-cols-[0.4fr_0.6fr] lg:items-center lg:gap-8">
-              {/* Image — desktop shown on desktop, mobile on mobile */}
+              {/* Hero image — always uses mobile image (portrait ratio fits the card well) */}
               <div className="overflow-hidden rounded-[1.75rem] bg-brand-teal-light ring-1 ring-brand-teal/10">
                 <div className="relative aspect-[4/3] lg:aspect-auto lg:h-[24rem] xl:h-[26rem]">
-                  {(post.image_desktop || post.image_mobile) ? (
-                    <>
-                      {/* Mobile image */}
-                      {post.image_mobile ? (
-                        <PlaceholderImage
-                          src={post.image_mobile}
-                          alt={post.title}
-                          fill
-                          priority
-                          className="object-cover object-center lg:hidden"
-                          sizes="100vw"
-                        />
-                      ) : null}
-                      {/* Desktop image */}
-                      {post.image_desktop ? (
-                        <PlaceholderImage
-                          src={post.image_desktop}
-                          alt={post.title}
-                          fill
-                          priority
-                          className="hidden object-cover object-center lg:block"
-                          sizes="40vw"
-                        />
-                      ) : null}
-                    </>
+                  {(post.image_mobile || post.image_desktop) ? (
+                    <PlaceholderImage
+                      src={post.image_mobile || post.image_desktop}
+                      alt={post.title}
+                      fill
+                      priority
+                      className="object-cover object-center"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
+                    />
                   ) : null}
                 </div>
               </div>
@@ -142,7 +126,7 @@ export default async function BlogDetailPage({
           <div className="mx-auto max-w-3xl rounded-[1.75rem] bg-white/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 lg:rounded-[2rem] lg:p-12">
             {post.content ? (
               <div
-                className="prose prose-base max-w-none leading-loose text-brand-navy/85 lg:prose-lg"
+                className="blog-content prose prose-base max-w-none leading-loose text-brand-navy/85 lg:prose-lg"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             ) : (
