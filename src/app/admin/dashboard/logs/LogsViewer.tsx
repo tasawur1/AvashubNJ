@@ -21,6 +21,15 @@ type Stats = {
   maxDuration: number;
 };
 
+type UptimeMonitor = {
+  id: number;
+  name: string;
+  url: string;
+  status: "up" | "down" | "degraded" | "unknown";
+  uptimeRatio: string | null;
+  lastResponseMs: number | null;
+};
+
 const RANGES = [
   { label: "1 Hour",   value: "1h"  },
   { label: "24 Hours", value: "24h" },
@@ -47,6 +56,13 @@ function DurationBadge({ ms }: { ms: number | null }) {
   return <span className={`font-mono text-xs font-semibold ${cls}`}>{ms}ms</span>;
 }
 
+const STATUS_COLOR = {
+  up:       { dot: "bg-green-500",  text: "text-green-700",  bg: "bg-green-50",  border: "border-green-200", label: "Online"   },
+  down:     { dot: "bg-red-500",    text: "text-red-700",    bg: "bg-red-50",    border: "border-red-200",   label: "Down"     },
+  degraded: { dot: "bg-yellow-500", text: "text-yellow-700", bg: "bg-yellow-50", border: "border-yellow-200",label: "Degraded" },
+  unknown:  { dot: "bg-gray-400",   text: "text-gray-600",   bg: "bg-gray-50",   border: "border-gray-200",  label: "Unknown"  },
+};
+
 export function LogsViewer() {
   const [range,        setRange       ] = useState("24h");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -56,6 +72,26 @@ export function LogsViewer() {
   const [fetchError,   setFetchError  ] = useState<string | null>(null);
   const [expanded,     setExpanded    ] = useState<string | null>(null);
   const [copied,       setCopied      ] = useState(false);
+
+  // Uptime state — only populated when user clicks "Check Status"
+  const [uptime,        setUptime       ] = useState<{ monitors: UptimeMonitor[]; checkedAt: string } | null>(null);
+  const [uptimeLoading, setUptimeLoading] = useState(false);
+  const [uptimeError,   setUptimeError  ] = useState<string | null>(null);
+
+  async function checkStatus() {
+    setUptimeLoading(true);
+    setUptimeError(null);
+    try {
+      const res  = await fetch("/api/admin/uptime");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? `Error ${res.status}`);
+      setUptime(data);
+    } catch (err) {
+      setUptimeError(String(err).replace(/^Error:\s*/, ""));
+    } finally {
+      setUptimeLoading(false);
+    }
+  }
 
   async function loadLogs() {
     setLoading(true);
@@ -95,6 +131,84 @@ export function LogsViewer() {
 
   return (
     <div className="space-y-5">
+
+      {/* ── Site Status ── */}
+      <div className="rounded-2xl border border-brand-purple-deep/10 bg-white p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-extrabold uppercase tracking-widest text-brand-navy/30">Site Status</p>
+            <p className="mt-0.5 text-xs text-brand-navy/40">Press check to fetch live status from UptimeRobot.</p>
+          </div>
+          <div className="flex items-center gap-2.5">
+            {uptime && (
+              <a
+                href="https://stats.uptimerobot.com/7Wmm3BM7mP"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-semibold text-brand-purple-deep/60 hover:text-brand-purple-deep underline underline-offset-2"
+              >
+                View Full Status →
+              </a>
+            )}
+            <button
+              onClick={checkStatus}
+              disabled={uptimeLoading}
+              className="flex items-center gap-2 rounded-xl border border-brand-purple-deep/20 bg-brand-lavender/40 px-3.5 py-2 text-xs font-semibold text-brand-navy/70 transition hover:bg-brand-lavender disabled:opacity-50"
+            >
+              {uptimeLoading ? (
+                <>
+                  <svg className="h-3 w-3 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25" />
+                    <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" className="opacity-75" />
+                  </svg>
+                  Checking…
+                </>
+              ) : (
+                <>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  Check Status
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Error */}
+        {uptimeError && (
+          <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-600">{uptimeError}</p>
+        )}
+
+        {/* Monitor cards */}
+        {uptime && uptime.monitors.length > 0 && (
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {uptime.monitors.map((m) => {
+              const s = STATUS_COLOR[m.status];
+              return (
+                <div key={m.id} className={`flex items-start gap-3 rounded-xl border ${s.border} ${s.bg} px-3.5 py-3`}>
+                  <span className={`mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full ${s.dot} ring-2 ring-white`} aria-hidden />
+                  <div className="min-w-0">
+                    <p className={`text-xs font-extrabold ${s.text}`}>{s.label}</p>
+                    <p className="truncate text-[11px] text-brand-navy/50">{m.name}</p>
+                    <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-brand-navy/40">
+                      {m.uptimeRatio && <span>Uptime: <strong className="text-brand-navy/60">{m.uptimeRatio}%</strong></span>}
+                      {m.lastResponseMs && <span>Response: <strong className="text-brand-navy/60">{m.lastResponseMs}ms</strong></span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Last checked */}
+        {uptime && (
+          <p className="mt-3 text-[11px] text-brand-navy/25">
+            Last checked: {new Date(uptime.checkedAt).toLocaleTimeString()}
+          </p>
+        )}
+      </div>
 
       {/* ── Controls ── */}
       <div className="flex flex-wrap items-center gap-3">
