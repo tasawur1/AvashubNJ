@@ -1,15 +1,28 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const secretKey = process.env.SUPABASE_SECRET_KEY!;
-const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
+const url        = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const secretKey  = process.env.SUPABASE_SECRET_KEY!;
+const anonKey    = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
 
-// Server-side admin client — uses secret key, bypasses RLS
-export function createAdminClient() {
-  return createClient(url, secretKey);
+// Singletons — one client per process, reused across all requests.
+// Prevents a new TCP connection opening on every API call.
+let _admin:  SupabaseClient | null = null;
+let _public: SupabaseClient | null = null;
+
+export function createAdminClient(): SupabaseClient {
+  if (!_admin) {
+    _admin = createClient(url, secretKey, {
+      auth: { persistSession: false },
+    });
+  }
+  return _admin;
 }
 
-// Public client — uses publishable key, respects RLS
-export function createPublicClient() {
-  return createClient(url, publishableKey);
+export function createPublicClient(): SupabaseClient {
+  if (!_public) {
+    _public = createClient(url, anonKey, {
+      auth: { persistSession: false },
+    });
+  }
+  return _public;
 }
