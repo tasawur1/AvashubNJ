@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { esc } from '@/lib/emailTemplate';
 import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
+import { logRequest } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  const start = Date.now();
   try {
     const resendApiKey = process.env.RESEND_API_KEY;
     if (!resendApiKey) {
@@ -146,12 +148,28 @@ export async function POST(request: NextRequest) {
       }).catch((err) => console.warn('[KLAVIYO] trackKlaviyoEvent failed:', email, err)),
     ]);
 
+    logRequest({
+      route: '/api/contact',
+      duration_ms: Date.now() - start,
+      status_code: 200,
+      success: !clinicResult.error,
+      error_message: clinicResult.error ? String(clinicResult.error) : undefined,
+      metadata: { has_message: !!message, has_phone: !!phone },
+    });
+
     return NextResponse.json({
       success: !clinicResult.error,
       clinicEmail: clinicResult,
     });
 
   } catch (error) {
+    logRequest({
+      route: '/api/contact',
+      duration_ms: Date.now() - start,
+      status_code: 500,
+      success: false,
+      error_message: String(error),
+    });
     console.error('Contact route error:', error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }

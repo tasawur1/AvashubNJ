@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { buildEmail, scheduleButtonHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
 import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
+import { logRequest } from '@/lib/logger';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
 export async function POST(request: NextRequest) {
+  const start = Date.now();
   try {
     const resendApiKey = process.env.RESEND_API_KEY;
 
@@ -158,6 +160,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    logRequest({
+      route: '/api/intake/notify',
+      duration_ms: Date.now() - start,
+      status_code: 200,
+      success: true,
+      metadata: {
+        form_id: formId,
+        service,
+        clinic_email_ok: !clinicEmailResult?.error,
+        parent_email_sent: !!parentEmailResult,
+      },
+    });
+
     return NextResponse.json({
       success: true,
       clinicEmail: clinicEmailResult,
@@ -165,6 +180,13 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
+    logRequest({
+      route: '/api/intake/notify',
+      duration_ms: Date.now() - start,
+      status_code: 500,
+      success: false,
+      error_message: String(error),
+    });
     // Always return success to the form — never block the results from showing
     console.error('Notify route error:', error);
     return NextResponse.json({ success: false, error: String(error) });

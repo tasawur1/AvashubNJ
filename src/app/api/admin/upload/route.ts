@@ -3,8 +3,10 @@ import { getIronSession } from "iron-session";
 import { cookies } from "next/headers";
 import { sessionOptions, type SessionData } from "@/lib/session";
 import { createAdminClient } from "@/lib/supabase-server";
+import { logRequest } from "@/lib/logger";
 
 export async function POST(request: NextRequest) {
+  const start = Date.now();
   try {
     const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
     if (!session.isLoggedIn) {
@@ -42,9 +44,24 @@ export async function POST(request: NextRequest) {
       .from("blog-images")
       .getPublicUrl(data.path);
 
+    logRequest({
+      route: '/api/admin/upload',
+      duration_ms: Date.now() - start,
+      status_code: 200,
+      success: true,
+      metadata: { filename, size_bytes: file.size, type: file.type },
+    });
+
     return NextResponse.json({ success: true, url: publicUrl });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Upload failed.";
+    logRequest({
+      route: '/api/admin/upload',
+      duration_ms: Date.now() - start,
+      status_code: 500,
+      success: false,
+      error_message: message,
+    });
     return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }

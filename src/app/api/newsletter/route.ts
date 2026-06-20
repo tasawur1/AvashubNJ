@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { addToKlaviyoList } from '@/lib/klaviyo';
+import { logRequest } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  const start = Date.now();
   try {
     const body = await request.json();
     const email: string = (body.email ?? '').trim().toLowerCase();
@@ -25,9 +27,23 @@ export async function POST(request: NextRequest) {
       console.error('[KLAVIYO] Failed to add contact:', email, klaviyoErr);
     }
 
+    logRequest({
+      route: '/api/newsletter',
+      duration_ms: Date.now() - start,
+      status_code: 200,
+      success: true,
+    });
+
     return NextResponse.json({ success: true });
 
   } catch (error) {
+    logRequest({
+      route: '/api/newsletter',
+      duration_ms: Date.now() - start,
+      status_code: 500,
+      success: false,
+      error_message: String(error),
+    });
     console.error('Newsletter route error:', error);
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
   }

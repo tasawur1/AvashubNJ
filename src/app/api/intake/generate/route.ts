@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logRequest } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
+  const start = Date.now();
   try {
     const { prompt, formId } = await request.json();
 
@@ -40,9 +42,25 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json();
     const text = data.content?.[0]?.text ?? '';
+
+    logRequest({
+      route: '/api/intake/generate',
+      duration_ms: Date.now() - start,
+      status_code: 200,
+      success: true,
+      metadata: { form_id: formId, tokens_used: data.usage?.output_tokens ?? null },
+    });
+
     return NextResponse.json({ text, formId });
 
   } catch (error) {
+    logRequest({
+      route: '/api/intake/generate',
+      duration_ms: Date.now() - start,
+      status_code: 500,
+      success: false,
+      error_message: String(error),
+    });
     console.error('Generate route error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
