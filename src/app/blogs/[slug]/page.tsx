@@ -8,7 +8,7 @@ import { ResourceBottomCta } from "@/components/page/ResourceMobileComponents";
 import { createAdminClient } from "@/lib/supabase-server";
 import type { BlogPost } from "@/data/blogs";
 
-export const revalidate = 60;
+export const revalidate = false;
 
 async function getBlog(slug: string): Promise<BlogPost | null> {
   try {

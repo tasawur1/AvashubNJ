@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase-server";
 import { BlogsContent } from "./BlogsContent";
 import type { BlogPost } from "@/data/blogs";
 
-export const revalidate = 60;
+export const revalidate = false;
 
 export const metadata: Metadata = {
   title: "Blogs | Ava's Hub",

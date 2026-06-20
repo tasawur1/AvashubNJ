@@ -60,14 +60,27 @@ export function LogsViewer() {
   async function loadLogs() {
     setLoading(true);
     setFetchError(null);
+    setLogs(null);
+    setStats(null);
     try {
-      const res  = await fetch(`/api/admin/logs?range=${range}&status=${statusFilter}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed to load logs");
-      setLogs(data.logs);
-      setStats(data.stats);
+      const res = await fetch(`/api/admin/logs?range=${range}&status=${statusFilter}`);
+      let data: { logs?: LogEntry[]; stats?: Stats; error?: string };
+      try {
+        data = await res.json();
+      } catch {
+        throw new Error("Server returned an unreadable response. Check that the app is running.");
+      }
+      if (!res.ok) throw new Error(data.error ?? `Server error (${res.status})`);
+      setLogs(data.logs ?? []);
+      setStats(data.stats ?? { total: 0, errors: 0, avgDuration: 0, maxDuration: 0 });
     } catch (err) {
-      setFetchError(String(err));
+      const msg = String(err);
+      // "Failed to fetch" is a browser network error — make it readable
+      setFetchError(
+        msg.includes("Failed to fetch")
+          ? "Could not reach the server. Make sure the app is deployed and try again."
+          : msg.replace(/^Error:\s*/, "")
+      );
     } finally {
       setLoading(false);
     }
@@ -239,8 +252,18 @@ export function LogsViewer() {
 
       {/* ── No results after load ── */}
       {logs && logs.length === 0 && (
-        <div className="rounded-2xl border border-brand-purple-deep/10 bg-white py-14 text-center">
-          <p className="text-sm text-brand-navy/40">No logs found for this filter.</p>
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-brand-purple-deep/10 bg-white py-14 text-center">
+          {statusFilter === "errors" ? (
+            <>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="mb-3 text-green-500/60" aria-hidden>
+                <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <p className="text-sm font-semibold text-brand-navy/50">No errors found</p>
+              <p className="mt-1 text-xs text-brand-navy/30">Everything looks clean in this time range.</p>
+            </>
+          ) : (
+            <p className="text-sm text-brand-navy/40">No logs found for this time range.</p>
+          )}
         </div>
       )}
 
