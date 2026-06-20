@@ -127,35 +127,24 @@ export async function POST(request: NextRequest) {
       ),
     ]);
 
-    // — Klaviyo: upsert full profile (name + phone + custom properties) —
-    try {
-      await upsertKlaviyoProfile(email, firstName, lastName, phone, {
+    // — Klaviyo: run all three calls concurrently (independent, no ordering needed) —
+    await Promise.all([
+      upsertKlaviyoProfile(email, firstName, lastName, phone, {
         last_message: message || '',
         last_contact_source: 'contact_form',
-      });
-    } catch (err) {
-      console.warn('[KLAVIYO] upsertKlaviyoProfile failed for contact form:', email, err);
-    }
+      }).catch((err) => console.warn('[KLAVIYO] upsertKlaviyoProfile failed:', email, err)),
 
-    // — Klaviyo: add to Contact Form Leads list —
-    try {
-      await addToKlaviyoList(email, firstName, lastName, process.env.KLAVIYO_CONTACT_LIST_ID);
-    } catch (err) {
-      console.warn('[KLAVIYO] addToKlaviyoList failed for contact form:', email, err);
-    }
+      addToKlaviyoList(email, firstName, lastName, process.env.KLAVIYO_CONTACT_LIST_ID)
+        .catch((err) => console.warn('[KLAVIYO] addToKlaviyoList failed:', email, err)),
 
-    // — Klaviyo: track rich contact form event —
-    try {
-      await trackKlaviyoEvent(email, 'Contact Form Submitted', {
+      trackKlaviyoEvent(email, 'Contact Form Submitted', {
         first_name: firstName || '',
         last_name: lastName || '',
         phone: phone || '',
         message: message || '',
         source: 'contact_form',
-      });
-    } catch (err) {
-      console.warn('[KLAVIYO] trackKlaviyoEvent failed for contact form:', email, err);
-    }
+      }).catch((err) => console.warn('[KLAVIYO] trackKlaviyoEvent failed:', email, err)),
+    ]);
 
     return NextResponse.json({
       success: !clinicResult.error,

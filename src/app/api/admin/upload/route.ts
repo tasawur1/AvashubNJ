@@ -19,6 +19,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "No file received." }, { status: 400 });
     }
 
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { success: false, error: "File too large. Please upload an image under 5MB." },
+        { status: 413 }
+      );
+    }
+
     const ext = file.type === "image/png" ? "png" : "jpg";
     const filename = `${label}-${Date.now()}.${ext}`;
     const buffer = await file.arrayBuffer();
