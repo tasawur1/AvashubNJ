@@ -17,6 +17,14 @@ function BlogsIcon() {
   );
 }
 
+function LogsIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M3 12h4l3 8 4-16 3 8h4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function LogoutIcon() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -32,7 +40,8 @@ function LogoutIcon() {
 }
 
 const navItems = [
-  { label: "Blogs", href: "/admin/dashboard/blogs", icon: <BlogsIcon /> },
+  { label: "Blogs",          href: "/admin/dashboard/blogs", icon: <BlogsIcon /> },
+  { label: "Activity Logs",  href: "/admin/dashboard/logs",  icon: <LogsIcon />  },
 ];
 
 export function AdminSidebar({ isOpen, onClose }: Props) {
