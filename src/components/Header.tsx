@@ -2,35 +2,32 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CTAButton } from "./CTAButton";
 import { PlaceholderImage } from "./PlaceholderImage";
 import { SectionContainer } from "./SectionContainer";
 import { navItems } from "@/data/navigation";
+import type { NavItem } from "@/data/navigation";
 import { siteImages } from "@/data/images";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
     <span className="relative block h-5 w-6" aria-hidden>
-      <span
-        className={
-          "absolute left-0 top-0 h-0.5 w-full rounded-full bg-brand-purple-deep transition " +
-          (open ? "translate-y-2 rotate-45" : "")
-        }
-      />
-      <span
-        className={
-          "absolute left-0 top-2 h-0.5 w-full rounded-full bg-brand-purple-deep transition " +
-          (open ? "scale-0 opacity-0" : "")
-        }
-      />
-      <span
-        className={
-          "absolute left-0 top-4 h-0.5 w-full rounded-full bg-brand-purple-deep transition " +
-          (open ? "-translate-y-2 -rotate-45" : "")
-        }
-      />
+      <span className={"absolute left-0 top-0 h-0.5 w-full rounded-full bg-brand-purple-deep transition " + (open ? "translate-y-2 rotate-45" : "")} />
+      <span className={"absolute left-0 top-2 h-0.5 w-full rounded-full bg-brand-purple-deep transition " + (open ? "scale-0 opacity-0" : "")} />
+      <span className={"absolute left-0 top-4 h-0.5 w-full rounded-full bg-brand-purple-deep transition " + (open ? "-translate-y-2 -rotate-45" : "")} />
     </span>
+  );
+}
+
+function ChevronDown({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden
+      className={"shrink-0 transition-transform duration-200 " + (open ? "rotate-180" : "")}
+    >
+      <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -38,41 +35,181 @@ function AdminPersonIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
       <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" />
-      <path
-        d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
+      <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
     </svg>
   );
 }
 
+// ── Desktop nav item (handles plain link + dropdown) ───────────────────────
+function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string }) {
+  const [open, setOpen] = useState(false);
+
+  const isActive = item.href === "/"
+    ? pathname === "/"
+    : pathname.startsWith(item.href);
+
+  const linkClass =
+    "whitespace-nowrap rounded-md px-[clamp(0.2rem,0.35vw,0.55rem)] py-1.5 text-[clamp(0.74rem,0.78vw,0.95rem)] font-semibold transition-colors " +
+    (isActive
+      ? "text-brand-purple-deep decoration-brand-gold underline decoration-2 underline-offset-8"
+      : "text-brand-navy/80 hover:text-brand-purple-bright");
+
+  if (!item.children) {
+    return (
+      <li>
+        <Link href={item.href} className={linkClass}>{item.label}</Link>
+      </li>
+    );
+  }
+
+  return (
+    <li
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      {/* Trigger — clicking still navigates to /programs */}
+      <Link
+        href={item.href}
+        className={linkClass + " inline-flex items-center gap-1"}
+        onClick={() => setOpen(false)}
+      >
+        {item.label}
+        <ChevronDown open={open} />
+      </Link>
+
+      {/* Dropdown panel — pt-2 bridges the gap so mouse doesn't lose hover */}
+      <div
+        className={
+          "absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2 " +
+          "transition-all duration-200 ease-out " +
+          (open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0")
+        }
+      >
+        <ul className="w-44 overflow-hidden rounded-2xl bg-white py-1.5 shadow-lg ring-1 ring-brand-purple-deep/10">
+          {item.children.map((child) => {
+            const childActive = pathname.startsWith(child.href);
+            return (
+              <li key={child.href}>
+                <Link
+                  href={child.href}
+                  onClick={() => setOpen(false)}
+                  className={
+                    "block px-4 py-2.5 text-sm font-semibold transition-colors " +
+                    (childActive
+                      ? "bg-brand-lavender text-brand-purple-deep"
+                      : "text-brand-navy/80 hover:bg-brand-teal-light hover:text-brand-teal")
+                  }
+                >
+                  {child.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </li>
+  );
+}
+
+// ── Mobile nav item (handles plain link + accordion) ──────────────────────
+function MobileNavItem({
+  item,
+  pathname,
+  onClose,
+}: {
+  item: NavItem;
+  pathname: string;
+  onClose: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const isActive = item.href === "/"
+    ? pathname === "/"
+    : pathname.startsWith(item.href);
+
+  const baseLinkClass =
+    "block rounded-lg px-3 py-2.5 text-base font-semibold " +
+    (isActive
+      ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-gold/60"
+      : "text-brand-navy hover:bg-brand-teal-light");
+
+  if (!item.children) {
+    return (
+      <li>
+        <Link href={item.href} className={baseLinkClass} onClick={onClose}>
+          {item.label}
+        </Link>
+      </li>
+    );
+  }
+
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className={
+          "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold transition-colors " +
+          (isActive
+            ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-gold/60"
+            : "text-brand-navy hover:bg-brand-teal-light")
+        }
+      >
+        {item.label}
+        <ChevronDown open={open} />
+      </button>
+
+      {/* Smooth accordion */}
+      <div
+        className="overflow-hidden transition-all duration-300 ease-in-out"
+        style={{ maxHeight: open ? `${item.children.length * 52}px` : "0px" }}
+      >
+        <ul className="mt-0.5 flex flex-col gap-0.5 border-l-2 border-brand-purple-deep/15 pl-3 pt-1 pb-1">
+          {item.children.map((child) => {
+            const childActive = pathname.startsWith(child.href);
+            return (
+              <li key={child.href}>
+                <Link
+                  href={child.href}
+                  onClick={onClose}
+                  className={
+                    "block rounded-lg px-3 py-2 text-sm font-semibold transition-colors " +
+                    (childActive
+                      ? "bg-brand-lavender text-brand-purple-deep"
+                      : "text-brand-navy/75 hover:bg-brand-teal-light hover:text-brand-teal")
+                  }
+                >
+                  {child.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </li>
+  );
+}
+
+// ── Main header ────────────────────────────────────────────────────────────
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
 
-  // Hide on all admin routes — admin has its own layout
+  useEffect(() => {
+    fetch("/api/admin/session")
+      .then((r) => r.json())
+      .then((d) => setAdminLoggedIn(d.isLoggedIn === true))
+      .catch(() => {});
+  }, [pathname]); // re-check whenever the route changes (e.g. after login/logout)
+
   if (pathname.startsWith("/admin")) return null;
-
-  const desktopLinkClass = (active: boolean) =>
-    [
-      "whitespace-nowrap rounded-md px-[clamp(0.2rem,0.35vw,0.55rem)] py-1.5 text-[clamp(0.74rem,0.78vw,0.95rem)] font-semibold transition-colors",
-      active
-        ? "text-brand-purple-deep decoration-brand-gold underline decoration-2 underline-offset-8"
-        : "text-brand-navy/80 hover:text-brand-purple-bright",
-    ].join(" ");
-
-  const mobileLinkClass = (active: boolean) =>
-    "block rounded-lg px-3 py-2.5 text-base font-semibold " +
-    (active
-      ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-gold/60"
-      : "text-brand-navy hover:bg-brand-teal-light");
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-teal/10 bg-[#fffaf4]/95 backdrop-blur-md xl:bg-white/95">
       <SectionContainer className="flex min-h-[5rem] items-center justify-between gap-3 py-4 sm:min-h-[5.25rem] sm:gap-4 sm:py-4 xl:min-h-[5rem] xl:gap-6 xl:py-4">
-        {/* Brand: logo image + tagline only */}
+        {/* Logo */}
         <Link
           href="/"
           className="group flex min-w-0 max-w-[min(100%,14rem)] items-center gap-2.5 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:max-w-none sm:gap-3 xl:max-w-[19rem] xl:gap-3 2xl:max-w-md 2xl:gap-4"
@@ -95,35 +232,25 @@ export function Header() {
         </Link>
 
         {/* Desktop navigation */}
-        <nav
-          className="mx-2 hidden min-w-0 flex-1 justify-center xl:flex"
-          aria-label="Primary"
-        >
+        <nav className="mx-2 hidden min-w-0 flex-1 justify-center xl:flex" aria-label="Primary">
           <ul className="flex flex-nowrap items-center justify-center gap-x-[clamp(0.35rem,0.8vw,1.25rem)]">
-            {navItems.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-              return (
-                <li key={item.href}>
-                  <Link href={item.href} className={desktopLinkClass(active)}>
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
+            {navItems.map((item) => (
+              <DesktopNavItem key={item.href} item={item} pathname={pathname} />
+            ))}
           </ul>
         </nav>
 
         {/* Actions */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
           <Link
-            href="/admin/login"
-            aria-label="Admin login"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-purple-bright"
+            href={adminLoggedIn ? "/admin/dashboard" : "/admin/login"}
+            aria-label={adminLoggedIn ? "Go to admin dashboard" : "Admin login"}
+            className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-purple-bright"
           >
             <AdminPersonIcon />
+            {adminLoggedIn && (
+              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white" aria-hidden />
+            )}
           </Link>
           <CTAButton
             href="/contact"
@@ -148,33 +275,21 @@ export function Header() {
       {/* Mobile / tablet menu */}
       <div
         id="mobile-nav"
-        className={
-          "border-t border-brand-teal/10 bg-white xl:hidden " +
-          (open ? "block" : "hidden")
-        }
+        className={"border-t border-brand-teal/10 bg-white xl:hidden " + (open ? "block" : "hidden")}
       >
         <SectionContainer className="py-3 sm:py-4">
           <p className="mb-3 px-1 text-xs font-medium leading-snug text-brand-teal sm:hidden">
             Skills for Today. Independence for Life.
           </p>
           <ul className="flex flex-col gap-0.5">
-            {navItems.map((item) => {
-              const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={mobileLinkClass(active)}
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              );
-            })}
+            {navItems.map((item) => (
+              <MobileNavItem
+                key={item.href}
+                item={item}
+                pathname={pathname}
+                onClose={() => setOpen(false)}
+              />
+            ))}
           </ul>
         </SectionContainer>
       </div>

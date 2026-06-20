@@ -1,9 +1,22 @@
-export const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
-  { label: "Programs", href: "/programs" },
+export type NavChild = { label: string; href: string };
+export type NavItem  = { label: string; href: string; children?: NavChild[] };
+
+export const navItems: NavItem[] = [
+  { label: "Home",        href: "/" },
+  { label: "About Us",    href: "/about" },
+  {
+    label: "Programs",
+    href: "/programs",
+    children: [
+      { label: "Kids",          href: "/programs/kids" },
+      { label: "School Age",    href: "/programs/school-age" },
+      { label: "Teens",         href: "/programs/teens" },
+      { label: "Young Adults",  href: "/programs/young-adults" },
+    ],
+  },
   { label: "For Families", href: "/families" },
-  { label: "Resources", href: "/resources" },
-  { label: "Events", href: "/events" },
-  { label: "Contact", href: "/contact" },
-] as const;
+  { label: "Resources",    href: "/resources" },
+  { label: "Events",       href: "/events" },
+  { label: "Blogs",        href: "/blogs" },
+  { label: "Contact",      href: "/contact" },
+];
