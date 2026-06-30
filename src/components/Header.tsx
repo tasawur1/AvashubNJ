@@ -31,15 +31,6 @@ function ChevronDown({ open }: { open: boolean }) {
   );
 }
 
-function AdminPersonIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" />
-      <path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 // ── Desktop nav item (handles plain link + dropdown) ───────────────────────
 function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string }) {
   const [open, setOpen] = useState(false);
@@ -195,16 +186,24 @@ function MobileNavItem({
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [adminLoggedIn, setAdminLoggedIn] = useState(false);
+  const [adminSession, setAdminSession] = useState<{ isLoggedIn: boolean; staffName: string | null } | null>(null);
+  const [clientUser,   setClientUser]   = useState<{ name: string | null; email: string | null } | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/session")
       .then((r) => r.json())
-      .then((d) => setAdminLoggedIn(d.isLoggedIn === true))
+      .then((d) => setAdminSession({ isLoggedIn: d.isLoggedIn === true, staffName: d.staffName ?? null }))
       .catch(() => {});
-  }, [pathname]); // re-check whenever the route changes (e.g. after login/logout)
+    fetch("/api/client/me")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.isLoggedIn) setClientUser({ name: d.name, email: d.email });
+        else setClientUser(null);
+      })
+      .catch(() => {});
+  }, [pathname]);
 
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/account") || pathname === "/login") return null;
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-teal/10 bg-[#fffaf4]/95 backdrop-blur-md xl:bg-white/95">
@@ -242,16 +241,35 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-          <Link
-            href={adminLoggedIn ? "/admin/dashboard" : "/admin/login"}
-            aria-label={adminLoggedIn ? "Go to admin dashboard" : "Admin login"}
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-purple-bright"
-          >
-            <AdminPersonIcon />
-            {adminLoggedIn && (
-              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white" aria-hidden />
-            )}
-          </Link>
+          {/* Single user icon — client avatar, admin avatar, or guest icon */}
+          {clientUser ? (
+            <Link
+              href="/account"
+              aria-label="My account"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-purple-bright text-sm font-extrabold text-white transition hover:bg-brand-purple-deep"
+            >
+              {(clientUser.name ?? clientUser.email ?? "U").charAt(0).toUpperCase()}
+            </Link>
+          ) : adminSession?.isLoggedIn ? (
+            <Link
+              href="/admin/dashboard"
+              aria-label="Admin dashboard"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-brand-navy text-sm font-extrabold text-white transition hover:bg-brand-navy/80"
+            >
+              {(adminSession.staffName ?? "A").charAt(0).toUpperCase()}
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              aria-label="Sign in"
+              className="relative inline-flex h-9 w-9 items-center justify-center rounded-xl text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-purple-bright"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          )}
           <CTAButton
             href="/contact"
             className="whitespace-nowrap !px-3.5 !py-2 text-xs sm:!px-5 sm:!py-2.5 sm:text-sm xl:!px-4 xl:!py-2.5 xl:text-xs 2xl:!px-6 2xl:!py-3 2xl:text-sm"

@@ -2,8 +2,16 @@
 
 import { useState } from "react";
 import { AdminSidebar } from "./AdminSidebar";
+import type { SessionData, StaffPermissions } from "@/lib/session";
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode;
+  role?: SessionData["role"];
+  permissions?: StaffPermissions;
+  staffName?: string;
+};
+
+export function DashboardShell({ children, role, permissions, staffName }: Props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -16,7 +24,13 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         />
       )}
 
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <AdminSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        role={role}
+        permissions={permissions}
+        staffName={staffName}
+      />
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         {/* Mobile top bar */}

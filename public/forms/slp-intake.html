@@ -355,13 +355,48 @@ Guidelines: Lead with strengths always. Be specific to their responses. Referenc
   clearInterval(iv);
   const finalText=resultText||buildSLPFallback(childName,parentName,formData);
   document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
+  let submissionId=null;
+  try{
+    const submitRes=await fetch('/api/intake/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      formType:'slp',
+      childName, childAge, parentName, parentEmail,
+      phone: document.getElementById('parent-phone').value || '',
+      bestTime: gr('best-time'),
+      insurance: gr('insurance'),
+      diagnosis: dx || '',
+      mainConcern: mainConcern || '',
+      topGoal: document.getElementById('slp-top-goal').value || '',
+      prevServices: gr('slp-prev'),
+      aiResults: finalText,
+      formData:{
+        comm_mode: gr('comm-mode'),
+        slp_express_needs: gr('slp-express-needs'),
+        slp_sentences: gr('slp-sentences'),
+        slp_initiate: gr('slp-initiate'),
+        slp_1step: gr('slp-1step'),
+        slp_2step: gr('slp-2step'),
+        slp_questions: gr('slp-questions'),
+        slp_intel_familiar: gr('slp-intel-familiar'),
+        slp_intel_unfamiliar: gr('slp-intel-unfamiliar'),
+        slp_pragmatic: gr('slp-pragmatic'),
+        slp_feeding_yn: gr('slp-feeding-yn'),
+        slp_feeding: gc('slp-feeding'),
+        slp_concerns: gc('slp-concerns'),
+        slp_impact: gc('slp-impact'),
+        slp_anything: document.getElementById('slp-anything').value || '',
+      }
+    })});
+    const submitData=await submitRes.json();
+    if(submitData.success) submissionId=submitData.id;
+  }catch(e){console.warn('[SLP] Submit failed:',e);}
   fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
     formId:'slp_screener',service:'Speech-Language Therapy',
     childName,parentName,parentEmail,
     phone: document.getElementById('parent-phone').value || '',
     bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
     insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
-    results:finalText
+    results:finalText,
+    submissionId,
   })}).catch(()=>{});
   document.getElementById('result-actions').style.display='flex';
 }

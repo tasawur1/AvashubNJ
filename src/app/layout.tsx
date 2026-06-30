@@ -70,7 +70,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={plusJakarta.variable}>
-      <body className="flex min-h-screen flex-col font-sans">
+      <body className="flex min-h-screen flex-col font-sans" suppressHydrationWarning>
         <Script
           src={`https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=${process.env.NEXT_PUBLIC_KLAVIYO_SITE_ID}`}
           strategy="afterInteractive"

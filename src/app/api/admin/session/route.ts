@@ -6,8 +6,12 @@ import { sessionOptions, type SessionData } from "@/lib/session";
 export async function GET() {
   try {
     const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
-    return NextResponse.json({ isLoggedIn: session.isLoggedIn === true });
+    return NextResponse.json({
+      isLoggedIn: session.isLoggedIn === true,
+      role:       session.role ?? null,
+      staffName:  session.staffName ?? null,
+    });
   } catch {
-    return NextResponse.json({ isLoggedIn: false });
+    return NextResponse.json({ isLoggedIn: false, role: null, staffName: null });
   }
 }

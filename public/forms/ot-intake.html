@@ -818,18 +818,59 @@ async function submitForm(){
   clearInterval(iv);
   const finalText = resultText || buildRichFallbackText(childName, parentName, formData);
   document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
-  fetch('/api/intake/notify',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      formId:'ot_screener',service:'Occupational Therapy',
-      childName, parentName, parentEmail,
+  let submissionId=null;
+  try{
+    const submitRes=await fetch('/api/intake/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      formType:'ot',
+      childName, childAge, parentName, parentEmail,
       phone: document.getElementById('parent-phone').value || '',
-      bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
-      insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
-      results: finalText
-    })
-  }).catch(()=>{});
+      bestTime: gr('best-time'),
+      insurance: gr('insurance'),
+      diagnosis: gc('dx').join(', '),
+      mainConcern: document.getElementById('main-concern').value || '',
+      topGoal: document.getElementById('cmop-priority').value || '',
+      prevServices: gr('prev-services'),
+      aiResults: finalText,
+      formData:{
+        dx: gc('dx'),
+        child_strengths: document.getElementById('child-strengths').value || '',
+        personality: gc('personality'),
+        ot_fine_motor: gr('ot-fine-motor'),
+        ot_handwriting: gr('ot-handwriting'),
+        ot_dressing: gr('ot-dressing'),
+        ot_grooming: gr('ot-grooming'),
+        ot_feeding: gr('ot-feeding'),
+        moho_volition: gr('moho-volition'),
+        moho_habituation: gr('moho-habituation'),
+        moho_interests: document.getElementById('moho-interests').value || '',
+        sen_touch: gr('sen-touch'),
+        sen_sound: gr('sen-sound'),
+        sen_movement: gr('sen-movement'),
+        sen_overload: gr('sen-overload'),
+        env_hard: gc('env-hard'),
+        env_helps: gc('env-helps'),
+        occ_affected: gc('occ-affected'),
+        peo_p: gr('peo-p'),
+        peo_e: gr('peo-e'),
+        peo_o: gr('peo-o'),
+        cmop_hope: gc('cmop-hope'),
+        cmop_vision: gc('cmop-vision'),
+        parent_worry: gc('parent-worry'),
+        anything_else: document.getElementById('anything-else').value || '',
+      }
+    })});
+    const submitData=await submitRes.json();
+    if(submitData.success) submissionId=submitData.id;
+  }catch(e){console.warn('[OT] Submit failed:',e);}
+  fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+    formId:'ot_screener',service:'Occupational Therapy',
+    childName, parentName, parentEmail,
+    phone: document.getElementById('parent-phone').value || '',
+    bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
+    insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
+    results: finalText,
+    submissionId,
+  })}).catch(()=>{});
   localStorage.removeItem(CACHE_KEY);
   document.getElementById('result-actions').style.display='flex';
 }

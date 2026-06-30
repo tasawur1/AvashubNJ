@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { esc } from '@/lib/emailTemplate';
 import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
 import { logRequest } from '@/lib/logger';
+import { createAdminClient } from '@/lib/supabase-server';
 
 export async function POST(request: NextRequest) {
   const start = Date.now();
@@ -147,6 +148,59 @@ export async function POST(request: NextRequest) {
         source: 'contact_form',
       }).catch((err) => console.warn('[KLAVIYO] trackKlaviyoEvent failed:', email, err)),
     ]);
+
+    // Store to Supabase (fire-and-forget — never blocks the response)
+    void (async () => {
+      try {
+        const supabase = createAdminClient();
+        const fullName = `${firstName} ${lastName}`.trim();
+        const { data: existing } = await supabase
+          .from('clients')
+          .select('id, source')
+          .eq('email', email)
+          .maybeSingle();
+
+        let clientId: string | null = null;
+        if (existing) {
+          const newSource = [...new Set([...(existing.source ?? []), 'contact'])];
+          await supabase.from('clients').update({
+            ...(fullName ? { parent_name: fullName } : {}),
+            ...(phone ? { phone } : {}),
+            source: newSource,
+          }).eq('id', existing.id);
+          clientId = existing.id;
+        } else {
+          const { data: newClient, error: insertError } = await supabase
+            .from('clients')
+            .insert({ email, parent_name: fullName || null, phone: phone || null, source: ['contact'] })
+            .select('id')
+            .single();
+          if (insertError) {
+            // 23505 = unique_violation — concurrent submission inserted same email first
+            if (insertError.code === '23505') {
+              const { data: retried } = await supabase
+                .from('clients').select('id').eq('email', email).single();
+              clientId = retried?.id ?? null;
+            } else {
+              console.warn('[CONTACT DB] client insert failed:', insertError.message);
+            }
+          } else {
+            clientId = newClient?.id ?? null;
+          }
+        }
+
+        const { error } = await supabase.from('contact_submissions').insert({
+          email,
+          name: fullName || null,
+          phone: phone || null,
+          message: message || null,
+          client_id: clientId,
+        });
+        if (error) console.warn('[CONTACT DB]', error.message);
+      } catch (err) {
+        console.warn('[CONTACT DB] failed:', err);
+      }
+    })();
 
     logRequest({
       route: '/api/contact',

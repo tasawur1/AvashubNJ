@@ -186,84 +186,83 @@ export function BlogManager({ initialBlogs }: Props) {
             {blogs.map((blog) => (
               <div
                 key={blog.id}
-                className={
-                  "flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-white p-4 shadow-card ring-1 ring-brand-purple-deep/10 lg:flex-nowrap " +
-                  (blog.hidden ? "opacity-55" : "")
-                }
+                className={"overflow-hidden rounded-xl border border-brand-purple-deep/10 bg-white shadow-sm " + (blog.hidden ? "opacity-55" : "")}
               >
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="truncate font-extrabold text-brand-navy">{blog.title}</p>
-                    {blog.hidden && (
-                      <span className="shrink-0 rounded-full bg-brand-navy/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-navy/50">
-                        Hidden
-                      </span>
-                    )}
+                <div className="flex items-start gap-4 px-5 py-4">
+                  {/* Avatar */}
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-purple-deep/10 text-lg font-extrabold text-brand-purple-deep">
+                    {blog.title.charAt(0).toUpperCase()}
                   </div>
-                  <p className="mt-0.5 text-xs text-brand-navy/50">
-                    {blog.date || "No date"} · {blog.author || "No author"}
-                  </p>
-                </div>
-                <span
-                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-bold ${
-                    TONE_OPTIONS.find((t) => t.value === blog.tone)?.color ?? ""
-                  }`}
-                >
-                  {blog.tone}
-                </span>
-                <div className="flex shrink-0 gap-2">
-                  {/* Hide / unhide */}
-                  <button
-                    onClick={() => handleToggleHidden(blog.id, blog.hidden)}
-                    title={blog.hidden ? "Unhide blog" : "Hide blog"}
-                    className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy"
-                  >
-                    {blog.hidden ? (
-                      // Eye-off icon
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                      </svg>
-                    ) : (
-                      // Eye icon
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
-                        <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-                      </svg>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => openEdit(blog)}
-                    className="rounded-full border border-brand-purple-deep/20 px-3 py-1.5 text-xs font-bold text-brand-navy transition hover:bg-brand-lavender"
-                  >
-                    Edit
-                  </button>
-                  {deleteId === blog.id ? (
-                    <div className="flex gap-1.5">
-                      <button
-                        onClick={() => handleDelete(blog.id)}
-                        className="rounded-full bg-red-500 px-3 py-1.5 text-xs font-bold text-white hover:bg-red-600"
-                      >
-                        Confirm
-                      </button>
-                      <button
-                        onClick={() => setDeleteId(null)}
-                        className="rounded-full border border-brand-purple-deep/20 px-3 py-1.5 text-xs font-bold text-brand-navy/60 hover:bg-brand-lavender"
-                      >
-                        Cancel
-                      </button>
+
+                  {/* Info */}
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-brand-navy/70">{blog.author || "No author"}</p>
+                    <p className="truncate text-base font-extrabold leading-tight text-brand-navy">{blog.title}</p>
+                    <p className="mt-0.5 text-xs text-brand-navy/50">{blog.date || "No date"}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                      <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ${TONE_OPTIONS.find((t) => t.value === blog.tone)?.color ?? ""}`}>
+                        {blog.tone}
+                      </span>
+                      {blog.hidden && (
+                        <span className="rounded-full bg-brand-navy/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-navy/50">
+                          Hidden
+                        </span>
+                      )}
                     </div>
-                  ) : (
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
+                    <button
+                      onClick={() => handleToggleHidden(blog.id, blog.hidden)}
+                      title={blog.hidden ? "Unhide blog" : "Hide blog"}
+                      className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy"
+                    >
+                      {blog.hidden ? (
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                        </svg>
+                      ) : (
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                          <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+                        </svg>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => openEdit(blog)}
+                      className="rounded-lg bg-brand-purple-deep/5 px-3 py-1.5 text-xs font-semibold text-brand-purple-deep hover:bg-brand-purple-deep/10"
+                    >
+                      Edit
+                    </button>
                     <button
                       onClick={() => setDeleteId(blog.id)}
-                      className="rounded-full border border-red-200 px-3 py-1.5 text-xs font-bold text-red-500 hover:bg-red-50"
+                      className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-500 hover:bg-red-50"
                     >
                       Delete
                     </button>
-                  )}
+                  </div>
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Delete confirm modal */}
+        {deleteId && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-brand-navy/40 p-4 backdrop-blur-sm"
+            onClick={(e) => { if (e.target === e.currentTarget) setDeleteId(null); }}
+          >
+            <div className="w-full max-w-xs rounded-2xl bg-white p-5 shadow-2xl">
+              <h2 className="text-base font-extrabold text-brand-navy">Delete blog post?</h2>
+              <p className="mt-1.5 text-sm text-brand-navy/55">This cannot be reversed.</p>
+              <div className="mt-5 flex justify-end gap-2">
+                <button onClick={() => setDeleteId(null)} className="rounded-xl px-4 py-2 text-sm font-semibold text-brand-navy/60 hover:text-brand-navy">Cancel</button>
+                <button onClick={() => handleDelete(deleteId)} className="rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600">Delete</button>
+              </div>
+            </div>
           </div>
         )}
       </div>

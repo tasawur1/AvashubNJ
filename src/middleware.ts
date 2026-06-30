@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect all /admin routes except the login page itself
+  // ── Admin protection (iron-session cookie) ─────────────────────────────────
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
     const sessionCookie = request.cookies.get("avashub-admin-session");
     if (!sessionCookie?.value) {
@@ -11,14 +12,45 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // Redirect /admin to /admin/dashboard
   if (pathname === "/admin") {
     return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+  }
+
+  // ── Client account protection (Supabase auth cookie) ───────────────────────
+  if (pathname.startsWith("/account")) {
+    const response = NextResponse.next({ request });
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            );
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            );
+          },
+        },
+      }
+    );
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    return response;
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/account/:path*"],
 };

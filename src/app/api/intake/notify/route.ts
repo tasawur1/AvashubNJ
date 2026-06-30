@@ -3,6 +3,7 @@ import { Resend } from 'resend';
 import { buildEmail, scheduleButtonHtml, replyPromptHtml, esc, nl2p } from '@/lib/emailTemplate';
 import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib/klaviyo';
 import { logRequest } from '@/lib/logger';
+import { createAdminClient } from '@/lib/supabase-server';
 
 const NOTIFY_EMAIL = process.env.NOTIFICATION_EMAIL || 'marilyn@avashubnj.com';
 
@@ -31,6 +32,7 @@ export async function POST(request: NextRequest) {
       bestTime,
       insurance,
       results,
+      submissionId,
     } = await request.json();
 
     const timestamp = new Date().toLocaleString('en-US', {
@@ -114,6 +116,22 @@ export async function POST(request: NextRequest) {
           setTimeout(() => reject(new Error('Resend parent email timed out')), 10_000)
         ),
       ]);
+    }
+
+    // — Update submission status to 'confirmed' once parent email is verified sent —
+    if (submissionId) {
+      const emailDelivered = parentEmailResult && !parentEmailResult.error;
+      if (emailDelivered) {
+        try {
+          const supabase = createAdminClient();
+          await supabase
+            .from('intake_submissions')
+            .update({ status: 'confirmed' })
+            .eq('id', submissionId);
+        } catch (e) {
+          console.warn('[NOTIFY] Status update to confirmed failed:', e);
+        }
+      }
     }
 
     // — Klaviyo: track event + upsert profile + add to list (all best-effort) —

@@ -300,13 +300,45 @@ Guidelines: Lead with strengths always. Be specific — reference toe walking, l
   clearInterval(iv);
   const finalText=resultText||buildPTFallback(childName,parentName,formData);
   document.getElementById('result-content').innerHTML=`<div class="result-body"><div class="result-text">${esc(finalText)}</div></div>`;
+  let submissionId=null;
+  try{
+    const submitRes=await fetch('/api/intake/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      formType:'pt',
+      childName, childAge, parentName, parentEmail,
+      phone: document.getElementById('parent-phone').value || '',
+      bestTime: gr('best-time'),
+      insurance: gr('insurance'),
+      diagnosis: dx || '',
+      mainConcern: mainConcern || '',
+      topGoal: document.getElementById('pt-top-goal').value || '',
+      prevServices: gr('pt-prev'),
+      aiResults: finalText,
+      formData:{
+        conditions: gc('pt-conditions'),
+        pt_walking: gr('pt-walking'),
+        pt_stairs: gr('pt-stairs'),
+        pt_jumping: gr('pt-jumping'),
+        pt_balance: gr('pt-balance'),
+        pt_coordination: gr('pt-coordination'),
+        pt_clumsy: gr('pt-clumsy'),
+        pt_strength: gr('pt-strength'),
+        pt_endurance: gr('pt-endurance'),
+        pt_concerns: gc('pt-concerns'),
+        pt_impact: gc('pt-impact'),
+        pt_anything: document.getElementById('pt-anything').value || '',
+      }
+    })});
+    const submitData=await submitRes.json();
+    if(submitData.success) submissionId=submitData.id;
+  }catch(e){console.warn('[PT] Submit failed:',e);}
   fetch('/api/intake/notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
     formId:'pt_screener',service:'Physical Therapy',
     childName,parentName,parentEmail,
     phone: document.getElementById('parent-phone').value || '',
     bestTime: (document.querySelector('input[name="best-time"]:checked')||{}).value || '',
     insurance: (document.querySelector('input[name="insurance"]:checked')||{}).value || '',
-    results:finalText
+    results:finalText,
+    submissionId,
   })}).catch(()=>{});
   document.getElementById('result-actions').style.display='flex';
 }

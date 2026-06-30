@@ -107,8 +107,20 @@ svg.svg-inline--fa {
   }
 }
 
+html,
+body {
+  overflow-x: hidden;
+}
+
 body {
   @apply bg-white text-brand-navy antialiased;
+}
+
+/* Prevent iOS Safari from zooming on input focus (triggers when font-size < 16px) */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]),
+textarea,
+select {
+  font-size: 16px;
 }
 
 /* ── TipTap rich-text editor content styles ─────────────────────────────── */

@@ -34,7 +34,7 @@ const socials = [
 
 export function SubFooter() {
   const pathname = usePathname();
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/account") || pathname === "/login") return null;
 
   return (
     <div className="border-t border-brand-purple-deep/10 bg-[#fffaf4]">

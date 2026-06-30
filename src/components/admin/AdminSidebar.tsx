@@ -3,11 +3,35 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import type { SessionData, StaffPermissions } from "@/lib/session";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  role?: SessionData["role"];
+  permissions?: StaffPermissions;
+  staffName?: string;
 };
+
+function ClientsIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IntakesIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="9" y="3" width="6" height="4" rx="1" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M9 12h6M9 16h4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 function BlogsIcon() {
   return (
@@ -21,6 +45,19 @@ function LogsIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path d="M3 12h4l3 8 4-16 3 8h4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TeamIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle cx="12" cy="8" r="3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M20 21a8 8 0 1 0-16 0" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="20" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M24 14a4 4 0 0 0-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="4" cy="7" r="2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M0 14a4 4 0 0 1 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -39,15 +76,26 @@ function LogoutIcon() {
   );
 }
 
-const navItems = [
-  { label: "Blogs",          href: "/admin/dashboard/blogs", icon: <BlogsIcon /> },
-  { label: "Activity Logs",  href: "/admin/dashboard/logs",  icon: <LogsIcon />  },
-];
-
-export function AdminSidebar({ isOpen, onClose }: Props) {
-  const pathname = usePathname();
-  const router = useRouter();
+export function AdminSidebar({ isOpen, onClose, role, permissions, staffName }: Props) {
+  const pathname    = usePathname();
+  const router      = useRouter();
   const [loggingOut, setLoggingOut] = useState(false);
+  const isSuperAdmin = role === "superadmin" || !role;
+
+  // Build the nav items based on role/permissions
+  function canView(section: keyof StaffPermissions): boolean {
+    if (isSuperAdmin) return true;
+    if (!permissions) return false;
+    return (permissions[section] as Record<string, boolean>).view ?? false;
+  }
+
+  const navItems = [
+    canView("clients")  && { label: "Clients",       href: "/admin/dashboard/clients", icon: <ClientsIcon /> },
+    canView("intakes")  && { label: "Intake Forms",  href: "/admin/dashboard/intakes", icon: <IntakesIcon /> },
+    canView("blogs")    && { label: "Blogs",          href: "/admin/dashboard/blogs",   icon: <BlogsIcon /> },
+    canView("logs")     && { label: "Activity Logs", href: "/admin/dashboard/logs",    icon: <LogsIcon /> },
+    isSuperAdmin        && { label: "Team",           href: "/admin/dashboard/team",    icon: <TeamIcon /> },
+  ].filter(Boolean) as { label: string; href: string; icon: React.ReactNode }[];
 
   async function handleLogout() {
     setLoggingOut(true);
@@ -62,14 +110,10 @@ export function AdminSidebar({ isOpen, onClose }: Props) {
   return (
     <aside
       className={
-        // Layout
         "flex h-full w-64 shrink-0 flex-col " +
-        // Colors
         "border-r border-white/15 bg-brand-purple-deep " +
-        // Mobile: fixed overlay sliding from left
         "fixed inset-y-0 left-0 z-30 " +
         "transition-transform duration-300 ease-in-out " +
-        // Desktop: back in flow, always visible
         "md:relative md:translate-x-0 " +
         (isOpen ? "translate-x-0" : "-translate-x-full")
       }
@@ -90,10 +134,12 @@ export function AdminSidebar({ isOpen, onClose }: Props) {
           </span>
           <div>
             <p className="text-sm font-extrabold leading-none text-white">Ava&apos;s Hub</p>
-            <p className="mt-0.5 text-[11px] font-medium text-white/55">Admin Dashboard</p>
+            <p className="mt-0.5 text-[11px] font-medium text-white/55">
+              {isSuperAdmin ? "Admin Dashboard" : (staffName ? `Hi, ${staffName.split(" ")[0]}` : "Staff Dashboard")}
+            </p>
           </div>
         </div>
-        {/* Mobile close button */}
+        {/* Mobile close */}
         <button
           onClick={onClose}
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-white/60 transition hover:bg-white/10 hover:text-white md:hidden"
@@ -108,7 +154,7 @@ export function AdminSidebar({ isOpen, onClose }: Props) {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Admin navigation">
         <p className="mb-2 px-3 text-[10px] font-extrabold uppercase tracking-widest text-white/35">
-          Content
+          {isSuperAdmin ? "Content" : "My Access"}
         </p>
         <ul className="grid gap-0.5">
           {navItems.map((item) => {
@@ -134,9 +180,8 @@ export function AdminSidebar({ isOpen, onClose }: Props) {
         </ul>
       </nav>
 
-      {/* Footer actions */}
+      {/* Footer */}
       <div className="border-t border-white/15 px-3 py-4 grid gap-1">
-        {/* Back to website */}
         <Link
           href="/"
           onClick={onClose}
@@ -148,7 +193,6 @@ export function AdminSidebar({ isOpen, onClose }: Props) {
           Back to Website
         </Link>
 
-        {/* Sign out */}
         <button
           onClick={handleLogout}
           disabled={loggingOut}
