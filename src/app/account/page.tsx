@@ -5,6 +5,7 @@ export const dynamic = "force-dynamic";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
 
 type Child  = { id?: string; name: string; age: string };
 type Client = {
@@ -15,6 +16,62 @@ type Client = {
   newsletter_opted_in: boolean;
 };
 
+function pwdStrength(pwd: string): "weak" | "good" | "strong" {
+  const hasUpper   = /[A-Z]/.test(pwd);
+  const hasSpecial = /[^a-zA-Z0-9]/.test(pwd);
+  if (!hasUpper || !hasSpecial || pwd.length < 8) return "weak";
+  if (pwd.length >= 12) return "strong";
+  return "good";
+}
+
+function EyeIcon({ open }: { open: boolean }) {
+  return open ? (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.75" />
+    </svg>
+  ) : (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function PasswordStrength({ pwd }: { pwd: string }) {
+  if (!pwd) return null;
+  const hasUpper   = /[A-Z]/.test(pwd);
+  const hasSpecial = /[^a-zA-Z0-9]/.test(pwd);
+  const len        = pwd.length;
+  const strength   = pwdStrength(pwd);
+
+  const barColor   = { weak: "bg-red-400",    good: "bg-yellow-400", strong: "bg-green-500" }[strength];
+  const barWidth   = { weak: "w-1/3",         good: "w-2/3",         strong: "w-full"       }[strength];
+  const label      = { weak: "Weak",          good: "Good",          strong: "Strong"       }[strength];
+  const labelColor = { weak: "text-red-500",  good: "text-yellow-600", strong: "text-green-600" }[strength];
+
+  return (
+    <div className="mt-1.5 grid gap-1.5">
+      <div className="h-1.5 w-full overflow-hidden rounded-full bg-brand-purple-deep/10">
+        <div className={`h-full rounded-full transition-all duration-300 ${barColor} ${barWidth}`} />
+      </div>
+      <span className={`text-xs font-bold ${labelColor}`}>{label}</span>
+      <div className="flex gap-4">
+        {[
+          { met: len >= 8,    label: "8+ chars"       },
+          { met: hasUpper,    label: "Uppercase"       },
+          { met: hasSpecial,  label: "Special (!@#…)" },
+        ].map(({ met, label: l }) => (
+          <span key={l} className={`flex items-center gap-1 text-[10px] font-semibold ${met ? "text-green-600" : "text-brand-navy/35"}`}>
+            {met ? "✓" : "○"} {l}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const inputCls = "w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
+
 export default function AccountPage() {
   const router = useRouter();
 
@@ -24,12 +81,24 @@ export default function AccountPage() {
   const [editing, setEditing]   = useState(false);
 
   // Edit state
-  const [editName, setEditName]         = useState("");
-  const [editPhone, setEditPhone]       = useState("");
-  const [editChildren, setEditChildren] = useState<Child[]>([]);
+  const [editName, setEditName]             = useState("");
+  const [editPhone, setEditPhone]           = useState("");
+  const [editChildren, setEditChildren]     = useState<Child[]>([]);
   const [editNewsletter, setEditNewsletter] = useState(false);
-  const [saving, setSaving]             = useState(false);
-  const [saveError, setSaveError]       = useState("");
+  const [saving, setSaving]                 = useState(false);
+  const [saveError, setSaveError]           = useState("");
+
+  // Change password state
+  const [changingPwd, setChangingPwd]         = useState(false);
+  const [currentPwd, setCurrentPwd]           = useState("");
+  const [newPwd, setNewPwd]                   = useState("");
+  const [confirmPwd, setConfirmPwd]           = useState("");
+  const [showCurrent, setShowCurrent]         = useState(false);
+  const [showNew, setShowNew]                 = useState(false);
+  const [showConfirm, setShowConfirm]         = useState(false);
+  const [pwdLoading, setPwdLoading]           = useState(false);
+  const [pwdError, setPwdError]               = useState("");
+  const [pwdSuccess, setPwdSuccess]           = useState(false);
 
   const loadProfile = useCallback(async () => {
     const res = await fetch("/api/client/profile");
@@ -88,6 +157,48 @@ export default function AccountPage() {
     setSaving(false);
   }
 
+  function openChangePwd() {
+    setCurrentPwd("");
+    setNewPwd("");
+    setConfirmPwd("");
+    setPwdError("");
+    setPwdSuccess(false);
+    setChangingPwd(true);
+  }
+
+  async function handleChangePassword() {
+    if (newPwd !== confirmPwd) { setPwdError("Passwords don't match."); return; }
+    if (!/[A-Z]/.test(newPwd) || !/[^a-zA-Z0-9]/.test(newPwd) || newPwd.length < 8) {
+      setPwdError("Password needs 8+ characters, one uppercase letter, and one special character.");
+      return;
+    }
+    setPwdLoading(true);
+    setPwdError("");
+
+    const supabase = createBrowserSupabaseClient();
+
+    if (currentPwd.trim()) {
+      const { error: verifyError } = await supabase.auth.signInWithPassword({
+        email: client!.email,
+        password: currentPwd,
+      });
+      if (verifyError) {
+        setPwdError("Current password is incorrect.");
+        setPwdLoading(false);
+        return;
+      }
+    }
+
+    const { error: updateError } = await supabase.auth.updateUser({ password: newPwd });
+    if (updateError) {
+      setPwdError(updateError.message);
+    } else {
+      setPwdSuccess(true);
+      setTimeout(() => setChangingPwd(false), 1500);
+    }
+    setPwdLoading(false);
+  }
+
   if (loading) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center">
@@ -120,20 +231,15 @@ export default function AccountPage() {
           {/* Profile card */}
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-purple-deep/10">
             <div className="flex items-center justify-between">
-              <h2 className="text-[10px] font-bold uppercase tracking-wider text-brand-navy/40">
-                Profile
-              </h2>
-              <button
-                onClick={openEdit}
-                className="text-xs font-semibold text-brand-purple-bright hover:underline"
-              >
+              <h2 className="text-[10px] font-bold uppercase tracking-wider text-brand-navy/40">Profile</h2>
+              <button onClick={openEdit} className="text-xs font-semibold text-brand-purple-bright hover:underline">
                 Edit
               </button>
             </div>
             <dl className="mt-4 grid gap-3">
-              <Row label="Name"  value={client.parent_name ?? "—"} />
-              <Row label="Email" value={client.email} />
-              <Row label="Phone" value={client.phone ?? "—"} />
+              <Row label="Name"       value={client.parent_name ?? "—"} />
+              <Row label="Email"      value={client.email} />
+              <Row label="Phone"      value={client.phone ?? "—"} />
               <Row label="Newsletter" value={client.newsletter_opted_in ? "Subscribed" : "Not subscribed"} />
             </dl>
           </div>
@@ -141,13 +247,8 @@ export default function AccountPage() {
           {/* Children card */}
           <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-purple-deep/10">
             <div className="flex items-center justify-between">
-              <h2 className="text-[10px] font-bold uppercase tracking-wider text-brand-navy/40">
-                Children
-              </h2>
-              <button
-                onClick={openEdit}
-                className="text-xs font-semibold text-brand-purple-bright hover:underline"
-              >
+              <h2 className="text-[10px] font-bold uppercase tracking-wider text-brand-navy/40">Children</h2>
+              <button onClick={openEdit} className="text-xs font-semibold text-brand-purple-bright hover:underline">
                 Edit
               </button>
             </div>
@@ -163,6 +264,20 @@ export default function AccountPage() {
                 ))}
               </ul>
             )}
+          </div>
+
+          {/* Security card */}
+          <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-purple-deep/10">
+            <h2 className="text-[10px] font-bold uppercase tracking-wider text-brand-navy/40">Security</h2>
+            <button
+              onClick={openChangePwd}
+              className="mt-3 flex w-full items-center justify-between rounded-xl bg-brand-lavender/30 px-4 py-3 text-left transition hover:bg-brand-lavender/60"
+            >
+              <span className="text-sm font-semibold text-brand-navy">Change password</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-navy/40" />
+              </svg>
+            </button>
           </div>
 
           {/* Intake forms shortcut */}
@@ -185,7 +300,7 @@ export default function AccountPage() {
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
                 placeholder="Jane Smith"
-                className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+                className={inputCls}
               />
             </Field>
 
@@ -195,7 +310,7 @@ export default function AccountPage() {
                 value={editPhone}
                 onChange={(e) => setEditPhone(e.target.value)}
                 placeholder="(555) 000-0000"
-                className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-2.5 text-sm text-brand-navy outline-none transition focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+                className={inputCls}
               />
             </Field>
 
@@ -273,6 +388,123 @@ export default function AccountPage() {
             >
               {saving ? "Saving…" : "Save changes"}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Change password modal */}
+      {changingPwd && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm"
+          onClick={(e) => { if (e.target === e.currentTarget) setChangingPwd(false); }}
+        >
+          <div className="w-full max-w-md rounded-[2rem] bg-white p-8 shadow-xl ring-1 ring-brand-purple-deep/10">
+            <h2 className="text-xl font-extrabold text-brand-navy">Change password</h2>
+
+            {pwdSuccess ? (
+              <div className="mt-6 text-center">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+                    <path d="M5 13l4 4L19 7" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <p className="font-semibold text-brand-navy">Password updated!</p>
+              </div>
+            ) : (
+              <div className="mt-5 grid gap-4">
+                <div className="grid gap-1.5">
+                  <label className="text-sm font-semibold text-brand-navy">
+                    Current password
+                    <span className="ml-1 text-xs font-normal text-brand-navy/45">(leave blank if signed in with Google)</span>
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showCurrent ? "text" : "password"}
+                      value={currentPwd}
+                      onChange={(e) => setCurrentPwd(e.target.value)}
+                      placeholder="••••••••"
+                      autoComplete="current-password"
+                      className={inputCls + " pr-11"}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrent(!showCurrent)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-navy/40 transition hover:text-brand-navy"
+                    >
+                      <EyeIcon open={showCurrent} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid gap-1.5">
+                  <label className="text-sm font-semibold text-brand-navy">New password</label>
+                  <div className="relative">
+                    <input
+                      type={showNew ? "text" : "password"}
+                      value={newPwd}
+                      onChange={(e) => setNewPwd(e.target.value)}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      className={inputCls + " pr-11"}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNew(!showNew)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-navy/40 transition hover:text-brand-navy"
+                    >
+                      <EyeIcon open={showNew} />
+                    </button>
+                  </div>
+                  <PasswordStrength pwd={newPwd} />
+                </div>
+
+                <div className="grid gap-1.5">
+                  <label className="text-sm font-semibold text-brand-navy">Confirm new password</label>
+                  <div className="relative">
+                    <input
+                      type={showConfirm ? "text" : "password"}
+                      value={confirmPwd}
+                      onChange={(e) => setConfirmPwd(e.target.value)}
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      className={inputCls + " pr-11"}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirm(!showConfirm)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-navy/40 transition hover:text-brand-navy"
+                    >
+                      <EyeIcon open={showConfirm} />
+                    </button>
+                  </div>
+                  {confirmPwd && newPwd !== confirmPwd && (
+                    <p className="text-xs font-semibold text-red-500">Passwords don&apos;t match</p>
+                  )}
+                </div>
+
+                {pwdError && (
+                  <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
+                    {pwdError}
+                  </p>
+                )}
+
+                <div className="flex gap-3 pt-1">
+                  <button
+                    onClick={() => setChangingPwd(false)}
+                    className="flex-1 rounded-full border border-brand-purple-deep/15 py-2.5 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-lavender"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleChangePassword}
+                    disabled={pwdLoading}
+                    className="flex-1 rounded-full bg-brand-purple-bright py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:opacity-60"
+                  >
+                    {pwdLoading ? "Saving…" : "Save password"}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

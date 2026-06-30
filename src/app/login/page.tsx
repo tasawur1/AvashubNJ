@@ -3,9 +3,11 @@
 export const dynamic = "force-dynamic";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+
+type Step = "email" | "sent" | "forgot" | "reset-sent";
 
 function BackArrow() {
   return (
@@ -26,15 +28,29 @@ function GoogleIcon() {
   );
 }
 
-type Step = "email" | "otp";
+function EyeIcon({ open }: { open: boolean }) {
+  return open ? (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.75" />
+    </svg>
+  ) : (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24M1 1l22 22" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+const inputCls = "w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [step, setStep]       = useState<Step>("email");
-  const [email, setEmail]     = useState("");
-  const [otp, setOtp]         = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError]     = useState("");
+  const [step, setStep]     = useState<Step>("email");
+  const [email, setEmail]   = useState("");
+  const [password, setPassword] = useState("");
+  const [showPwd, setShowPwd]   = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState("");
 
   async function handleGoogleSignIn() {
     setLoading(true);
@@ -42,65 +58,62 @@ export default function LoginPage() {
     const supabase = createBrowserSupabaseClient();
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/api/auth/callback`,
-      },
+      options: { redirectTo: `${window.location.origin}/api/auth/callback` },
     });
-    if (oauthError) {
-      setError(oauthError.message);
-      setLoading(false);
-    }
-    // On success, browser navigates to Google — no cleanup needed
+    if (oauthError) { setError(oauthError.message); setLoading(false); }
   }
 
-  async function handleSendOtp(e: React.FormEvent) {
+  async function handlePasswordSignIn(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || !password) return;
+    setLoading(true);
+    setError("");
+    const supabase = createBrowserSupabaseClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: email.trim().toLowerCase(),
+      password,
+    });
+    if (signInError) {
+      setError("Incorrect email or password.");
+      setLoading(false);
+      return;
+    }
+    const res = await fetch("/api/client/profile");
+    router.push(res.status === 404 ? "/account/setup" : "/account");
+  }
+
+  async function handleSendLink() {
+    if (!email.trim()) { setError("Enter your email address first."); return; }
+    setLoading(true);
+    setError("");
+    const supabase = createBrowserSupabaseClient();
+    const { error: linkError } = await supabase.auth.signInWithOtp({
+      email: email.trim().toLowerCase(),
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+      },
+    });
+    setLoading(false);
+    if (linkError) { setError(linkError.message); } else { setStep("sent"); }
+  }
+
+  async function handleForgotPassword(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
     setError("");
-
     const supabase = createBrowserSupabaseClient();
-    const { error: otpError } = await supabase.auth.signInWithOtp({
-      email: email.trim().toLowerCase(),
-      options: { shouldCreateUser: true },
-    });
-
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+      email.trim().toLowerCase(),
+      { redirectTo: `${window.location.origin}/api/auth/callback?next=/account/reset-password` }
+    );
     setLoading(false);
-    if (otpError) {
-      setError(otpError.message);
-    } else {
-      setStep("otp");
-    }
-  }
-
-  async function handleVerifyOtp(e: React.FormEvent) {
-    e.preventDefault();
-    if (!otp.trim()) return;
-    setLoading(true);
-    setError("");
-
-    const supabase = createBrowserSupabaseClient();
-    const { data, error: verifyError } = await supabase.auth.verifyOtp({
-      email: email.trim().toLowerCase(),
-      token: otp.trim(),
-      type: "email",
-    });
-
-    if (verifyError || !data.user) {
-      setLoading(false);
-      setError(verifyError?.message ?? "Invalid code. Please try again.");
-      return;
-    }
-
-    // Check if user has a linked client profile
-    const res = await fetch("/api/client/me");
-    const me = await res.json();
-    router.push(me.hasProfile ? "/account" : "/account/setup");
+    if (resetError) { setError(resetError.message); } else { setStep("reset-sent"); }
   }
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#fffaf4] px-4 py-12">
-      {/* Back link */}
       <div className="mb-8 w-full max-w-md">
         <Link
           href="/"
@@ -111,11 +124,11 @@ export default function LoginPage() {
         </Link>
       </div>
 
-      {/* Card */}
       <div className="w-full max-w-md rounded-[2rem] bg-white p-8 shadow-card ring-1 ring-brand-purple-deep/10 lg:p-10">
-        {step === "email" ? (
+
+        {/* ── Email + password step ── */}
+        {step === "email" && (
           <>
-            {/* Heading */}
             <div className="text-center">
               <h1 className="text-2xl font-extrabold text-brand-navy lg:text-3xl">
                 Welcome to Ava&apos;s Hub
@@ -125,7 +138,6 @@ export default function LoginPage() {
               </p>
             </div>
 
-            {/* Google */}
             <button
               type="button"
               onClick={handleGoogleSignIn}
@@ -138,12 +150,11 @@ export default function LoginPage() {
 
             <div className="my-5 flex items-center gap-3">
               <div className="h-px flex-1 bg-brand-purple-deep/10" />
-              <span className="text-xs font-semibold text-brand-navy/40">or continue with email</span>
+              <span className="text-xs font-semibold text-brand-navy/40">or sign in with email</span>
               <div className="h-px flex-1 bg-brand-purple-deep/10" />
             </div>
 
-            {/* Email form */}
-            <form onSubmit={handleSendOtp} className="grid gap-4">
+            <form onSubmit={handlePasswordSignIn} className="grid gap-4">
               <div className="grid gap-1.5">
                 <label htmlFor="login-email" className="text-sm font-semibold text-brand-navy">
                   Email address
@@ -156,8 +167,43 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+                  className={inputCls}
                 />
+              </div>
+
+              <div className="grid gap-1.5">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="login-password" className="text-sm font-semibold text-brand-navy">
+                    Password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => { setStep("forgot"); setError(""); }}
+                    className="text-xs font-semibold text-brand-purple-bright hover:underline"
+                  >
+                    Forgot password?
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    id="login-password"
+                    type={showPwd ? "text" : "password"}
+                    required
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className={inputCls + " pr-12"}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPwd(!showPwd)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-brand-navy/40 transition hover:text-brand-navy"
+                    aria-label={showPwd ? "Hide password" : "Show password"}
+                  >
+                    <EyeIcon open={showPwd} />
+                  </button>
+                </div>
               </div>
 
               {error && (
@@ -169,73 +215,144 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-1 inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {loading ? "Sending…" : "Send code"}
+                {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
 
-            {/* Admin link */}
-            <p className="mt-6 text-center text-xs text-brand-navy/40">
+            <div className="mt-5 text-center">
+              <button
+                type="button"
+                onClick={handleSendLink}
+                disabled={loading}
+                className="text-xs font-semibold text-brand-navy/50 transition hover:text-brand-purple-bright disabled:opacity-60"
+              >
+                Use a sign-in link instead →
+              </button>
+            </div>
+
+            <p className="mt-5 text-center text-xs text-brand-navy/40">
               Are you an administrator?{" "}
               <Link href="/admin/login" className="font-semibold text-brand-purple-bright hover:underline">
                 Admin login →
               </Link>
             </p>
           </>
-        ) : (
+        )}
+
+        {/* ── Magic link sent step ── */}
+        {step === "sent" && (
           <>
-            {/* OTP step */}
             <div className="text-center">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand-purple-bright/10">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="text-brand-purple-bright" />
+                </svg>
+              </div>
               <h1 className="text-2xl font-extrabold text-brand-navy">Check your email</h1>
               <p className="mt-2 text-sm leading-relaxed text-brand-navy/55">
-                We sent a 6-digit code to <strong>{email}</strong>
+                We sent a sign-in link to{" "}
+                <strong className="text-brand-navy">{email}</strong>. Click it to continue.
               </p>
             </div>
+            <p className="mt-6 text-center text-xs text-brand-navy/40">
+              Didn&apos;t get it? Check your spam folder or{" "}
+              <button
+                type="button"
+                onClick={() => { setStep("email"); setError(""); }}
+                className="font-semibold text-brand-purple-bright hover:underline"
+              >
+                try again
+              </button>
+              .
+            </p>
+          </>
+        )}
 
-            <form onSubmit={handleVerifyOtp} className="mt-7 grid gap-4">
+        {/* ── Forgot password step ── */}
+        {step === "forgot" && (
+          <>
+            <button
+              type="button"
+              onClick={() => { setStep("email"); setError(""); }}
+              className="mb-6 inline-flex items-center gap-1 text-sm font-semibold text-brand-navy/60 transition hover:text-brand-purple-bright"
+            >
+              <BackArrow /> Back to sign in
+            </button>
+            <h1 className="text-2xl font-extrabold text-brand-navy">Reset your password</h1>
+            <p className="mt-2 text-sm leading-relaxed text-brand-navy/55">
+              Enter your email and we&apos;ll send you a link to set a new password.
+            </p>
+            <form onSubmit={handleForgotPassword} className="mt-7 grid gap-4">
               <div className="grid gap-1.5">
-                <label htmlFor="otp-code" className="text-sm font-semibold text-brand-navy">
-                  Verification code
+                <label htmlFor="forgot-email" className="text-sm font-semibold text-brand-navy">
+                  Email address
                 </label>
                 <input
-                  id="otp-code"
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
+                  id="forgot-email"
+                  type="email"
                   required
-                  autoComplete="one-time-code"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                  placeholder="000000"
-                  className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-center text-lg font-bold tracking-[0.4em] text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/20 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className={inputCls}
                 />
               </div>
-
               {error && (
                 <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">
                   {error}
                 </p>
               )}
-
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {loading ? "Verifying…" : "Continue"}
+                {loading ? "Sending…" : "Send reset link"}
               </button>
             </form>
-
-            <button
-              type="button"
-              onClick={() => { setStep("email"); setOtp(""); setError(""); }}
-              className="mt-4 w-full text-center text-xs font-semibold text-brand-navy/50 hover:text-brand-purple-bright"
-            >
-              ← Use a different email
-            </button>
           </>
         )}
+
+        {/* ── Reset link sent step ── */}
+        {step === "reset-sent" && (
+          <>
+            <div className="text-center">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-brand-purple-bright/10">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="text-brand-purple-bright" />
+                </svg>
+              </div>
+              <h1 className="text-2xl font-extrabold text-brand-navy">Check your email</h1>
+              <p className="mt-2 text-sm leading-relaxed text-brand-navy/55">
+                We sent a password reset link to{" "}
+                <strong className="text-brand-navy">{email}</strong>. Click it to set a new password.
+              </p>
+            </div>
+            <p className="mt-6 text-center text-xs text-brand-navy/40">
+              Didn&apos;t get it?{" "}
+              <button
+                type="button"
+                onClick={() => { setStep("forgot"); setError(""); }}
+                className="font-semibold text-brand-purple-bright hover:underline"
+              >
+                Try again
+              </button>
+              {" "}or{" "}
+              <button
+                type="button"
+                onClick={() => { setStep("email"); setError(""); }}
+                className="font-semibold text-brand-purple-bright hover:underline"
+              >
+                back to sign in
+              </button>
+              .
+            </p>
+          </>
+        )}
+
       </div>
     </div>
   );

@@ -42,15 +42,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=auth_failed`);
   }
 
-  // Check if this auth user already has a linked client record (returning user)
-  const adminDb = createAdminClient();
-  const { data: existingClient } = await adminDb
-    .from("clients")
-    .select("id")
-    .eq("auth_user_id", data.user.id)
-    .maybeSingle();
+  // Allow trusted next-paths (e.g. password reset flow)
+  const next = searchParams.get("next");
+  const SAFE_NEXT = ["/account/reset-password"];
 
-  const redirectPath = existingClient ? "/account" : "/account/setup";
+  let redirectPath: string;
+  if (next && SAFE_NEXT.includes(next)) {
+    redirectPath = next;
+  } else {
+    // Check if this auth user already has a linked client record (returning user)
+    const adminDb = createAdminClient();
+    const { data: existingClient } = await adminDb
+      .from("clients")
+      .select("id")
+      .eq("auth_user_id", data.user.id)
+      .maybeSingle();
+    redirectPath = existingClient ? "/account" : "/account/setup";
+  }
+
   const response = NextResponse.redirect(`${origin}${redirectPath}`);
 
   // Attach auth cookies to the redirect response
