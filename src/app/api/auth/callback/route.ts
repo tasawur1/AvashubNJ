@@ -3,8 +3,16 @@ import { createServerClient } from "@supabase/ssr";
 import { createAdminClient } from "@/lib/supabase-server";
 
 export async function GET(request: NextRequest) {
-  const { searchParams, origin } = new URL(request.url);
+  const { searchParams } = new URL(request.url);
   const code = searchParams.get("code");
+
+  // On Vercel, request.url may contain an internal IP (0.0.0.0) rather than
+  // the public domain. Use x-forwarded-host in production for a reliable origin.
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const proto = request.headers.get("x-forwarded-proto") ?? "https";
+  const origin = forwardedHost
+    ? `${proto}://${forwardedHost}`
+    : new URL(request.url).origin;
 
   if (!code) {
     return NextResponse.redirect(`${origin}/login?error=missing_code`);
