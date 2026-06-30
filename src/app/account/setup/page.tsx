@@ -209,9 +209,9 @@ export default function AccountSetupPage() {
             <button
               onClick={handleSubmit}
               disabled={saving}
-              className="flex-1 rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:opacity-60"
+              className="flex-1 whitespace-nowrap rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:opacity-60"
             >
-              {saving ? "Saving…" : "Complete setup"}
+              {saving ? "Saving…" : "Finish"}
             </button>
           </div>
         </div>

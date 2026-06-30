@@ -237,7 +237,7 @@ export function ClientsViewer() {
               : childCount === 1
                 ? c.children[0].name
                 : (c.child_name ?? null);
-            const avatarInitial = (c.children?.[0]?.name ?? c.child_name ?? c.parent_name ?? "?").charAt(0).toUpperCase();
+            const avatarInitial = (c.parent_name ?? c.children?.[0]?.name ?? c.child_name ?? "?").charAt(0).toUpperCase();
             return (
               <div key={c.id} className="overflow-hidden rounded-xl border border-brand-purple-deep/10 bg-white shadow-sm">
                 {/* Client row */}
