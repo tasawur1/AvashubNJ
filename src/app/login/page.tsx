@@ -36,11 +36,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState("");
 
-  const supabase = createBrowserSupabaseClient();
-
   async function handleGoogleSignIn() {
     setLoading(true);
     setError("");
+    const supabase = createBrowserSupabaseClient();
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -60,6 +59,7 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
+    const supabase = createBrowserSupabaseClient();
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email: email.trim().toLowerCase(),
       options: { shouldCreateUser: true },
@@ -79,6 +79,7 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
+    const supabase = createBrowserSupabaseClient();
     const { data, error: verifyError } = await supabase.auth.verifyOtp({
       email: email.trim().toLowerCase(),
       token: otp.trim(),
