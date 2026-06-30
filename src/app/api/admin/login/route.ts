@@ -5,7 +5,7 @@ import { sessionOptions, type SessionData } from "@/lib/session";
 import { createPublicClient, createAdminClient } from "@/lib/supabase-server";
 
 const SUPERADMIN_EMAIL    = process.env.ADMIN_EMAIL    ?? "hello@avashubnj.com";
-const SUPERADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "Mutikani1983";
+const SUPERADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
 
     // ── Superadmin path ───────────────────────────────────────────────────────
     if (
+      SUPERADMIN_PASSWORD &&
       normalizedEmail === SUPERADMIN_EMAIL.toLowerCase() &&
       password === SUPERADMIN_PASSWORD
     ) {

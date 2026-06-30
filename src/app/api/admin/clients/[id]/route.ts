@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getIronSession } from 'iron-session';
 import { cookies } from 'next/headers';
-import { sessionOptions, type SessionData } from '@/lib/session';
+import { sessionOptions, type SessionData, type StaffPermissions } from '@/lib/session';
 import { createAdminClient } from '@/lib/supabase-server';
 
 async function requireAuth() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
   if (!session.isLoggedIn) throw new Error('Unauthorized');
+  return session;
+}
+
+function permitted(session: SessionData, resource: keyof StaffPermissions, action: string): boolean {
+  if (session.role === 'superadmin') return true;
+  const perms = session.permissions?.[resource] as Record<string, boolean> | undefined;
+  return perms?.[action] === true;
 }
 
 export async function GET(
@@ -14,7 +21,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAuth();
+    const session = await requireAuth();
+    if (!permitted(session, 'clients', 'view'))
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     const { id } = await params;
     const supabase = createAdminClient();
     const { data, error } = await supabase
@@ -44,7 +53,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAuth();
+    const session = await requireAuth();
+    if (!permitted(session, 'clients', 'edit'))
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     const { id } = await params;
     const body = await request.json();
 
@@ -98,7 +109,9 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    await requireAuth();
+    const session = await requireAuth();
+    if (!permitted(session, 'clients', 'delete'))
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     const { id } = await params;
     const supabase = createAdminClient();
     const { error } = await supabase.from('clients').delete().eq('id', id);

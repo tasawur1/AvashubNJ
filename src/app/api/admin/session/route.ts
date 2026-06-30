@@ -7,9 +7,10 @@ export async function GET() {
   try {
     const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
     return NextResponse.json({
-      isLoggedIn: session.isLoggedIn === true,
-      role:       session.role ?? null,
-      staffName:  session.staffName ?? null,
+      isLoggedIn:  session.isLoggedIn === true,
+      role:        session.role ?? null,
+      staffName:   session.staffName ?? null,
+      permissions: session.permissions ?? null,
     });
   } catch {
     return NextResponse.json({ isLoggedIn: false, role: null, staffName: null });
