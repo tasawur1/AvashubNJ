@@ -54,7 +54,9 @@ export function BlogManager({ initialBlogs }: Props) {
   const [view, setView] = useState<"list" | "form">("list");
   const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
   const [form, setForm] = useState(emptyForm());
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving]     = useState(false);
+  const [toggling, setToggling] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
@@ -107,6 +109,10 @@ export function BlogManager({ initialBlogs }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Save failed.");
+      }
       const data = await res.json();
       if (!data.success) throw new Error(data.error ?? "Save failed.");
 
@@ -125,31 +131,46 @@ export function BlogManager({ initialBlogs }: Props) {
   }
 
   async function handleToggleHidden(id: string, currentlyHidden: boolean) {
+    if (toggling) return;
+    setToggling(true);
     try {
       const res = await fetch(`/api/admin/blogs/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hidden: !currentlyHidden }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Failed to update visibility.");
+      }
       const data = await res.json();
-      if (!data.success) throw new Error(data.error);
+      if (!data.success) throw new Error(data.error ?? "Failed to update visibility.");
       setBlogs((prev) =>
         prev.map((b) => (b.id === id ? { ...b, hidden: !currentlyHidden } : b))
       );
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to update visibility.");
+    } finally {
+      setToggling(false);
     }
   }
 
   async function handleDelete(id: string) {
+    if (deleting) return;
+    setDeleting(true);
     try {
       const res = await fetch(`/api/admin/blogs/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Delete failed.");
+      }
       const data = await res.json();
-      if (!data.success) throw new Error(data.error);
+      if (!data.success) throw new Error(data.error ?? "Delete failed.");
       setBlogs((prev) => prev.filter((b) => b.id !== id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Delete failed.");
     } finally {
+      setDeleting(false);
       setDeleteId(null);
     }
   }
@@ -215,8 +236,9 @@ export function BlogManager({ initialBlogs }: Props) {
                   <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
                     <button
                       onClick={() => handleToggleHidden(blog.id, blog.hidden)}
+                      disabled={toggling}
                       title={blog.hidden ? "Unhide blog" : "Hide blog"}
-                      className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy"
+                      className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy disabled:cursor-not-allowed disabled:opacity-40"
                     >
                       {blog.hidden ? (
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -260,7 +282,7 @@ export function BlogManager({ initialBlogs }: Props) {
               <p className="mt-1.5 text-sm text-brand-navy/55">This cannot be reversed.</p>
               <div className="mt-5 flex justify-end gap-2">
                 <button onClick={() => setDeleteId(null)} className="rounded-xl px-4 py-2 text-sm font-semibold text-brand-navy/60 hover:text-brand-navy">Cancel</button>
-                <button onClick={() => handleDelete(deleteId)} className="rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600">Delete</button>
+                <button onClick={() => handleDelete(deleteId)} disabled={deleting} className="rounded-xl bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60">{deleting ? "Deleting…" : "Delete"}</button>
               </div>
             </div>
           </div>

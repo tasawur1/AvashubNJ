@@ -6,6 +6,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { PhoneInputField } from "@/components/PhoneInputField";
+import { validatePhone, validateChildAge } from "@/lib/validation";
 
 type Child  = { id?: string; name: string; age: string };
 type Client = {
@@ -141,6 +143,14 @@ export default function AccountPage() {
   }
 
   async function handleSave() {
+    if (editPhone) {
+      const phoneErr = validatePhone(editPhone);
+      if (phoneErr) { setSaveError(phoneErr); return; }
+    }
+    for (const c of editChildren.filter((ch) => ch.name.trim())) {
+      const ageErr = validateChildAge(c.age);
+      if (ageErr) { setSaveError(ageErr); return; }
+    }
     setSaving(true);
     setSaveError("");
     const controller = new AbortController();
@@ -335,13 +345,7 @@ export default function AccountPage() {
             </Field>
 
             <Field label="Phone number">
-              <input
-                type="tel"
-                value={editPhone}
-                onChange={(e) => setEditPhone(e.target.value)}
-                placeholder="(555) 000-0000"
-                className={inputCls}
-              />
+              <PhoneInputField value={editPhone} onChange={setEditPhone} variant="pill" />
             </Field>
 
             <div>
@@ -357,7 +361,9 @@ export default function AccountPage() {
                       className="flex-1 rounded-full border border-brand-teal/20 bg-[#fffaf4] px-4 py-2 text-sm text-brand-navy outline-none transition focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
                     />
                     <input
-                      type="text"
+                      type="number"
+                      min={1}
+                      max={21}
                       value={child.age}
                       onChange={(e) => updateEditChild(i, "age", e.target.value)}
                       placeholder="Age"

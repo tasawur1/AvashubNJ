@@ -40,7 +40,13 @@ export async function middleware(request: NextRequest) {
       }
     );
 
-    const { data: { user } } = await supabase.auth.getUser();
+    let user: Awaited<ReturnType<typeof supabase.auth.getUser>>["data"]["user"];
+    try {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    } catch {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
     if (!user) {
       return NextResponse.redirect(new URL("/login", request.url));
     }

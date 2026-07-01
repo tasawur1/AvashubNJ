@@ -5,11 +5,14 @@ import { upsertKlaviyoProfile, addToKlaviyoList, trackKlaviyoEvent } from '@/lib
 import { logRequest } from '@/lib/logger';
 import { createAdminClient } from '@/lib/supabase-server';
 
+// Module-level singleton — reuses the underlying HTTP agent/connection pool
+// across requests instead of spinning up a new client on every POST.
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export async function POST(request: NextRequest) {
   const start = Date.now();
   try {
-    const resendApiKey = process.env.RESEND_API_KEY;
-    if (!resendApiKey) {
+    if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
         { success: false, error: 'Email service not configured.' },
         { status: 500 }
@@ -30,9 +33,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const resend = new Resend(resendApiKey);
-
     // — Internal notification to hello@avashubnj.com —
+    // 20s timeout gives Resend headroom for warm-up while staying well under
+    // Hostinger's nginx proxy_read_timeout (typically 60s on managed Node plans).
+    // clearTimeout ensures the timer handle is released immediately on success —
+    // without it, every successful send leaves a dangling timer alive in the
+    // long-running Node process until the 20s elapses.
+    let timeoutId: ReturnType<typeof setTimeout>;
     const clinicResult = await Promise.race([
       resend.emails.send({
         from: "Ava's Hub <forms@avashubnj.com>",
@@ -125,10 +132,19 @@ export async function POST(request: NextRequest) {
   </body>
 </html>`,
       }),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Resend timed out after 10s')), 10_000)
-      ),
+      new Promise<never>((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error('Email delivery timed out — please try again.')), 20_000);
+      }),
     ]);
+    clearTimeout(timeoutId!);
+
+    // Resend SDK returns { data, error } — treat a non-null error as a hard failure
+    // so it falls to the catch block and returns HTTP 500 with the real message.
+    if (clinicResult.error) {
+      throw new Error(
+        (clinicResult.error as { message?: string }).message ?? 'Email service returned an error.'
+      );
+    }
 
     // — Klaviyo: run all three calls concurrently (independent, no ordering needed) —
     await Promise.all([
@@ -149,54 +165,39 @@ export async function POST(request: NextRequest) {
       }).catch((err) => console.warn('[KLAVIYO] trackKlaviyoEvent failed:', email, err)),
     ]);
 
-    // Store to Supabase (fire-and-forget — never blocks the response)
+    // Store contact submission to Supabase (fire-and-forget — never blocks the response).
+    // We do NOT create or modify client records here — clients are created only via
+    // sign-up and intake forms. We do a read-only lookup to link the submission to an
+    // existing client if their email matches, but we never write to the clients table.
+    // The 8s race prevents a stalled Supabase connection from accumulating indefinitely
+    // in the long-running Node process when the connection pool is under pressure.
     void (async () => {
       try {
         const supabase = createAdminClient();
         const fullName = `${firstName} ${lastName}`.trim();
-        const { data: existing } = await supabase
-          .from('clients')
-          .select('id, source')
-          .eq('email', email)
-          .maybeSingle();
 
-        let clientId: string | null = null;
-        if (existing) {
-          const newSource = [...new Set([...(existing.source ?? []), 'contact'])];
-          await supabase.from('clients').update({
-            ...(fullName ? { parent_name: fullName } : {}),
-            ...(phone ? { phone } : {}),
-            source: newSource,
-          }).eq('id', existing.id);
-          clientId = existing.id;
-        } else {
-          const { data: newClient, error: insertError } = await supabase
-            .from('clients')
-            .insert({ email, parent_name: fullName || null, phone: phone || null, source: ['contact'] })
-            .select('id')
-            .single();
-          if (insertError) {
-            // 23505 = unique_violation — concurrent submission inserted same email first
-            if (insertError.code === '23505') {
-              const { data: retried } = await supabase
-                .from('clients').select('id').eq('email', email).single();
-              clientId = retried?.id ?? null;
-            } else {
-              console.warn('[CONTACT DB] client insert failed:', insertError.message);
-            }
-          } else {
-            clientId = newClient?.id ?? null;
-          }
-        }
+        await Promise.race([
+          (async () => {
+            // Read-only: find existing client to attach the submission to (no upsert)
+            const { data: existing } = await supabase
+              .from('clients')
+              .select('id')
+              .eq('email', email)
+              .maybeSingle();
 
-        const { error } = await supabase.from('contact_submissions').insert({
-          email,
-          name: fullName || null,
-          phone: phone || null,
-          message: message || null,
-          client_id: clientId,
-        });
-        if (error) console.warn('[CONTACT DB]', error.message);
+            const { error } = await supabase.from('contact_submissions').insert({
+              email,
+              name: fullName || null,
+              phone: phone || null,
+              message: message || null,
+              client_id: existing?.id ?? null,
+            });
+            if (error) console.warn('[CONTACT DB]', error.message);
+          })(),
+          new Promise<void>((_, reject) =>
+            setTimeout(() => reject(new Error('Supabase write timed out')), 8_000)
+          ),
+        ]);
       } catch (err) {
         console.warn('[CONTACT DB] failed:', err);
       }
@@ -206,15 +207,11 @@ export async function POST(request: NextRequest) {
       route: '/api/contact',
       duration_ms: Date.now() - start,
       status_code: 200,
-      success: !clinicResult.error,
-      error_message: clinicResult.error ? String(clinicResult.error) : undefined,
+      success: true,
       metadata: { has_message: !!message, has_phone: !!phone },
     });
 
-    return NextResponse.json({
-      success: !clinicResult.error,
-      clinicEmail: clinicResult,
-    });
+    return NextResponse.json({ success: true });
 
   } catch (error) {
     logRequest({

@@ -30,6 +30,10 @@ export default function ImageCropUpload({ label, value, onChange }: Props) {
       formData.append("label", label);
 
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Upload failed.");
+      }
       const data = await res.json();
       if (!data.success) throw new Error(data.error ?? "Upload failed.");
       onChange(data.url);

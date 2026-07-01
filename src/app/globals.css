@@ -154,3 +154,116 @@ select {
 /* Blog detail page body content */
 .blog-content img { border-radius: 0.5rem; height: auto; }
 .blog-content::after { content: ""; display: table; clear: both; }
+
+/* ── Phone number input — brand overrides ───────────────────────────────── */
+/* The library's own classes are overridden via the .phone-field parent.     */
+
+.phone-field .PhoneInput {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(0, 124, 137, 0.2); /* brand-teal/20 */
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.phone-field .PhoneInput:focus-within {
+  border-color: #BD7ABB; /* brand-purple-bright */
+  box-shadow: 0 0 0 2px rgba(189, 122, 187, 0.2);
+}
+
+/* Pill — signup, account pages */
+.phone-field--pill .PhoneInput {
+  border-radius: 9999px;
+  background: #fffaf4;
+  padding: 0 1.25rem 0 0.75rem;
+  min-height: 44px;
+}
+/* Box — contact form desktop */
+.phone-field--box .PhoneInput {
+  border-radius: 0.75rem;
+  background: #ffffff;
+  padding: 0 1rem 0 0.75rem;
+  min-height: 44px;
+}
+/* Mobile — contact form mobile panel */
+.phone-field--mobile .PhoneInput {
+  border-radius: 1.1rem;
+  background: rgba(255,255,255,0.95);
+  border-color: rgba(0, 124, 137, 0.15);
+  padding: 0 1.25rem 0 0.75rem;
+  min-height: 52px;
+}
+
+.phone-field .PhoneInputCountry {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(23, 19, 71, 0.1);
+  align-self: stretch;
+  position: relative;
+  flex-shrink: 0;
+}
+.phone-field .PhoneInputCountrySelect {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%; width: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+  border: 0;
+  font-size: 16px; /* prevent iOS zoom */
+}
+.phone-field .PhoneInputCountrySelectArrow {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-bottom: 1.5px solid rgba(23, 19, 71, 0.45);
+  border-right: 1.5px solid rgba(23, 19, 71, 0.45);
+  transform: rotate(45deg) translateY(-2px);
+  margin-left: 2px;
+}
+.phone-field .PhoneInputCountryIcon {
+  width: 1.5em;
+  height: 1.15em;
+  display: flex;
+  align-items: center;
+}
+.phone-field .PhoneInputCountryIcon--border {
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  border-radius: 2px;
+}
+.phone-field .PhoneInputCountryIconImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.phone-field .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  border: 0 !important;
+  background: transparent;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0.625rem 0.5rem;
+  color: #171347;
+  font-family: inherit;
+  font-size: 16px; /* prevent iOS zoom */
+}
+.phone-field .PhoneInputInput::placeholder {
+  color: rgba(23, 19, 71, 0.4);
+}
+.phone-field--mobile .PhoneInputInput {
+  font-weight: 500;
+  padding: 0.875rem 0.5rem;
+}
+
+/* Error state — red border, right padding so text doesn't overlap the ! icon */
+.phone-field--error .PhoneInput {
+  border-color: #f87171 !important; /* red-400 */
+}
+.phone-field--error .PhoneInput:focus-within {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 2px rgba(248, 113, 113, 0.2) !important;
+}
+.phone-field--error .PhoneInputInput {
+  padding-right: 2rem;
+}

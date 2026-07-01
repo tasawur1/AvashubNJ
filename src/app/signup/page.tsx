@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { PhoneInputField } from "@/components/PhoneInputField";
+import { isPersonalEmail, validateEmail, validatePhone, validateChildAge, suggestEmailCorrection } from "@/lib/validation";
 
 type Step  = 1 | 2 | 3 | 4;
 type Child = { name: string; age: string };
@@ -100,7 +102,6 @@ export default function SignupPage() {
   // Step 4
   const [newsletter, setNewsletter] = useState(true);
   const [otp, setOtp]               = useState("");
-  // true = Supabase gave us an immediate session (email confirmations OFF)
   const [hasSession, setHasSession] = useState(false);
   const [resending, setResending]   = useState(false);
   const [resendSent, setResendSent] = useState(false);
@@ -123,13 +124,21 @@ export default function SignupPage() {
       setError("Password needs 8+ characters, one uppercase letter, and one special character.");
       return;
     }
+    const normalizedEmail = email.trim().toLowerCase();
+    // validateEmail runs validator.isEmail (format) then suggestEmailCorrection (typo)
+    const emailFmtErr = validateEmail(normalizedEmail);
+    if (emailFmtErr) { setError(emailFmtErr); return; }
+    if (!isPersonalEmail(normalizedEmail)) {
+      setError("Please sign up with a personal email address (Gmail, Yahoo, iCloud, Outlook, etc.) — not a work email.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
       const res = await fetch("/api/auth/check-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+        body: JSON.stringify({ email: normalizedEmail }),
       });
       if (!res.ok) throw new Error("Could not verify email. Please try again.");
       const { exists } = await res.json();
@@ -145,11 +154,26 @@ export default function SignupPage() {
     }
   }
 
-  // Called when moving from step 3 → 4. First time we touch Supabase Auth —
-  // nothing is written anywhere until the user completes all info steps.
-  async function handleProceedToConfirm() {
-    setLoading(true);
+  function handleStep2Next() {
     setError("");
+    if (phone) {
+      const phoneErr = validatePhone(phone);
+      if (phoneErr) { setError(phoneErr); return; }
+    }
+    setStep(3);
+  }
+
+  async function handleProceedToConfirm() {
+    // Clear any stale error first so the user never sees a stale message while loading
+    setError("");
+    // Validate child ages before touching Supabase auth
+    const filledChildren = children.filter((c) => c.name.trim());
+    for (const c of filledChildren) {
+      const ageErr = validateChildAge(c.age);
+      if (ageErr) { setError(ageErr); return; }
+    }
+
+    setLoading(true);
     try {
       const supabase = createBrowserSupabaseClient();
       const { data, error: signUpError } = await supabase.auth.signUp({
@@ -196,7 +220,6 @@ export default function SignupPage() {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
     try {
-      // If email confirmations are enabled, verify the OTP first
       if (!hasSession) {
         if (!otp.trim()) { setError("Enter the confirmation code from your email."); return; }
         const supabase = createBrowserSupabaseClient();
@@ -211,14 +234,13 @@ export default function SignupPage() {
         }
       }
 
-      // Save profile
       const res = await fetch("/api/client/onboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
           parent_name:         parentName.trim() || null,
-          phone:               phone.trim() || null,
+          phone:               phone || null,
           children:            children.filter((c) => c.name.trim()),
           newsletter_opted_in: newsletter,
         }),
@@ -299,7 +321,8 @@ export default function SignupPage() {
                 <label htmlFor="su-email" className="text-sm font-semibold text-brand-navy">Email address</label>
                 <input id="su-email" type="email" required autoComplete="email"
                   value={email} onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com" className={inputCls} />
+                  placeholder="you@gmail.com" className={inputCls} />
+                <p className="text-xs text-brand-navy/45">Use a personal email (Gmail, Yahoo, iCloud, etc.)</p>
               </div>
 
               <div className="grid gap-1.5">
@@ -359,13 +382,12 @@ export default function SignupPage() {
                   placeholder="Jane Smith" className={inputCls} />
               </div>
               <div className="grid gap-1.5">
-                <label className="text-sm font-semibold text-brand-navy">Phone number</label>
-                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)}
-                  placeholder="(555) 000-0000" className={inputCls} />
+                <label className="text-sm font-semibold text-brand-navy">Phone number <span className="font-normal text-brand-navy/45">(optional)</span></label>
+                <PhoneInputField value={phone} onChange={setPhone} variant="pill" />
               </div>
             </div>
             {error && <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">{error}</p>}
-            <button onClick={() => { setError(""); setStep(3); }}
+            <button onClick={handleStep2Next}
               className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep">
               Next →
             </button>
@@ -376,7 +398,7 @@ export default function SignupPage() {
         {step === 3 && (
           <>
             <h1 className="text-xl font-extrabold text-brand-navy">Your children</h1>
-            <p className="mt-1 text-sm text-brand-navy/55">Add each child you&apos;re enrolling.</p>
+            <p className="mt-1 text-sm text-brand-navy/55">Add each child you&apos;re enrolling. Ages 1–21.</p>
             <div className="mt-6 grid gap-3">
               {children.map((child, i) => (
                 <div key={i} className="flex items-center gap-2">
@@ -384,7 +406,12 @@ export default function SignupPage() {
                     <input type="text" value={child.name} onChange={(e) => updateChild(i, "name", e.target.value)}
                       placeholder="Child's name"
                       className="flex-1 rounded-full border border-brand-teal/20 bg-[#fffaf4] px-4 py-2.5 text-sm text-brand-navy outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20" />
-                    <input type="text" value={child.age} onChange={(e) => updateChild(i, "age", e.target.value)}
+                    <input
+                      type="number"
+                      min={1}
+                      max={21}
+                      value={child.age}
+                      onChange={(e) => updateChild(i, "age", e.target.value)}
                       placeholder="Age"
                       className="w-20 rounded-full border border-brand-teal/20 bg-[#fffaf4] px-4 py-2.5 text-sm text-brand-navy outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20" />
                   </div>
@@ -431,7 +458,6 @@ export default function SignupPage() {
             </div>
             <h1 className="text-xl font-extrabold text-brand-navy">Almost done!</h1>
 
-            {/* Newsletter */}
             <label className="mt-4 flex cursor-pointer items-start gap-3">
               <input type="checkbox" checked={newsletter} onChange={(e) => setNewsletter(e.target.checked)}
                 className="mt-0.5 h-4 w-4 rounded border-brand-teal/30 text-brand-purple-bright" />
@@ -442,7 +468,6 @@ export default function SignupPage() {
             </label>
 
             <form onSubmit={handleConfirm} className="mt-5 grid gap-3">
-              {/* OTP — only shown when Supabase requires email confirmation */}
               {!hasSession && (
                 <div className="grid gap-2">
                   <p className="text-sm leading-relaxed text-brand-navy/55">

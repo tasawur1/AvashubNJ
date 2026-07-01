@@ -5,6 +5,8 @@ export const dynamic = "force-dynamic";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { PhoneInputField } from "@/components/PhoneInputField";
+import { validatePhone, validateChildAge } from "@/lib/validation";
 
 type Child = { name: string; age: string };
 type Step  = 1 | 2 | 3;
@@ -102,8 +104,22 @@ export default function AccountSetupPage() {
         return;
       }
     }
+    if (phone) {
+      const phoneErr = validatePhone(phone);
+      if (phoneErr) { setError(phoneErr); return; }
+    }
     setError("");
     setStep(2);
+  }
+
+  function handleStep2Next() {
+    const filledChildren = children.filter((c) => c.name.trim());
+    for (const c of filledChildren) {
+      const ageErr = validateChildAge(c.age);
+      if (ageErr) { setError(ageErr); return; }
+    }
+    setError("");
+    setStep(3);
   }
 
   async function handleSubmit() {
@@ -118,7 +134,7 @@ export default function AccountSetupPage() {
         signal: controller.signal,
         body: JSON.stringify({
           parent_name: parentName.trim() || null,
-          phone:       phone.trim() || null,
+          phone:       phone || null,
           children:    children.filter((c) => c.name.trim()),
           newsletter_opted_in: newsletter,
         }),
@@ -177,14 +193,8 @@ export default function AccountSetupPage() {
             </div>
 
             <div className="grid gap-1.5">
-              <label className="text-sm font-semibold text-brand-navy">Phone number</label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="(555) 000-0000"
-                className={inputCls}
-              />
+              <label className="text-sm font-semibold text-brand-navy">Phone number <span className="font-normal text-brand-navy/45">(optional)</span></label>
+              <PhoneInputField value={phone} onChange={setPhone} variant="pill" />
             </div>
 
             <div className="border-t border-brand-purple-deep/10 pt-4">
@@ -264,7 +274,7 @@ export default function AccountSetupPage() {
       {step === 2 && (
         <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-brand-purple-deep/10">
           <h1 className="text-xl font-extrabold text-brand-navy">Your children</h1>
-          <p className="mt-1 text-sm text-brand-navy/55">Add each child you&apos;re enrolling.</p>
+          <p className="mt-1 text-sm text-brand-navy/55">Add each child you&apos;re enrolling. Ages 1–21.</p>
 
           <div className="mt-6 grid gap-3">
             {children.map((child, i) => (
@@ -278,7 +288,9 @@ export default function AccountSetupPage() {
                     className="flex-1 rounded-full border border-brand-teal/20 bg-[#fffaf4] px-4 py-2.5 text-sm text-brand-navy outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
                   />
                   <input
-                    type="text"
+                    type="number"
+                    min={1}
+                    max={21}
                     value={child.age}
                     onChange={(e) => updateChild(i, "age", e.target.value)}
                     placeholder="Age"
@@ -312,15 +324,19 @@ export default function AccountSetupPage() {
             </button>
           </div>
 
+          {error && (
+            <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">{error}</p>
+          )}
+
           <div className="mt-6 flex gap-3">
             <button
-              onClick={() => setStep(1)}
+              onClick={() => { setError(""); setStep(1); }}
               className="flex-1 rounded-full border border-brand-purple-deep/15 px-6 py-3 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-lavender"
             >
               ← Back
             </button>
             <button
-              onClick={() => setStep(3)}
+              onClick={handleStep2Next}
               className="flex-1 rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
             >
               Next →
@@ -356,7 +372,7 @@ export default function AccountSetupPage() {
 
           <div className="mt-6 flex gap-3">
             <button
-              onClick={() => setStep(2)}
+              onClick={() => { setError(""); setStep(2); }}
               className="flex-1 rounded-full border border-brand-purple-deep/15 px-6 py-3 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-lavender"
             >
               ← Back
