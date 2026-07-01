@@ -8,6 +8,7 @@ export const navItems: NavItem[] = [
     label: "Programs",
     href: "/programs",
     children: [
+      { label: "All Programs",  href: "/programs" },
       { label: "Kids",          href: "/programs/kids" },
       { label: "School Age",    href: "/programs/school-age" },
       { label: "Teens",         href: "/programs/teens" },

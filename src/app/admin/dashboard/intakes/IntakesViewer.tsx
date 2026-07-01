@@ -84,11 +84,11 @@ export function IntakesViewer() {
       const data = await res.json();
       if (!res.ok || data.error) { alert(data.error ?? 'Delete failed'); return; }
       setSubmissions((prev) => prev.filter((s) => s.id !== deleteId));
-      setDeleteId(null);
     } catch {
       alert('Network error — please try again.');
     } finally {
       setDeleting(false);
+      setDeleteId(null);
     }
   }
 

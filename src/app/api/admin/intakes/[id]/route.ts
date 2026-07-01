@@ -89,7 +89,8 @@ export async function PATCH(
       const clientSync: Record<string, unknown> = {};
       if ('parent_email' in update) clientSync.email = data.parent_email;
       if ('phone' in update) clientSync.phone = data.phone;
-      await supabase.from('clients').update(clientSync).eq('id', data.client_id);
+      const { error: syncErr } = await supabase.from('clients').update(clientSync).eq('id', data.client_id);
+      if (syncErr) console.error("[intakes/patch] Client sync failed:", syncErr.message);
     }
 
     return NextResponse.json({ success: true, submission: data });

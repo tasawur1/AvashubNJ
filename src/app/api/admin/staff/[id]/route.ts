@@ -66,7 +66,8 @@ export async function DELETE(
 
     // Also remove from Supabase Auth
     if (staff?.auth_user_id) {
-      await adminDb.auth.admin.deleteUser(staff.auth_user_id);
+      const { error: authErr } = await adminDb.auth.admin.deleteUser(staff.auth_user_id);
+      if (authErr) console.error("[staff/delete] Auth user deletion failed:", authErr.message);
     }
 
     return NextResponse.json({ success: true });

@@ -101,13 +101,19 @@ export default function AccountPage() {
   const [pwdSuccess, setPwdSuccess]           = useState(false);
 
   const loadProfile = useCallback(async () => {
-    const res = await fetch("/api/client/profile");
-    if (res.status === 401) { router.push("/login"); return; }
-    if (res.status === 404) { router.push("/account/setup"); return; }
-    const data = await res.json();
-    setClient(data.client);
-    setChildren(data.children ?? []);
-    setLoading(false);
+    try {
+      const res = await fetch("/api/client/profile");
+      if (res.status === 401) { router.push("/login"); return; }
+      if (res.status === 404) { router.push("/account/setup"); return; }
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+      setClient(data.client);
+      setChildren(data.children ?? []);
+    } catch {
+      router.push("/login");
+    } finally {
+      setLoading(false);
+    }
   }, [router]);
 
   useEffect(() => { loadProfile(); }, [loadProfile]);
@@ -137,24 +143,36 @@ export default function AccountPage() {
   async function handleSave() {
     setSaving(true);
     setSaveError("");
-    const res = await fetch("/api/client/profile", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        parent_name:         editName.trim() || null,
-        phone:               editPhone.trim() || null,
-        newsletter_opted_in: editNewsletter,
-        children:            editChildren.filter((c) => c.name.trim()),
-      }),
-    });
-    const data = await res.json();
-    if (data.success) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const res = await fetch("/api/client/profile", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          parent_name:         editName.trim() || null,
+          phone:               editPhone.trim() || null,
+          newsletter_opted_in: editNewsletter,
+          children:            editChildren.filter((c) => c.name.trim()),
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Could not save changes.");
+      }
       setEditing(false);
       await loadProfile();
-    } else {
-      setSaveError(data.error ?? "Could not save changes.");
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        setSaveError("Request timed out. Please try again.");
+      } else {
+        setSaveError(err instanceof Error ? err.message : "Could not save changes.");
+      }
+    } finally {
+      clearTimeout(timeout);
+      setSaving(false);
     }
-    setSaving(false);
   }
 
   function openChangePwd() {
@@ -174,29 +192,30 @@ export default function AccountPage() {
     }
     setPwdLoading(true);
     setPwdError("");
-
-    const supabase = createBrowserSupabaseClient();
-
-    if (currentPwd.trim()) {
-      const { error: verifyError } = await supabase.auth.signInWithPassword({
-        email: client!.email,
-        password: currentPwd,
-      });
-      if (verifyError) {
-        setPwdError("Current password is incorrect.");
-        setPwdLoading(false);
-        return;
+    try {
+      const supabase = createBrowserSupabaseClient();
+      if (currentPwd.trim()) {
+        const { error: verifyError } = await supabase.auth.signInWithPassword({
+          email: client!.email,
+          password: currentPwd,
+        });
+        if (verifyError) {
+          setPwdError("Current password is incorrect.");
+          return;
+        }
       }
+      const { error: updateError } = await supabase.auth.updateUser({ password: newPwd });
+      if (updateError) {
+        setPwdError(updateError.message);
+      } else {
+        setPwdSuccess(true);
+        setTimeout(() => setChangingPwd(false), 1500);
+      }
+    } catch {
+      setPwdError("Something went wrong. Please try again.");
+    } finally {
+      setPwdLoading(false);
     }
-
-    const { error: updateError } = await supabase.auth.updateUser({ password: newPwd });
-    if (updateError) {
-      setPwdError(updateError.message);
-    } else {
-      setPwdSuccess(true);
-      setTimeout(() => setChangingPwd(false), 1500);
-    }
-    setPwdLoading(false);
   }
 
   if (loading) {
@@ -213,6 +232,17 @@ export default function AccountPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4">
+      {/* Back arrow */}
+      <button
+        onClick={() => router.back()}
+        className="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-navy/50 transition hover:text-brand-purple-bright"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+          <path d="M12.5 15L7.5 10l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Back
+      </button>
+
       {/* Profile header */}
       <div className="mb-6 flex items-center gap-4">
         <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-purple-bright text-xl font-extrabold text-white">

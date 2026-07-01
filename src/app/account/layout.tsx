@@ -10,7 +10,11 @@ function AccountHeader() {
 
   async function handleSignOut() {
     setSigningOut(true);
-    await fetch("/api/auth/signout", { method: "POST" });
+    try {
+      await fetch("/api/auth/signout", { method: "POST" });
+    } catch {
+      // sign out failed — redirect anyway
+    }
     router.push("/");
   }
 

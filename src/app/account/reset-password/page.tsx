@@ -80,13 +80,18 @@ export default function ResetPasswordPage() {
     }
     setLoading(true);
     setError("");
-    const supabase = createBrowserSupabaseClient();
-    const { error: updateError } = await supabase.auth.updateUser({ password });
-    if (updateError) {
-      setError(updateError.message);
+    try {
+      const supabase = createBrowserSupabaseClient();
+      const { error: updateError } = await supabase.auth.updateUser({ password });
+      if (updateError) {
+        setError(updateError.message);
+      } else {
+        router.push("/account");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
-    } else {
-      router.push("/account");
     }
   }
 

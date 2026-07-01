@@ -36,7 +36,14 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  let sessionResult: Awaited<ReturnType<typeof supabase.auth.exchangeCodeForSession>>;
+  try {
+    sessionResult = await supabase.auth.exchangeCodeForSession(code);
+  } catch {
+    return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+  }
+
+  const { data, error } = sessionResult;
 
   if (error || !data.user) {
     return NextResponse.redirect(`${origin}/login?error=auth_failed`);
@@ -50,14 +57,17 @@ export async function GET(request: NextRequest) {
   if (next && SAFE_NEXT.includes(next)) {
     redirectPath = next;
   } else {
-    // Check if this auth user already has a linked client record (returning user)
-    const adminDb = createAdminClient();
-    const { data: existingClient } = await adminDb
-      .from("clients")
-      .select("id")
-      .eq("auth_user_id", data.user.id)
-      .maybeSingle();
-    redirectPath = existingClient ? "/account" : "/account/setup";
+    try {
+      const adminDb = createAdminClient();
+      const { data: existingClient } = await adminDb
+        .from("clients")
+        .select("id")
+        .eq("auth_user_id", data.user.id)
+        .maybeSingle();
+      redirectPath = existingClient ? "/account" : "/account/setup";
+    } catch {
+      redirectPath = "/account/setup";
+    }
   }
 
   const response = NextResponse.redirect(`${origin}${redirectPath}`);

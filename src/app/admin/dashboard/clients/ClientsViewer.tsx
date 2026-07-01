@@ -131,11 +131,11 @@ export function ClientsViewer() {
       const data = await res.json();
       if (!res.ok || data.error) { alert(data.error ?? 'Delete failed'); return; }
       setClients((prev) => prev.filter((c) => c.id !== deleteId));
-      setDeleteId(null);
     } catch {
       alert('Network error — please try again.');
     } finally {
       setDeleting(false);
+      setDeleteId(null);
     }
   }
 
@@ -149,10 +149,13 @@ export function ClientsViewer() {
     if (!editingId) return;
     setSaving(true);
     setSaveError(null);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
     try {
       const res = await fetch(`/api/admin/clients/${editingId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify(editForm),
       });
       const data = await res.json();
@@ -168,9 +171,14 @@ export function ClientsViewer() {
         )
       );
       setEditingId(null);
-    } catch {
-      setSaveError("Network error — please try again.");
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        setSaveError("Request timed out. Please try again.");
+      } else {
+        setSaveError("Network error — please try again.");
+      }
     } finally {
+      clearTimeout(timeout);
       setSaving(false);
     }
   }

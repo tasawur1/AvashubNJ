@@ -5,8 +5,13 @@ import { sessionOptions, type SessionData } from "@/lib/session";
 import { TeamManager } from "@/components/admin/TeamManager";
 
 export default async function TeamPage() {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
-  if (!session.isLoggedIn || session.role !== "superadmin") redirect("/admin/dashboard");
+  let session: SessionData | undefined;
+  try {
+    session = await getIronSession<SessionData>(await cookies(), sessionOptions);
+  } catch {
+    redirect("/admin/dashboard");
+  }
+  if (!session?.isLoggedIn || session?.role !== "superadmin") redirect("/admin/dashboard");
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">

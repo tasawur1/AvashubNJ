@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { createAuthServerClient } from "@/lib/supabase-server";
 
 export async function POST() {
-  const supabase = await createAuthServerClient();
-  await supabase.auth.signOut();
+  try {
+    const supabase = await createAuthServerClient();
+    await supabase.auth.signOut();
+  } catch (err) {
+    console.error("[signout] Error:", err);
+  }
   return NextResponse.json({ success: true });
 }

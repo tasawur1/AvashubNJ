@@ -109,25 +109,39 @@ export default function AccountSetupPage() {
   async function handleSubmit() {
     setSaving(true);
     setError("");
-    const res = await fetch("/api/client/onboard", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        parent_name: parentName.trim() || null,
-        phone:       phone.trim() || null,
-        children:    children.filter((c) => c.name.trim()),
-        newsletter_opted_in: newsletter,
-      }),
-    });
-    const data = await res.json();
-    if (!data.success) { setError(data.error ?? "Something went wrong."); setSaving(false); return; }
-
-    if (password) {
-      const supabase = createBrowserSupabaseClient();
-      await supabase.auth.updateUser({ password });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const res = await fetch("/api/client/onboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          parent_name: parentName.trim() || null,
+          phone:       phone.trim() || null,
+          children:    children.filter((c) => c.name.trim()),
+          newsletter_opted_in: newsletter,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? "Something went wrong.");
+      }
+      if (password) {
+        const supabase = createBrowserSupabaseClient();
+        await supabase.auth.updateUser({ password }).catch(() => {});
+      }
+      router.push("/account");
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        setError("Request timed out. Please try again.");
+      } else {
+        setError(err instanceof Error ? err.message : "Something went wrong.");
+      }
+    } finally {
+      clearTimeout(timeout);
+      setSaving(false);
     }
-
-    router.push("/account");
   }
 
   return (

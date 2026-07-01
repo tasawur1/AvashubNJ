@@ -39,6 +39,7 @@ export async function GET(
       `)
       .eq('id', id)
       .single();
+    if (error?.code === 'PGRST116') return NextResponse.json({ error: 'Not found' }, { status: 404 });
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ client: data });
   } catch (err) {
@@ -114,8 +115,23 @@ export async function DELETE(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     const { id } = await params;
     const supabase = createAdminClient();
+
+    // Grab the linked auth user id before deleting
+    const { data: clientRow } = await supabase
+      .from('clients')
+      .select('auth_user_id')
+      .eq('id', id)
+      .maybeSingle();
+
     const { error } = await supabase.from('clients').delete().eq('id', id);
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
+    // Also remove from Supabase Auth so the email can be reused
+    if (clientRow?.auth_user_id) {
+      const { error: authErr } = await supabase.auth.admin.deleteUser(clientRow.auth_user_id);
+      if (authErr) console.error("[clients/delete] Auth user deletion failed:", authErr.message);
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
     const msg = String(err);

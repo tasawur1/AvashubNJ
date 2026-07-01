@@ -33,10 +33,13 @@ function emptyPermissions(): StaffPermissions {
 export function TeamManager() {
   const [staff, setStaff]       = useState<StaffMember[]>([]);
   const [loading, setLoading]   = useState(true);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [adding, setAdding]     = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [editId, setEditId]     = useState<string | null>(null);
+  const [editError, setEditError] = useState<string | null>(null);
 
   // New staff form
   const [newName,     setNewName]     = useState("");
@@ -52,10 +55,17 @@ export function TeamManager() {
 
   const loadStaff = useCallback(async () => {
     setLoading(true);
-    const res = await fetch("/api/admin/staff");
-    const data = await res.json();
-    setStaff(data.staff ?? []);
-    setLoading(false);
+    setFetchError(null);
+    try {
+      const res = await fetch("/api/admin/staff");
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+      setStaff(data.staff ?? []);
+    } catch (err) {
+      setFetchError(err instanceof Error ? err.message : "Failed to load staff.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => { loadStaff(); }, [loadStaff]);
@@ -80,49 +90,81 @@ export function TeamManager() {
     }
     setSaving(true);
     setFormError("");
-    const res = await fetch("/api/admin/staff", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newName, email: newEmail, password: newPassword, permissions: newPerms }),
-    });
-    const data = await res.json();
-    if (data.success) {
+    try {
+      const res = await fetch("/api/admin/staff", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName, email: newEmail, password: newPassword, permissions: newPerms }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? `Server error ${res.status}`);
+      }
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error ?? "Something went wrong.");
       setAdding(false);
       setNewName(""); setNewEmail(""); setNewPassword(""); setNewPerms(emptyPermissions());
       await loadStaff();
-    } else {
-      setFormError(data.error ?? "Something went wrong.");
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   }
 
   async function handleDelete(id: string) {
     setDeleting(true);
-    await fetch(`/api/admin/staff/${id}`, { method: "DELETE" });
-    setDeleteId(null);
-    setDeleting(false);
-    await loadStaff();
+    setDeleteError(null);
+    try {
+      const res = await fetch(`/api/admin/staff/${id}`, { method: "DELETE" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? `Server error ${res.status}`);
+      }
+      setDeleteId(null);
+      await loadStaff();
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Delete failed.");
+    } finally {
+      setDeleting(false);
+    }
   }
 
   async function handleSavePermissions(id: string) {
     setEditSaving(true);
-    await fetch(`/api/admin/staff/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ permissions: editPerms }),
-    });
-    setEditId(null);
-    setEditSaving(false);
-    await loadStaff();
+    setEditError(null);
+    try {
+      const res = await fetch(`/api/admin/staff/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ permissions: editPerms }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as { error?: string }).error ?? `Server error ${res.status}`);
+      }
+      setEditId(null);
+      await loadStaff();
+    } catch (err) {
+      setEditError(err instanceof Error ? err.message : "Failed to save permissions.");
+    } finally {
+      setEditSaving(false);
+    }
   }
 
   async function handleToggleActive(member: StaffMember) {
-    await fetch(`/api/admin/staff/${member.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ active: !member.active }),
-    });
-    await loadStaff();
+    try {
+      const res = await fetch(`/api/admin/staff/${member.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: !member.active }),
+      });
+      if (!res.ok) throw new Error();
+    } catch {
+      // reload to show current true state
+    } finally {
+      await loadStaff();
+    }
   }
 
   return (
@@ -141,6 +183,11 @@ export function TeamManager() {
       {loading ? (
         <div className="flex h-40 items-center justify-center">
           <div className="h-5 w-5 animate-spin rounded-full border-2 border-brand-purple-bright border-t-transparent" />
+        </div>
+      ) : fetchError ? (
+        <div className="rounded-2xl border border-red-100 bg-red-50 p-6 text-center">
+          <p className="text-sm font-semibold text-red-600">{fetchError}</p>
+          <button onClick={loadStaff} className="mt-3 text-xs font-semibold text-brand-purple-bright hover:underline">Retry</button>
         </div>
       ) : staff.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-brand-purple-deep/15 p-10 text-center">
@@ -207,6 +254,9 @@ export function TeamManager() {
                       </div>
                     ))}
                   </div>
+                  {editError && (
+                    <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">{editError}</p>
+                  )}
                   <div className="mt-4 flex gap-2">
                     <button
                       onClick={() => setEditId(null)}
@@ -298,8 +348,11 @@ export function TeamManager() {
           <div className="w-full max-w-xs rounded-2xl bg-white p-5 shadow-2xl">
             <h2 className="text-base font-extrabold text-brand-navy">Remove staff member?</h2>
             <p className="mt-1.5 text-sm text-brand-navy/55">This will delete their login access. Cannot be reversed.</p>
+            {deleteError && (
+              <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-xs font-semibold text-red-600">{deleteError}</p>
+            )}
             <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setDeleteId(null)} className="rounded-full border border-brand-purple-deep/15 px-4 py-2 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-lavender">Cancel</button>
+              <button onClick={() => { setDeleteId(null); setDeleteError(null); }} className="rounded-full border border-brand-purple-deep/15 px-4 py-2 text-sm font-semibold text-brand-navy/70 transition hover:bg-brand-lavender">Cancel</button>
               <button onClick={() => handleDelete(deleteId)} disabled={deleting} className="rounded-full bg-red-500 px-4 py-2 text-sm font-bold text-white transition hover:bg-red-600 disabled:opacity-60">
                 {deleting ? "Removing…" : "Remove"}
               </button>

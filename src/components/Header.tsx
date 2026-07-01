@@ -42,7 +42,7 @@ function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string })
   const linkClass =
     "whitespace-nowrap rounded-md px-[clamp(0.2rem,0.35vw,0.55rem)] py-1.5 text-[clamp(0.74rem,0.78vw,0.95rem)] font-semibold transition-colors " +
     (isActive
-      ? "text-brand-purple-deep decoration-brand-gold underline decoration-2 underline-offset-8"
+      ? "text-brand-purple-deep decoration-brand-purple-bright underline decoration-2 underline-offset-8"
       : "text-brand-navy/80 hover:text-brand-purple-bright");
 
   if (!item.children) {
@@ -89,7 +89,7 @@ function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string })
                     "block px-4 py-2.5 text-sm font-semibold transition-colors " +
                     (childActive
                       ? "bg-brand-lavender text-brand-purple-deep"
-                      : "text-brand-navy/80 hover:bg-brand-teal-light hover:text-brand-teal")
+                      : "text-brand-navy/80 hover:bg-brand-lavender hover:text-brand-purple-bright")
                   }
                 >
                   {child.label}
@@ -122,8 +122,8 @@ function MobileNavItem({
   const baseLinkClass =
     "block rounded-lg px-3 py-2.5 text-base font-semibold " +
     (isActive
-      ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-gold/60"
-      : "text-brand-navy hover:bg-brand-teal-light");
+      ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-purple-bright/40"
+      : "text-brand-navy hover:bg-brand-lavender hover:text-brand-purple-bright");
 
   if (!item.children) {
     return (
@@ -143,8 +143,8 @@ function MobileNavItem({
         className={
           "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-base font-semibold transition-colors " +
           (isActive
-            ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-gold/60"
-            : "text-brand-navy hover:bg-brand-teal-light")
+            ? "bg-brand-lavender text-brand-purple-deep ring-2 ring-brand-purple-bright/40"
+            : "text-brand-navy hover:bg-brand-lavender hover:text-brand-purple-bright")
         }
       >
         {item.label}
@@ -168,7 +168,7 @@ function MobileNavItem({
                     "block rounded-lg px-3 py-2 text-sm font-semibold transition-colors " +
                     (childActive
                       ? "bg-brand-lavender text-brand-purple-deep"
-                      : "text-brand-navy/75 hover:bg-brand-teal-light hover:text-brand-teal")
+                      : "text-brand-navy/75 hover:bg-brand-lavender hover:text-brand-purple-bright")
                   }
                 >
                   {child.label}

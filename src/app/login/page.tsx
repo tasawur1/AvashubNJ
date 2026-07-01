@@ -45,12 +45,14 @@ const inputCls = "w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] p
 
 export default function LoginPage() {
   const router = useRouter();
-  const [step, setStep]     = useState<Step>("email");
-  const [email, setEmail]   = useState("");
+  const [step, setStep]         = useState<Step>("email");
+  const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd]   = useState(false);
-  const [loading, setLoading]   = useState(false);
-  const [error, setError]       = useState("");
+  const [signInToken, setSignInToken] = useState("");
+  const [resetToken, setResetToken]   = useState("");
+  const [loading, setLoading]         = useState(false);
+  const [error, setError]             = useState("");
 
   async function handleGoogleSignIn() {
     setLoading(true);
@@ -68,18 +70,23 @@ export default function LoginPage() {
     if (!email.trim() || !password) return;
     setLoading(true);
     setError("");
-    const supabase = createBrowserSupabaseClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim().toLowerCase(),
-      password,
-    });
-    if (signInError) {
-      setError("Incorrect email or password.");
+    try {
+      const supabase = createBrowserSupabaseClient();
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
+      if (signInError) {
+        setError("Incorrect email or password.");
+        return;
+      }
+      const res = await fetch("/api/client/profile");
+      router.push(res.status === 404 ? "/account/setup" : "/account");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
-      return;
     }
-    const res = await fetch("/api/client/profile");
-    router.push(res.status === 404 ? "/account/setup" : "/account");
   }
 
   async function handleSendLink() {
@@ -98,18 +105,78 @@ export default function LoginPage() {
     if (linkError) { setError(linkError.message); } else { setStep("sent"); }
   }
 
+  async function handleVerifySignInToken(e: React.FormEvent) {
+    e.preventDefault();
+    if (!signInToken.trim()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const supabase = createBrowserSupabaseClient();
+      const { error: verifyError } = await supabase.auth.verifyOtp({
+        email: email.trim().toLowerCase(),
+        token: signInToken.trim(),
+        type: "email",
+      });
+      if (verifyError) {
+        setError("Invalid or expired code.");
+        return;
+      }
+      const res = await fetch("/api/client/profile");
+      router.push(res.status === 404 ? "/account/setup" : "/account");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleVerifyResetToken(e: React.FormEvent) {
+    e.preventDefault();
+    if (!resetToken.trim()) return;
+    setLoading(true);
+    setError("");
+    const supabase = createBrowserSupabaseClient();
+    const { error: verifyError } = await supabase.auth.verifyOtp({
+      email: email.trim().toLowerCase(),
+      token: resetToken.trim(),
+      type: "recovery",
+    });
+    if (verifyError) {
+      setError("Invalid or expired code.");
+      setLoading(false);
+    } else {
+      router.push("/account/reset-password");
+    }
+  }
+
   async function handleForgotPassword(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
     setError("");
-    const supabase = createBrowserSupabaseClient();
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-      email.trim().toLowerCase(),
-      { redirectTo: `${window.location.origin}/api/auth/callback?next=/account/reset-password` }
-    );
-    setLoading(false);
-    if (resetError) { setError(resetError.message); } else { setStep("reset-sent"); }
+    try {
+      const check = await fetch("/api/auth/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase() }),
+      });
+      if (!check.ok) throw new Error("Could not verify email. Please try again.");
+      const { exists } = await check.json();
+      if (!exists) {
+        setError("No account found with this email address. Sign in with Google or use a sign-in link to create one.");
+        return;
+      }
+      const supabase = createBrowserSupabaseClient();
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email.trim().toLowerCase(),
+        { redirectTo: `${window.location.origin}/api/auth/callback?next=/account/reset-password` }
+      );
+      if (resetError) { setError(resetError.message); } else { setStep("reset-sent"); }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -232,7 +299,14 @@ export default function LoginPage() {
               </button>
             </div>
 
-            <p className="mt-5 text-center text-xs text-brand-navy/40">
+            <p className="mt-5 text-center text-sm font-semibold text-brand-navy/60">
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="text-brand-purple-bright hover:underline">
+                Sign up →
+              </Link>
+            </p>
+
+            <p className="mt-3 text-center text-xs text-brand-navy/40">
               Are you an administrator?{" "}
               <Link href="/admin/login" className="font-semibold text-brand-purple-bright hover:underline">
                 Admin login →
@@ -241,7 +315,7 @@ export default function LoginPage() {
           </>
         )}
 
-        {/* ── Magic link sent step ── */}
+        {/* ── Magic link / OTP sent step ── */}
         {step === "sent" && (
           <>
             <div className="text-center">
@@ -252,15 +326,45 @@ export default function LoginPage() {
               </div>
               <h1 className="text-2xl font-extrabold text-brand-navy">Check your email</h1>
               <p className="mt-2 text-sm leading-relaxed text-brand-navy/55">
-                We sent a sign-in link to{" "}
-                <strong className="text-brand-navy">{email}</strong>. Click it to continue.
+                We sent a sign-in link and code to{" "}
+                <strong className="text-brand-navy">{email}</strong>. Click the link or enter the code below.
               </p>
             </div>
-            <p className="mt-6 text-center text-xs text-brand-navy/40">
-              Didn&apos;t get it? Check your spam folder or{" "}
+
+            {/* Divider */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-brand-purple-deep/10" />
+              <span className="text-xs font-semibold text-brand-navy/40">enter code manually</span>
+              <div className="h-px flex-1 bg-brand-purple-deep/10" />
+            </div>
+
+            <form onSubmit={handleVerifySignInToken} className="grid gap-3">
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={8}
+                value={signInToken}
+                onChange={(e) => setSignInToken(e.target.value.replace(/\D/g, ""))}
+                placeholder="- - - - - -"
+                className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-center text-xl font-bold tracking-[0.35em] text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/20 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+              />
+              {error && (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={loading || !signInToken.trim()}
+                className="inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading ? "Verifying…" : "Continue with code"}
+              </button>
+            </form>
+
+            <p className="mt-5 text-center text-xs text-brand-navy/40">
+              Didn&apos;t get it? Check your spam or{" "}
               <button
                 type="button"
-                onClick={() => { setStep("email"); setError(""); }}
+                onClick={() => { setStep("email"); setSignInToken(""); setError(""); }}
                 className="font-semibold text-brand-purple-bright hover:underline"
               >
                 try again
@@ -327,15 +431,45 @@ export default function LoginPage() {
               </div>
               <h1 className="text-2xl font-extrabold text-brand-navy">Check your email</h1>
               <p className="mt-2 text-sm leading-relaxed text-brand-navy/55">
-                We sent a password reset link to{" "}
-                <strong className="text-brand-navy">{email}</strong>. Click it to set a new password.
+                We sent a reset link and code to{" "}
+                <strong className="text-brand-navy">{email}</strong>. Click the link or enter the code below.
               </p>
             </div>
-            <p className="mt-6 text-center text-xs text-brand-navy/40">
+
+            {/* Divider */}
+            <div className="my-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-brand-purple-deep/10" />
+              <span className="text-xs font-semibold text-brand-navy/40">enter code manually</span>
+              <div className="h-px flex-1 bg-brand-purple-deep/10" />
+            </div>
+
+            <form onSubmit={handleVerifyResetToken} className="grid gap-3">
+              <input
+                type="text"
+                inputMode="numeric"
+                maxLength={8}
+                value={resetToken}
+                onChange={(e) => setResetToken(e.target.value.replace(/\D/g, ""))}
+                placeholder="- - - - - -"
+                className="w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-center text-xl font-bold tracking-[0.35em] text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/20 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20"
+              />
+              {error && (
+                <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-600">{error}</p>
+              )}
+              <button
+                type="submit"
+                disabled={loading || !resetToken.trim()}
+                className="inline-flex w-full items-center justify-center rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {loading ? "Verifying…" : "Continue with code"}
+              </button>
+            </form>
+
+            <p className="mt-5 text-center text-xs text-brand-navy/40">
               Didn&apos;t get it?{" "}
               <button
                 type="button"
-                onClick={() => { setStep("forgot"); setError(""); }}
+                onClick={() => { setStep("forgot"); setResetToken(""); setError(""); }}
                 className="font-semibold text-brand-purple-bright hover:underline"
               >
                 Try again
@@ -343,7 +477,7 @@ export default function LoginPage() {
               {" "}or{" "}
               <button
                 type="button"
-                onClick={() => { setStep("email"); setError(""); }}
+                onClick={() => { setStep("email"); setResetToken(""); setError(""); }}
                 className="font-semibold text-brand-purple-bright hover:underline"
               >
                 back to sign in
