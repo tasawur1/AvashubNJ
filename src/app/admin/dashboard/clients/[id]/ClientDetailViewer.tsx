@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { PhoneInputField } from "@/components/PhoneInputField";
 
 type ChildRecord = { id: string; name: string; age: string | null };
 type IntakeSummary = {
@@ -201,8 +202,13 @@ export function ClientDetailViewer({ id }: { id: string }) {
   }
 
   const c = client;
-  const childCount = c.children?.length ?? 0;
-  const avatarInitial = (c.children?.[0]?.name ?? c.child_name ?? c.parent_name ?? "?").charAt(0).toUpperCase();
+  const displayChildren: ChildRecord[] = c.children?.length
+    ? c.children
+    : c.child_name
+      ? [{ id: "legacy", name: c.child_name, age: null }]
+      : [];
+  const childCount = displayChildren.length;
+  const avatarInitial = (displayChildren[0]?.name ?? c.parent_name ?? "?").charAt(0).toUpperCase();
   const intakeCount = c.intake_submissions?.length ?? 0;
 
   return (
@@ -280,7 +286,7 @@ export function ClientDetailViewer({ id }: { id: string }) {
           <p className="text-sm italic text-brand-navy/30">No children on record.</p>
         ) : (
           <div className="space-y-2">
-            {c.children.map((ch) => (
+            {displayChildren.map((ch) => (
               <div key={ch.id} className="flex items-center gap-3 rounded-xl bg-brand-purple-deep/[0.03] px-4 py-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-purple-deep/10 text-sm font-extrabold text-brand-purple-deep">
                   {ch.name.charAt(0).toUpperCase()}
@@ -355,11 +361,10 @@ export function ClientDetailViewer({ id }: { id: string }) {
                 />
               </Field>
               <Field label="Phone">
-                <input
-                  type="tel"
+                <PhoneInputField
                   value={editForm.phone}
-                  onChange={(e) => setEditForm((p) => ({ ...p, phone: e.target.value }))}
-                  className="w-full rounded-xl border border-brand-purple-deep/20 px-3 py-2 text-sm text-brand-navy focus:border-brand-purple-deep/40 focus:outline-none focus:ring-2 focus:ring-brand-purple-deep/15"
+                  onChange={(val) => setEditForm((p) => ({ ...p, phone: val }))}
+                  variant="box"
                 />
               </Field>
             </div>

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25_000);
+    const timeoutId = setTimeout(() => controller.abort(), 55_000);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
