@@ -83,7 +83,7 @@ export const lifeReadyCategoryCards: CohortSessionCard[] = [
       "Kitchen safety",
       "Reading recipes",
       "Cleaning up",
-      "Loading the dishwasher",
+      "Loading and unloading the dishwasher",
       "Food organization",
     ],
   },
@@ -110,7 +110,8 @@ export const lifeReadyCategoryCards: CohortSessionCard[] = [
       "Interview basics",
       "Organization",
       "Self-advocacy",
-      "Teamwork & responsibility",
+      "Teamwork",
+      "Responsibility",
     ],
   },
 ];

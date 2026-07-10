@@ -266,7 +266,7 @@ function MobileCohortsPage() {
               <p className="mt-3 text-xs font-semibold italic text-brand-navy/70">
                 {TAGLINE}
               </p>
-              <CTAButton href="/contact" className="mt-5 w-full !py-2.5 !shadow-md !shadow-brand-purple-bright/30">
+              <CTAButton href="/cohorts/life-ready" className="mt-5 w-full !py-2.5 !shadow-md !shadow-brand-purple-bright/30">
                 <span className="inline-flex items-center gap-2">
                   Explore Life Ready Cohorts
                   <Icon name="arrowRight" size="sm" />
@@ -481,6 +481,22 @@ function MobileCohortsPage() {
               registration closes. Join the waitlist today to receive priority
               enrollment.
             </p>
+            <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href="tel:+19739055255"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                <span>(973) 905-5255</span>
+              </a>
+              <a
+                href="mailto:hello@avashubnj.com"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                <span>hello@avashubnj.com</span>
+              </a>
+            </div>
             <div className="mt-5 w-full max-w-xs">
               <CTAButton href="/contact" className="w-full">
                 Join the Waitlist
@@ -657,7 +673,7 @@ function DesktopCohortsPage() {
                   {TAGLINE}
                 </p>
                 <div className="mt-7">
-                  <CTAButton href="/contact" className="!px-8 !py-3 !shadow-lg !shadow-brand-purple-bright/25">
+                  <CTAButton href="/cohorts/life-ready" className="!px-8 !py-3 !shadow-lg !shadow-brand-purple-bright/25">
                     <span className="inline-flex items-center gap-2">
                       Explore Life Ready Cohorts
                       <Icon name="arrowRight" size="sm" />
@@ -915,6 +931,22 @@ function DesktopCohortsPage() {
                   Cohorts are intentionally limited to 4–6 participants. Many fill before
                   registration closes. Join the waitlist today to receive priority enrollment.
                 </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                  <a
+                    href="tel:+19739055255"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                    <span>(973) 905-5255</span>
+                  </a>
+                  <a
+                    href="mailto:hello@avashubnj.com"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                    <span>hello@avashubnj.com</span>
+                  </a>
+                </div>
                 <div className="mx-auto mt-6 max-w-xs">
                   <CTAButton href="/contact" className="w-full">
                     Join the Waitlist

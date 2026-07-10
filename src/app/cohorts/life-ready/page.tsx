@@ -3,10 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import {
-  ResourceBottomCta,
-  TiltedHeartOutline,
-} from "@/components/page/ResourceMobileComponents";
+import { TiltedHeartOutline } from "@/components/page/ResourceMobileComponents";
 import { AdventureCohortsCarousel } from "@/components/page/AdventureCohortsCarousel";
 import { lifeReadyCategoryCards } from "@/data/adventureSessionCards";
 import { cohortsImages } from "@/data/pageImages/cohortsImages";
@@ -29,70 +26,46 @@ export const metadata: Metadata = {
 
 const categoryCards = lifeReadyCategoryCards;
 
-const buildSkills: string[] = [
-  "Self-Care & Hygiene",
-  "Home Management",
-  "Meal Preparation",
-  "Money & Budgeting",
-  "Community Safety",
-  "Job Readiness",
-  "Self-Advocacy",
-  "Executive Function",
-];
-
-const parentApproved: string[] = [
-  "Small groups (4–6 teens)",
-  "OT-led and goal-focused",
-  "Practical and hands-on",
-  "Every teen is welcome.",
-  "Every teen belongs.",
-];
-
-const perfectForTeens: string[] = [
-  "Need support with daily routines",
-  "Building home independence",
-  "Preparing for work and community",
-  "Benefit from structure & practice",
-  "Working toward greater autonomy",
-];
-
 type CardTone = "teal" | "purple" | "gold";
 
-const threeCards: {
+const whyCards: {
   icon: IconName;
   tone: CardTone;
   title: string;
-  items: string[];
+  description: string;
   iconStyle: string;
-  listIcon: IconName;
-  listIconClass: string;
 }[] = [
   {
     icon: "brain",
     tone: "teal",
-    title: "Skills That Transfer to Real Life",
-    items: buildSkills,
+    title: "Real OT for Real Life",
+    description:
+      "Life Ready Cohorts are not just classes or activities. They are occupational therapy small group experiences designed to help teens practice the skills they need at home, in school, in the community, and beyond.",
     iconStyle: "bg-brand-teal-light text-brand-teal",
-    listIcon: "circleCheck",
-    listIconClass: "text-brand-teal",
   },
   {
     icon: "family",
     tone: "purple",
-    title: "Parent Approved. Teen Driven.",
-    items: parentApproved,
+    title: "Small Groups",
+    description:
+      "Cohorts are intentionally limited to 4–6 teens so each participant receives support, coaching, and opportunities to practice at their own pace.",
     iconStyle: "bg-brand-lavender text-brand-purple-bright",
-    listIcon: "circleCheck",
-    listIconClass: "text-brand-purple-bright",
   },
   {
     icon: "heart",
     tone: "gold",
-    title: "Great for Teens Who:",
-    items: perfectForTeens,
+    title: "Meaningful Carryover",
+    description:
+      "The goal is not just progress during the session. The goal is carryover into everyday life: smoother mornings, more participation at home, greater confidence, stronger routines, and growing independence.",
     iconStyle: "bg-brand-gold/25 text-brand-navy",
-    listIcon: "heart",
-    listIconClass: "text-brand-purple-bright",
+  },
+  {
+    icon: "shieldHeart",
+    tone: "purple",
+    title: "Built for How Teens Learn",
+    description:
+      "Life Ready Cohorts are especially designed for teens with ADHD, autism, anxiety, learning differences, and other support needs who benefit from hands-on learning, structure, repetition, modeling, and encouragement.",
+    iconStyle: "bg-brand-lavender text-brand-purple-bright",
   },
 ];
 
@@ -110,10 +83,10 @@ const sessionStats: { icon: IconName; label: string; detail: string; tone: CardT
 ];
 
 const insuranceOptions = [
-  "Major Insurance Plans",
-  "NJ FamilyCare / Medicaid",
-  "Private Pay Options",
-  "Superbills Available",
+  "Major commercial insurance plans",
+  "NJ FamilyCare / Medicaid, when applicable",
+  "Out-of-network superbills",
+  "Private pay options",
 ] as const;
 
 const statIconStyles: Record<CardTone, string> = {
@@ -156,12 +129,31 @@ function MobileLifeReadyPage() {
             Life Ready Cohorts
           </h2>
           <p className="mt-2 text-[clamp(0.92rem,4.35vw,1.08rem)] font-extrabold leading-snug text-brand-purple-bright">
-            Real-Life Skills Designed by Occupational Therapists
+            Occupational Therapy Small Group Experiences
           </p>
-          <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-            As teens grow, parents begin asking bigger questions about independence.
-            Life Ready Cohorts bridge the gap — building the everyday skills teens
-            need at home, school, work, and in the community.
+          <p className="mt-3 text-base font-extrabold leading-tight text-brand-navy">
+            Preparing Today&apos;s Teens for Tomorrow&apos;s Independence.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-brand-navy/80">
+            As children grow older, parents begin asking different questions:
+          </p>
+          <ul className="mt-2 space-y-1.5">
+            {[
+              "Will they remember to shower?",
+              "Can they prepare their own meals?",
+              "Will they help around the house?",
+              "Will they be ready for adulthood?",
+            ].map((q) => (
+              <li key={q} className="flex items-start gap-2 text-sm leading-relaxed text-brand-navy/80">
+                <Icon name="arrowRight" className="mt-0.5 shrink-0 text-brand-purple-bright" size="sm" />
+                <span>{q}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-sm leading-relaxed text-brand-navy/85">
+            Life Ready Cohorts provide occupational therapy through meaningful
+            real-life experiences that teach teens the everyday skills they need
+            for greater independence at home, school, work, and in the community.
           </p>
 
           <div className="mt-6 rounded-[1.5rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10">
@@ -170,7 +162,7 @@ function MobileLifeReadyPage() {
                 <Icon name="heart" size="sm" />
               </span>
               <p className="text-sm font-semibold leading-snug text-brand-navy">
-                Every activity has a purpose. Every session builds skills.
+                Every activity has a purpose. Every session builds skills. Every success carries over into everyday life.
               </p>
             </div>
           </div>
@@ -192,7 +184,7 @@ function MobileLifeReadyPage() {
       {/* 2 — Life Ready Categories */}
       <section id="categories-mobile" className="px-6 pb-10">
         <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
-          Five Skill Areas. Real Independence.
+          What Teens Practice
           <span className="ml-2 text-brand-purple-bright/55">
             <TiltedHeartOutline />
           </span>
@@ -250,19 +242,19 @@ function MobileLifeReadyPage() {
         </div>
       </section>
 
-      {/* 3 — Skills / Parent Approved / Great for Teens */}
+      {/* 3 — Why Families Choose Life Ready Cohorts */}
       <section className="px-6 pb-10">
         <h2 className="font-serif text-[1.9rem] font-semibold leading-tight text-brand-navy">
-          Built for Every Teen
+          Why Families Choose Life Ready Cohorts
           <span className="ml-2 text-brand-purple-bright/55">
             <TiltedHeartOutline />
           </span>
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-brand-navy/70">
-          Skills that last. Families that see the difference. Teens who grow.
+          Real occupational therapy. Real skills. Real life.
         </p>
         <div className="mt-5 space-y-5">
-          {threeCards.map((card) => (
+          {whyCards.map((card) => (
             <article
               key={card.title}
               className={`rounded-[1.75rem] p-5 shadow-card ring-1 ${cardBg[card.tone]}`}
@@ -277,29 +269,25 @@ function MobileLifeReadyPage() {
                   {card.title}
                 </h3>
               </div>
-              <ul
-                className={`mt-4 space-y-2 ${
-                  card.title === "Skills That Transfer to Real Life"
-                    ? "grid grid-cols-2 gap-x-4 gap-y-2 space-y-0"
-                    : ""
-                }`}
-              >
-                {card.items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-sm leading-relaxed text-brand-navy/80"
-                  >
-                    <Icon
-                      name={card.listIcon}
-                      className={`mt-0.5 shrink-0 ${card.listIconClass}`}
-                      size="sm"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                {card.description}
+              </p>
             </article>
           ))}
+        </div>
+        <div className="mt-5 rounded-[1.75rem] bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
+          <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+            You do not have to teach every life skill alone.
+          </h3>
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+            At Ava&apos;s Hub, we help teens build independence through supportive,
+            hands-on occupational therapy experiences that meet them where they are
+            and help them grow from there.
+          </p>
+          <p className="mt-3 text-sm font-semibold leading-relaxed text-brand-purple-bright">
+            Because independence is not automatic. It is taught. It is practiced.
+            It is built over time.
+          </p>
         </div>
       </section>
 
@@ -370,13 +358,15 @@ function MobileLifeReadyPage() {
                 Insurance Based Model
               </p>
               <h3 className="mt-1 text-xl font-extrabold leading-tight text-brand-navy">
-                Insurance &amp; Payment
+                Enrollment &amp; Insurance
               </h3>
             </div>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-brand-navy/75">
-            Some cohorts may be eligible for insurance billing. Private pay and
-            superbills are also available.
+            Many cohorts may be eligible for insurance coverage when they support
+            your teen&apos;s occupational therapy goals. Private pay options are also
+            available, and superbills can be provided for eligible out-of-network
+            reimbursement.
           </p>
           <ul className="mt-5 grid gap-3 sm:grid-cols-2">
             {insuranceOptions.map((option) => (
@@ -396,12 +386,51 @@ function MobileLifeReadyPage() {
       </section>
 
       {/* 6 — Bottom CTA */}
-      <ResourceBottomCta
-        title="Their Independence Starts Here."
-        text="Call us at (973) 905-5255, email hello@avashubnj.com, or join the waitlist to secure your teen's spot today."
-        buttonLabel="Join the Waitlist"
-        buttonHref="/contact"
-      />
+      <section className="px-6 pb-14">
+        <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+          <div className="relative min-h-48 bg-brand-teal-light">
+            <PlaceholderImage
+              src={cohortsImages.lifeReadyOverview}
+              alt="Life Ready Cohorts at Ava's Hub"
+              fill
+              className="object-cover object-[50%_32%]"
+              sizes="100vw"
+            />
+          </div>
+          <div className="flex flex-col items-center p-6 text-center">
+            <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+              <Icon name="heart" size="lg" />
+            </span>
+            <h2 className="mt-4 text-xl font-extrabold text-brand-navy">
+              Cohorts Are Filling Up.
+            </h2>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-brand-navy/75">
+              Spots are limited to 4–6 teens per cohort. Many fill before registration closes.
+            </p>
+            <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href="tel:+19739055255"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                <span>(973) 905-5255</span>
+              </a>
+              <a
+                href="mailto:hello@avashubnj.com"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                <span>hello@avashubnj.com</span>
+              </a>
+            </div>
+            <div className="mt-5 w-full max-w-xs">
+              <CTAButton href="/contact" className="w-full">
+                Join the Waitlist
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -432,12 +461,31 @@ function DesktopLifeReadyPage() {
               Life Ready Cohorts
             </h2>
             <p className="mt-4 text-[clamp(1.15rem,1.7vw,1.75rem)] font-extrabold leading-tight text-brand-purple-bright">
-              Real-Life Skills Designed by Occupational Therapists
+              Occupational Therapy Small Group Experiences
             </p>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-brand-navy/82">
-              As teens grow, parents begin asking bigger questions about independence.
-              Life Ready Cohorts bridge the gap — building the everyday skills teens
-              need for real life in small groups of 4–6, led by our OT team.
+            <p className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
+              Preparing Today&apos;s Teens for Tomorrow&apos;s Independence.
+            </p>
+            <p className="mt-5 text-base leading-relaxed text-brand-navy/80">
+              As children grow older, parents begin asking different questions:
+            </p>
+            <ul className="mt-3 space-y-2">
+              {[
+                "Will they remember to shower?",
+                "Can they prepare their own meals?",
+                "Will they help around the house?",
+                "Will they be ready for adulthood?",
+              ].map((q) => (
+                <li key={q} className="flex items-start gap-2.5 text-base leading-relaxed text-brand-navy/80">
+                  <Icon name="arrowRight" className="mt-0.5 shrink-0 text-brand-purple-bright" size="sm" />
+                  <span>{q}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-navy/82">
+              Life Ready Cohorts provide occupational therapy through meaningful
+              real-life experiences that teach teens the everyday skills they need
+              for greater independence at home, school, work, and in the community.
             </p>
 
             <div className="mt-7 rounded-[1.65rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-teal/10">
@@ -495,7 +543,7 @@ function DesktopLifeReadyPage() {
         <SectionContainer>
           <div className="text-center">
             <h2 className="inline-flex items-center gap-2 font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
-              <span>Five Skill Areas. Real Independence.</span>
+              <span>What Teens Practice</span>
               <span className="shrink-0 text-brand-purple-bright/55">
                 <TiltedHeartOutline />
               </span>
@@ -510,20 +558,20 @@ function DesktopLifeReadyPage() {
         </SectionContainer>
       </section>
 
-      {/* 3 — Skills / Parent Approved / Great for Teens */}
+      {/* 3 — Why Families Choose Life Ready Cohorts */}
       <section className="pb-14">
         <SectionContainer>
           <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
-            Built for Every Teen
+            Why Families Choose Life Ready Cohorts
             <span className="ml-3 text-brand-purple-bright/55">
               <TiltedHeartOutline />
             </span>
           </h2>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-brand-navy/70">
-            Skills that last. Families that see the difference. Teens who grow.
+            Real occupational therapy. Real skills. Real life.
           </p>
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {threeCards.map((card) => (
+          <div className="mt-8 grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+            {whyCards.map((card) => (
               <article
                 key={card.title}
                 className={`rounded-[1.75rem] p-6 shadow-card ring-1 ${cardBg[card.tone]}`}
@@ -536,29 +584,25 @@ function DesktopLifeReadyPage() {
                 <h3 className="mt-5 text-xl font-extrabold leading-tight text-brand-navy">
                   {card.title}
                 </h3>
-                <ul
-                  className={`mt-5 ${
-                    card.title === "Skills That Transfer to Real Life"
-                      ? "grid grid-cols-2 gap-x-3 gap-y-2"
-                      : "space-y-3"
-                  }`}
-                >
-                  {card.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-2 text-sm leading-relaxed text-brand-navy/80"
-                    >
-                      <Icon
-                        name={card.listIcon}
-                        className={`mt-0.5 shrink-0 ${card.listIconClass}`}
-                        size="sm"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="mt-3 text-sm leading-relaxed text-brand-navy/80">
+                  {card.description}
+                </p>
               </article>
             ))}
+          </div>
+          <div className="mt-6 rounded-[1.75rem] bg-white/90 p-7 shadow-card ring-1 ring-brand-purple-deep/10">
+            <h3 className="text-xl font-extrabold leading-tight text-brand-navy">
+              You do not have to teach every life skill alone.
+            </h3>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-brand-navy/80">
+              At Ava&apos;s Hub, we help teens build independence through supportive,
+              hands-on occupational therapy experiences that meet them where they are
+              and help them grow from there.
+            </p>
+            <p className="mt-4 text-base font-semibold leading-relaxed text-brand-purple-bright">
+              Because independence is not automatic. It is taught. It is practiced.
+              It is built over time.
+            </p>
           </div>
         </SectionContainer>
       </section>
@@ -643,15 +687,15 @@ function DesktopLifeReadyPage() {
                     Insurance Based Model
                   </p>
                   <h2 className="mt-2 text-3xl font-extrabold leading-tight text-brand-navy">
-                    Insurance &amp; Payment Options
+                    Enrollment &amp; Insurance
                   </h2>
                 </div>
               </div>
               <p className="mt-5 max-w-md text-base leading-relaxed text-brand-navy/75">
-                We believe meaningful occupational therapy should be accessible. Some
-                Life Ready Cohorts may be eligible for insurance billing depending on
-                your teen&apos;s plan and clinical needs. Private pay and superbills
-                are also available.
+                Many cohorts may be eligible for insurance coverage when they support
+                your teen&apos;s occupational therapy goals. Private pay options are
+                also available, and superbills can be provided for eligible
+                out-of-network reimbursement.
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {insuranceOptions.map((option) => (
@@ -682,12 +726,56 @@ function DesktopLifeReadyPage() {
       </section>
 
       {/* 6 — Bottom CTA */}
-      <ResourceBottomCta
-        title="Their Independence Starts Here."
-        text="Call us at (973) 905-5255, email hello@avashubnj.com, or join the waitlist to secure your teen's spot today."
-        buttonLabel="Join the Waitlist"
-        buttonHref="/contact"
-      />
+      <section className="pb-16">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+            <div className="grid h-full items-stretch xl:grid-cols-[0.38fr_0.62fr]">
+              <div className="relative min-h-52 bg-brand-teal-light xl:min-h-[17rem]">
+                <PlaceholderImage
+                  src={cohortsImages.lifeReadyOverview}
+                  alt="Life Ready Cohorts at Ava's Hub"
+                  fill
+                  className="object-cover object-[50%_32%]"
+                  sizes="(min-width: 1280px) 38vw, 100vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 text-center xl:p-10">
+                <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+                  <Icon name="heart" size="lg" />
+                </span>
+                <h2 className="mt-4 text-2xl font-extrabold text-brand-navy xl:text-3xl">
+                  Cohorts Are Filling Up.
+                </h2>
+                <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/75 xl:text-base">
+                  Spots are limited to 4–6 teens per cohort. Many fill before
+                  registration closes. Call or email to secure your teen&apos;s spot.
+                </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                  <a
+                    href="tel:+19739055255"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                    <span>(973) 905-5255</span>
+                  </a>
+                  <a
+                    href="mailto:hello@avashubnj.com"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                    <span>hello@avashubnj.com</span>
+                  </a>
+                </div>
+                <div className="mx-auto mt-6 max-w-xs">
+                  <CTAButton href="/contact" className="w-full">
+                    Join the Waitlist
+                  </CTAButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
     </div>
   );
 }

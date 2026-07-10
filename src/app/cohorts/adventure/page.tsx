@@ -3,10 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import {
-  ResourceBottomCta,
-  TiltedHeartOutline,
-} from "@/components/page/ResourceMobileComponents";
+import { TiltedHeartOutline } from "@/components/page/ResourceMobileComponents";
 import { AdventureCohortsCarousel } from "@/components/page/AdventureCohortsCarousel";
 import { adventureSessionCards } from "@/data/adventureSessionCards";
 import { cohortsImages } from "@/data/pageImages/cohortsImages";
@@ -133,7 +130,7 @@ function MobileAdventurePage() {
       <section className="pb-8">
         <div className="mx-auto w-full overflow-hidden rounded-b-[2rem] bg-brand-teal-light shadow-card">
           <PlaceholderImage
-            src={cohortsImages.adventureHeroMobile}
+            src={cohortsImages.adventureOverview}
             alt="Adventure Cohorts at Ava's Hub — Ages 5–11"
             width={1122}
             height={1402}
@@ -399,12 +396,51 @@ function MobileAdventurePage() {
       </section>
 
       {/* 6 — Bottom CTA */}
-      <ResourceBottomCta
-        title="Let's Build Their Future Together."
-        text="Call us at (973) 905-5255, email hello@avashubnj.com, or reserve your child's spot today."
-        buttonLabel="Reserve a Spot"
-        buttonHref="/contact"
-      />
+      <section className="px-6 pb-14">
+        <div className="overflow-hidden rounded-[1.75rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+          <div className="relative min-h-48 bg-brand-teal-light">
+            <PlaceholderImage
+              src={cohortsImages.adventureOverview}
+              alt="Adventure Cohorts at Ava's Hub"
+              fill
+              className="object-cover object-[50%_32%]"
+              sizes="100vw"
+            />
+          </div>
+          <div className="flex flex-col items-center p-6 text-center">
+            <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+              <Icon name="heart" size="lg" />
+            </span>
+            <h2 className="mt-4 text-xl font-extrabold text-brand-navy">
+              Cohorts Are Filling Up.
+            </h2>
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-brand-navy/75">
+              Spots are limited to 4–6 children per cohort. Many fill before registration closes.
+            </p>
+            <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <a
+                href="tel:+19739055255"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                <span>(973) 905-5255</span>
+              </a>
+              <a
+                href="mailto:hello@avashubnj.com"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+              >
+                <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                <span>hello@avashubnj.com</span>
+              </a>
+            </div>
+            <div className="mt-5 w-full max-w-xs">
+              <CTAButton href="/contact" className="w-full">
+                Reserve a Spot
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -481,7 +517,7 @@ function DesktopAdventurePage() {
 
           <div className="overflow-hidden rounded-[4rem_2rem_4rem_2rem] bg-brand-teal-light shadow-card ring-1 ring-brand-purple-deep/10 xl:rounded-[7rem_3rem_7rem_3rem]">
             <PlaceholderImage
-              src={cohortsImages.adventureHero}
+              src={cohortsImages.adventureOverview}
               alt="Adventure Cohorts at Ava's Hub — Ages 5–11"
               width={1122}
               height={1402}
@@ -686,12 +722,56 @@ function DesktopAdventurePage() {
       </section>
 
       {/* 6 — Bottom CTA */}
-      <ResourceBottomCta
-        title="Let's Build Their Future Together."
-        text="Call us at (973) 905-5255, email hello@avashubnj.com, or reserve your child's spot today."
-        buttonLabel="Reserve a Spot"
-        buttonHref="/contact"
-      />
+      <section className="pb-16">
+        <SectionContainer>
+          <div className="overflow-hidden rounded-[2rem] bg-brand-lavender/45 shadow-card ring-1 ring-brand-purple-deep/10">
+            <div className="grid h-full items-stretch xl:grid-cols-[0.38fr_0.62fr]">
+              <div className="relative min-h-52 bg-brand-teal-light xl:min-h-[17rem]">
+                <PlaceholderImage
+                  src={cohortsImages.adventureOverview}
+                  alt="Adventure Cohorts at Ava's Hub"
+                  fill
+                  className="object-cover object-[50%_32%]"
+                  sizes="(min-width: 1280px) 38vw, 100vw"
+                />
+              </div>
+              <div className="flex flex-col justify-center p-8 text-center xl:p-10">
+                <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white text-brand-purple-bright shadow-sm">
+                  <Icon name="heart" size="lg" />
+                </span>
+                <h2 className="mt-4 text-2xl font-extrabold text-brand-navy xl:text-3xl">
+                  Cohorts Are Filling Up.
+                </h2>
+                <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/75 xl:text-base">
+                  Spots are limited to 4–6 children per cohort. Many fill before
+                  registration closes. Call or email to reserve your child&apos;s spot.
+                </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-3">
+                  <a
+                    href="tel:+19739055255"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="phone" className="text-brand-purple-bright" size="sm" />
+                    <span>(973) 905-5255</span>
+                  </a>
+                  <a
+                    href="mailto:hello@avashubnj.com"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-brand-navy shadow-sm ring-1 ring-brand-purple-deep/10"
+                  >
+                    <Icon name="email" className="text-brand-purple-bright" size="sm" />
+                    <span>hello@avashubnj.com</span>
+                  </a>
+                </div>
+                <div className="mx-auto mt-6 max-w-xs">
+                  <CTAButton href="/contact" className="w-full">
+                    Reserve a Spot
+                  </CTAButton>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionContainer>
+      </section>
     </div>
   );
 }

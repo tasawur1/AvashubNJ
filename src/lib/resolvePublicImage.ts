@@ -14,9 +14,14 @@ const EXTS = [".jpg", ".jpeg", ".png", ".webp"] as const;
 export function resolvePublicImage(pathWithoutExt: string): string {
   const publicDir = join(process.cwd(), "public");
   for (const ext of EXTS) {
-    if (existsSync(join(publicDir, pathWithoutExt + ext))) {
-      return pathWithoutExt + ext;
+    try {
+      if (existsSync(join(publicDir, pathWithoutExt + ext))) {
+        return pathWithoutExt + ext;
+      }
+    } catch {
+      // filesystem error for this extension — try the next one
     }
   }
+  console.warn(`[resolvePublicImage] No image found for: ${pathWithoutExt}`);
   return pathWithoutExt + ".png";
 }

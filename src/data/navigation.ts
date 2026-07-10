@@ -17,7 +17,15 @@ export const navItems: NavItem[] = [
   },
   { label: "For Families", href: "/families" },
   { label: "Resources",    href: "/resources" },
-  { label: "Events",       href: "/events" },
+  {
+    label: "Cohorts",
+    href: "/cohorts",
+    children: [
+      { label: "View All",             href: "/cohorts" },
+      { label: "Adventure Cohorts",    href: "/cohorts/adventure" },
+      { label: "Life Ready Cohorts",   href: "/cohorts/life-ready" },
+    ],
+  },
   { label: "Blogs",        href: "/blogs" },
   { label: "Contact",      href: "/contact" },
 ];
