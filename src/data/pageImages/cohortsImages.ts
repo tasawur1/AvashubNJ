@@ -24,6 +24,10 @@ export const cohortsImages = {
   adventureHero:       r("/images/cohorts/adventure/hero-adventure"),
   adventureHeroMobile: r("/images/cohorts/adventure/hero-adventure"),
 
+  // ── Life Ready Cohorts sub-page hero ─────────────────────────────────────────
+  lifeReadyHero:       r("/images/cohorts/life-ready/hero-life-ready"),
+  lifeReadyHeroMobile: r("/images/cohorts/life-ready/hero-life-ready"),
+
   // ── Adventure cohort session cards ──────────────────────────────────────────
   carWashCrew:     r("/images/cohorts/adventure/car-wash-crew"),
   bakeryBrigade:   r("/images/cohorts/adventure/bakery-brigade"),

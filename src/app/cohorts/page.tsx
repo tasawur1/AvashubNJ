@@ -168,7 +168,7 @@ function MobileCohortsPage() {
 
       {/* 2 — Find the Right Cohort */}
       <section id="cohort-types-mobile" className="px-6 pb-10">
-        <h2 className="font-serif text-[clamp(0.9rem,4vw,1.85rem)] font-semibold leading-tight text-brand-navy">
+        <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
           Find the Right Cohort for Your Child
           <span className="ml-2 text-brand-purple-bright/55">
             <TiltedHeartOutline />
@@ -328,7 +328,7 @@ function MobileCohortsPage() {
           <p className="inline-flex rounded-full bg-brand-teal-light px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-teal">
             Ages 5–11
           </p>
-          <h2 className="mt-4 font-serif text-[clamp(0.9rem,3.9vw,1.85rem)] font-semibold leading-tight text-brand-navy">
+          <h2 className="mt-4 font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
             Adventure Cohorts: 6 Themed Missions
             <span className="ml-2 text-brand-purple-bright/55">
               <TiltedHeartOutline />
@@ -349,7 +349,7 @@ function MobileCohortsPage() {
           <p className="inline-flex rounded-full bg-brand-lavender px-3 py-1 text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
             Ages 12–17
           </p>
-          <h2 className="mt-4 font-serif text-[clamp(0.9rem,3.9vw,1.85rem)] font-semibold leading-tight text-brand-navy">
+          <h2 className="mt-4 font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
             Life Ready Cohorts: What We Build Together
             <span className="ml-2 text-brand-purple-bright/55">
               <TiltedHeartOutline />
@@ -367,7 +367,7 @@ function MobileCohortsPage() {
       {/* 6 — Why Families Choose */}
       <section className="px-6 pb-10">
         <div className="rounded-[1.75rem] bg-white/80 p-5 shadow-card ring-1 ring-brand-teal/10">
-          <h2 className="font-serif text-[clamp(0.875rem,3.6vw,1.25rem)] font-semibold leading-tight text-brand-navy">
+          <h2 className="font-serif text-[1.85rem] font-semibold leading-tight text-brand-navy">
             Why Families Choose Ava&apos;s Hub Cohorts
             <span className="ml-2 text-brand-purple-bright/55">
               <TiltedHeartOutline />
