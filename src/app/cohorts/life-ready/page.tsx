@@ -82,11 +82,11 @@ const sessionStats: { icon: IconName; label: string; detail: string; tone: CardT
   { icon: "home",     label: "Real-World Practice", detail: "Designed for independence at home, school, work, and community.", tone: "teal" },
 ];
 
-const insuranceOptions = [
-  "Major commercial insurance plans",
-  "NJ FamilyCare / Medicaid, when applicable",
-  "Out-of-network superbills",
-  "Private pay options",
+const pricingOptions = [
+  "$625 per 6-week cohort",
+  "Pay directly, no authorization delays",
+  "Superbill provided for out-of-network reimbursement",
+  "Reserve your spot the same day you sign up",
 ] as const;
 
 const statIconStyles: Record<CardTone, string> = {
@@ -159,11 +159,17 @@ function MobileLifeReadyPage() {
           <div className="mt-6 rounded-[1.5rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-gold/25 text-brand-purple-bright">
-                <Icon name="heart" size="sm" />
+                <Icon name="shieldHeart" size="sm" />
               </span>
-              <p className="text-sm font-semibold leading-snug text-brand-navy">
-                Every activity has a purpose. Every session builds skills. Every success carries over into everyday life.
-              </p>
+              <div>
+                <p className="text-xs leading-relaxed text-brand-navy/80">
+                  Life Ready Cohorts are $625 for a full 6-week cohort. Six 90-minute, OT-led group sessions building real independence skills.
+                </p>
+                <div className="mt-2 flex w-fit items-center gap-2 rounded-full bg-brand-gold/20 px-3 py-1.5 ring-1 ring-brand-gold/30">
+                  <span className="text-xs font-extrabold text-brand-navy">$625</span>
+                  <span className="text-[11px] tracking-wider text-brand-navy/65">· 6-Week Cohort</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -355,32 +361,45 @@ function MobileLifeReadyPage() {
             </span>
             <div>
               <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                Insurance Based Model
+                Private Pay Program
               </p>
               <h3 className="mt-1 text-xl font-extrabold leading-tight text-brand-navy">
-                Enrollment &amp; Insurance
+                Enrollment &amp; Pricing
               </h3>
             </div>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-brand-navy/75">
-            Many cohorts may be eligible for insurance coverage when they support
-            your teen&apos;s occupational therapy goals. Private pay options are also
-            available, and superbills can be provided for eligible out-of-network
-            reimbursement.
+            Life Ready Cohorts are $625 for a full 6-week cohort. Six 90-minute,
+            OT-led group sessions building real independence skills.
           </p>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-            {insuranceOptions.map((option) => (
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+            This is a private pay program, so there&apos;s no wait for insurance
+            approval. You reserve your teen&apos;s spot and start right away. We
+            provide a detailed superbill after enrollment so families can submit to
+            their insurance for possible out-of-network reimbursement.
+          </p>
+          <ul className="mt-5 grid gap-3">
+            {pricingOptions.map((option, i) => (
               <li
                 key={option}
-                className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                  i === 0
+                    ? "bg-brand-gold/20 ring-brand-gold/30"
+                    : "bg-brand-teal-light/45 ring-brand-teal/10"
+                }`}
               >
-                <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                <Icon
+                  name="circleCheck"
+                  className={"text-brand-teal"}
+                  size="sm"
+                />
                 <span>{option}</span>
               </li>
             ))}
           </ul>
           <p className="mt-3 text-xs text-brand-navy/55">
-            Coverage varies by plan. Our team can help review options before enrollment.
+            Reimbursement varies by plan. We&apos;re happy to answer questions about
+            the superbill process after you enroll.
           </p>
         </div>
       </section>
@@ -489,17 +508,18 @@ function DesktopLifeReadyPage() {
             </p>
 
             <div className="mt-7 rounded-[1.65rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-teal/10">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-gold/25 text-brand-purple-bright">
-                  <Icon name="heart" size="lg" />
+                  <Icon name="shieldHeart" size="lg" />
                 </span>
                 <div>
-                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-                    Every activity has a purpose.
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
-                    Every session builds skills. Every success carries over into everyday life.
+                  <p className="text-sm leading-relaxed text-brand-navy/80">
+                    Life Ready Cohorts are $625 for a full 6-week cohort. Six 90-minute, OT-led group sessions building real independence skills.
                   </p>
+                  <div className="mt-2.5 flex w-fit items-center gap-2.5 rounded-full bg-brand-gold/20 px-4 py-1.5 ring-1 ring-brand-gold/30">
+                    <span className="text-sm font-extrabold text-brand-navy">$625</span>
+                    <span className="text-xs tracking-wider text-brand-navy/65">· 6-Week Cohort</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -684,37 +704,50 @@ function DesktopLifeReadyPage() {
                 </span>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                    Insurance Based Model
+                    Private Pay Program
                   </p>
                   <h2 className="mt-2 text-3xl font-extrabold leading-tight text-brand-navy">
-                    Enrollment &amp; Insurance
+                    Enrollment &amp; Pricing
                   </h2>
                 </div>
               </div>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-brand-navy/75">
-                Many cohorts may be eligible for insurance coverage when they support
-                your teen&apos;s occupational therapy goals. Private pay options are
-                also available, and superbills can be provided for eligible
-                out-of-network reimbursement.
+              <p className="mt-5 text-base leading-relaxed text-brand-navy/75">
+                Life Ready Cohorts are $625 for a full 6-week cohort. Six 90-minute,
+                OT-led group sessions building real independence skills.
               </p>
-              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                {insuranceOptions.map((option) => (
+              <p className="mt-4 text-base leading-relaxed text-brand-navy/75">
+                This is a private pay program, so there&apos;s no wait for insurance
+                approval. You reserve your teen&apos;s spot and start right away. We
+                provide a detailed superbill after enrollment so families can submit to
+                their insurance for possible out-of-network reimbursement.
+              </p>
+              <ul className="mt-6 grid gap-3">
+                {pricingOptions.map((option, i) => (
                   <li
                     key={option}
-                    className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                    className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                      i === 0
+                        ? "bg-brand-gold/20 ring-brand-gold/30"
+                        : "bg-brand-teal-light/45 ring-brand-teal/10"
+                    }`}
                   >
-                    <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                    <Icon
+                      name="circleCheck"
+                      className={"text-brand-teal"}
+                      size="sm"
+                    />
                     <span>{option}</span>
                   </li>
                 ))}
               </ul>
               <p className="mt-4 text-xs text-brand-navy/55">
-                Coverage varies by plan. Our team can help review options before enrollment.
+                Reimbursement varies by plan. We&apos;re happy to answer questions
+                about the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="/contact" variant="secondary" className="w-full !py-3">
+                <CTAButton href="/contact" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
-                    Ask About Coverage
+                    Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
                   </span>
                 </CTAButton>

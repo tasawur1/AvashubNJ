@@ -80,11 +80,11 @@ const whyCards: { icon: IconName; title: string; body: string; tone: Tone }[] = 
   },
 ];
 
-const insuranceOptions = [
-  "Major commercial insurance plans",
-  "NJ FamilyCare / Medicaid, when applicable",
-  "Out-of-network superbills",
-  "Private pay options",
+const pricingOptions = [
+  "$625 per 6-week cohort",
+  "Pay directly, no authorization delays",
+  "Superbill provided for out-of-network reimbursement",
+  "Reserve your spot the same day you sign up",
 ] as const;
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -394,7 +394,7 @@ function MobileCohortsPage() {
         </div>
       </section>
 
-      {/* 7 — Enrollment & Insurance */}
+      {/* 7 — Enrollment & Pricing */}
       <section className="px-6 pb-10">
         <div className="flex h-full flex-col rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
           <div className="flex items-start gap-4">
@@ -403,30 +403,41 @@ function MobileCohortsPage() {
             </span>
             <div>
               <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                Insurance Based Model
+                Private Pay Program
               </p>
               <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-navy">
-                Enrollment &amp; Insurance
+                Enrollment &amp; Pricing
               </h2>
             </div>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-brand-navy/75">
-            Many cohorts may be eligible for insurance coverage. Private pay and
-            superbills are also available.
+            Both Adventure and Life Ready Cohorts are $625 for a full 6-week cohort.
+            Six 90-minute, OT-led small group sessions. No insurance approval needed.
+            Reserve your child&apos;s spot and start right away. We provide a superbill
+            after enrollment for possible out-of-network reimbursement.
           </p>
           <ul className="mt-5 grid gap-3">
-            {insuranceOptions.map((option) => (
+            {pricingOptions.map((option, i) => (
               <li
                 key={option}
-                className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                  i === 0
+                    ? "bg-brand-gold/20 ring-brand-gold/30"
+                    : "bg-brand-teal-light/45 ring-brand-teal/10"
+                }`}
               >
-                <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                <Icon
+                  name="circleCheck"
+                  className={"text-brand-teal"}
+                  size="sm"
+                />
                 <span>{option}</span>
               </li>
             ))}
           </ul>
           <p className="mt-3 text-xs text-brand-navy/55">
-            Coverage varies by plan. Our team can help review options before enrollment.
+            Reimbursement varies by plan. We&apos;re happy to answer questions about
+            the superbill process after you enroll.
           </p>
         </div>
       </section>
@@ -825,7 +836,7 @@ function DesktopCohortsPage() {
               </div>
             </div>
 
-            {/* Right — Enrollment & Insurance */}
+            {/* Right — Enrollment & Pricing */}
             <div className="flex h-full flex-col rounded-[1.75rem] bg-white/95 p-7 shadow-card ring-1 ring-brand-purple-deep/10">
               <div className="flex items-start gap-5">
                 <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
@@ -833,36 +844,46 @@ function DesktopCohortsPage() {
                 </span>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                    Insurance Based Model
+                    Private Pay Program
                   </p>
                   <h2 className="mt-2 text-3xl font-extrabold leading-tight text-brand-navy">
-                    Enrollment &amp; Insurance
+                    Enrollment &amp; Pricing
                   </h2>
                 </div>
               </div>
               <p className="mt-5 max-w-md text-base leading-relaxed text-brand-navy/75">
-                Many cohorts may be eligible for insurance coverage when they support your
-                child&apos;s occupational therapy goals. Private pay and superbills are
-                also available.
+                Both Adventure and Life Ready Cohorts are $625 for a full 6-week cohort.
+                Six 90-minute, OT-led small group sessions. No insurance approval needed.
+                Reserve your child&apos;s spot and start right away. We provide a superbill
+                after enrollment for possible out-of-network reimbursement.
               </p>
               <ul className="mt-6 grid gap-3">
-                {insuranceOptions.map((option) => (
+                {pricingOptions.map((option, i) => (
                   <li
                     key={option}
-                    className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                    className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                      i === 0
+                        ? "bg-brand-gold/20 ring-brand-gold/30"
+                        : "bg-brand-teal-light/45 ring-brand-teal/10"
+                    }`}
                   >
-                    <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                    <Icon
+                      name="circleCheck"
+                      className={"text-brand-teal"}
+                      size="sm"
+                    />
                     <span>{option}</span>
                   </li>
                 ))}
               </ul>
               <p className="mt-4 text-xs text-brand-navy/55">
-                Coverage varies by plan. Our team can help review options before enrollment.
+                Reimbursement varies by plan. We&apos;re happy to answer questions about
+                the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="/contact" variant="secondary" className="w-full !py-3">
+                <CTAButton href="/contact" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
-                    Ask About Coverage
+                    Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
                   </span>
                 </CTAButton>

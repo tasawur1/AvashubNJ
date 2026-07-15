@@ -106,11 +106,11 @@ const sessionStats: { icon: IconName; label: string; detail: string; tone: CardT
   { icon: "home", label: "Indoor & Outdoor", detail: "Designed for growth, movement, and real-world play.", tone: "teal" },
 ];
 
-const insuranceOptions = [
-  "Major Insurance Plans",
-  "NJ FamilyCare / Medicaid",
-  "Private Pay Options",
-  "Superbills Available",
+const pricingOptions = [
+  "$625 per 6-week cohort",
+  "Pay directly, no authorization delays",
+  "Superbill provided for out-of-network reimbursement",
+  "Reserve your spot the same day you sign up",
 ] as const;
 
 const statIconStyles: Record<CardTone, string> = {
@@ -156,7 +156,7 @@ function MobileAdventurePage() {
             Immersive, Hands-On Adventures Designed by Occupational Therapists
           </p>
           <p className="mt-5 text-base leading-relaxed text-brand-navy/85">
-            Building confidence, friendships, and real-life skills — one adventure at
+            Building confidence, friendships, and real-life skills. One adventure at
             a time. Each 6-week cohort is a themed mission led by our OT team in small
             groups of 4–6 children.
           </p>
@@ -164,11 +164,17 @@ function MobileAdventurePage() {
           <div className="mt-6 rounded-[1.5rem] bg-white/90 p-4 shadow-sm ring-1 ring-brand-teal/10">
             <div className="flex items-center gap-3">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-gold/25 text-brand-purple-bright">
-                <Icon name="heart" size="sm" />
+                <Icon name="shieldHeart" size="sm" />
               </span>
-              <p className="text-sm font-semibold leading-snug text-brand-navy">
-                Inclusive. Accepting. Empowering. Fun!
-              </p>
+              <div>
+                <p className="text-xs leading-relaxed text-brand-navy/80">
+                  Adventure Cohorts are $625 for a full 6-week cohort. Six 90-minute, OT-led group sessions built around hands-on themed adventures.
+                </p>
+                <div className="mt-2 flex w-fit items-center gap-2 rounded-full bg-brand-gold/20 px-3 py-1.5 ring-1 ring-brand-gold/30">
+                  <span className="text-xs font-extrabold text-brand-navy">$625</span>
+                  <span className="text-[11px] tracking-wider text-brand-navy/65">· 6-Week Cohort</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -367,30 +373,45 @@ function MobileAdventurePage() {
             </span>
             <div>
               <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                Insurance Based Model
+                Private Pay Program
               </p>
               <h3 className="mt-1 text-xl font-extrabold leading-tight text-brand-navy">
-                Insurance &amp; Payment
+                Enrollment &amp; Pricing
               </h3>
             </div>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-brand-navy/75">
-            Some cohorts may be eligible for insurance billing. Private pay and
-            superbills are also available.
+            Adventure Cohorts are $625 for a full 6-week cohort. Six 90-minute,
+            OT-led group sessions built around hands-on themed adventures.
           </p>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-            {insuranceOptions.map((option) => (
+          <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
+            This is a private pay program, so there&apos;s no wait for insurance
+            approval. Reserve your child&apos;s spot and start right away. We provide
+            a superbill after enrollment so families can submit to their insurance for
+            possible out-of-network reimbursement.
+          </p>
+          <ul className="mt-5 grid gap-3">
+            {pricingOptions.map((option, i) => (
               <li
                 key={option}
-                className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                  i === 0
+                    ? "bg-brand-gold/20 ring-brand-gold/30"
+                    : "bg-brand-teal-light/45 ring-brand-teal/10"
+                }`}
               >
-                <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                <Icon
+                  name="circleCheck"
+                  className={"text-brand-teal"}
+                  size="sm"
+                />
                 <span>{option}</span>
               </li>
             ))}
           </ul>
           <p className="mt-3 text-xs text-brand-navy/55">
-            Coverage varies by plan. Our team can help review options before enrollment.
+            Reimbursement varies by plan. We&apos;re happy to answer questions about
+            the superbill process after you enroll.
           </p>
         </div>
       </section>
@@ -474,23 +495,24 @@ function DesktopAdventurePage() {
               Immersive, Hands-On Adventures Designed by Occupational Therapists
             </p>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-brand-navy/82">
-              Building confidence, friendships, and real-life skills — one adventure at
+              Building confidence, friendships, and real-life skills. One adventure at
               a time. Six themed missions, small groups of 4–6 children, each led by
               our occupational therapy team.
             </p>
 
             <div className="mt-7 rounded-[1.65rem] bg-white/90 p-5 shadow-sm ring-1 ring-brand-teal/10">
-              <div className="flex items-start gap-4">
+              <div className="flex items-center gap-4">
                 <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-gold/25 text-brand-purple-bright">
-                  <Icon name="heart" size="lg" />
+                  <Icon name="shieldHeart" size="lg" />
                 </span>
                 <div>
-                  <h3 className="text-lg font-extrabold leading-tight text-brand-navy">
-                    Inclusive. Accepting. Empowering. Fun!
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-navy/75">
-                    Every child is welcome. Every child belongs.
+                  <p className="text-sm leading-relaxed text-brand-navy/80">
+                    Adventure Cohorts are $625 for a full 6-week cohort. Six 90-minute, OT-led group sessions built around hands-on themed adventures.
                   </p>
+                  <div className="mt-2.5 flex w-fit items-center gap-2.5 rounded-full bg-brand-gold/20 px-4 py-1.5 ring-1 ring-brand-gold/30">
+                    <span className="text-sm font-extrabold text-brand-navy">$625</span>
+                    <span className="text-xs tracking-wider text-brand-navy/65">· 6-Week Cohort</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -540,7 +562,7 @@ function DesktopAdventurePage() {
               </span>
             </h2>
             <p className="mt-3 text-base leading-relaxed text-brand-navy/70">
-              Six unique themes, real skills, and real fun — rotating every session block.
+              Six unique themes, real skills, and real fun. Rotating every session block.
             </p>
           </div>
           <div className="mt-8 px-5">
@@ -673,7 +695,7 @@ function DesktopAdventurePage() {
               </div>
             </div>
 
-            {/* Right — Insurance */}
+            {/* Right — Pricing */}
             <div className="h-full flex flex-col rounded-[1.75rem] bg-white/95 p-7 shadow-card ring-1 ring-brand-purple-deep/10">
               <div className="flex items-start gap-5">
                 <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand-lavender text-brand-purple-bright">
@@ -681,37 +703,50 @@ function DesktopAdventurePage() {
                 </span>
                 <div>
                   <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-                    Insurance Based Model
+                    Private Pay Program
                   </p>
                   <h2 className="mt-2 text-3xl font-extrabold leading-tight text-brand-navy">
-                    Insurance &amp; Payment Options
+                    Enrollment &amp; Pricing
                   </h2>
                 </div>
               </div>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-brand-navy/75">
-                We believe meaningful occupational therapy should be accessible. Some
-                Adventure Cohorts may be eligible for insurance billing depending on
-                your child&apos;s plan and clinical needs. Private pay and superbills
-                are also available.
+              <p className="mt-5 text-base leading-relaxed text-brand-navy/75">
+                Adventure Cohorts are $625 for a full 6-week cohort. Six 90-minute,
+                OT-led group sessions built around hands-on themed adventures.
               </p>
-              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-                {insuranceOptions.map((option) => (
+              <p className="mt-4 text-base leading-relaxed text-brand-navy/75">
+                This is a private pay program, so there&apos;s no wait for insurance
+                approval. Reserve your child&apos;s spot and start right away. We
+                provide a superbill after enrollment so families can submit to their
+                insurance for possible out-of-network reimbursement.
+              </p>
+              <ul className="mt-6 grid gap-3">
+                {pricingOptions.map((option, i) => (
                   <li
                     key={option}
-                    className="flex items-center gap-3 rounded-2xl bg-brand-teal-light/45 px-4 py-3 text-sm font-bold text-brand-navy ring-1 ring-brand-teal/10"
+                    className={`flex items-center gap-3 rounded-full px-4 py-3 text-sm font-bold text-brand-navy ring-1 ${
+                      i === 0
+                        ? "bg-brand-gold/20 ring-brand-gold/30"
+                        : "bg-brand-teal-light/45 ring-brand-teal/10"
+                    }`}
                   >
-                    <Icon name="circleCheck" className="text-brand-teal" size="sm" />
+                    <Icon
+                      name="circleCheck"
+                      className={"text-brand-teal"}
+                      size="sm"
+                    />
                     <span>{option}</span>
                   </li>
                 ))}
               </ul>
               <p className="mt-4 text-xs text-brand-navy/55">
-                Coverage varies by plan. Our team can help review options before enrollment.
+                Reimbursement varies by plan. We&apos;re happy to answer questions
+                about the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="/contact" variant="secondary" className="w-full !py-3">
+                <CTAButton href="/contact" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
-                    Ask About Coverage
+                    Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
                   </span>
                 </CTAButton>
