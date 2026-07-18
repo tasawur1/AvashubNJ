@@ -587,7 +587,6 @@ function DesktopCohortsPage() {
               alt="Ava's Hub Cohort Programs"
               width={1182}
               height={1331}
-              priority
               className="h-[min(76vh,48rem)] w-full object-cover object-[50%_32%]"
               sizes="(min-width: 1280px) 54vw, 100vw"
             />

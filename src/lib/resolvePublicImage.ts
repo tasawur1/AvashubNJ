@@ -18,8 +18,8 @@ export function resolvePublicImage(pathWithoutExt: string): string {
       if (existsSync(join(publicDir, pathWithoutExt + ext))) {
         return pathWithoutExt + ext;
       }
-    } catch {
-      // filesystem error for this extension — try the next one
+    } catch (err) {
+      console.warn(`[resolvePublicImage] fs error for ${pathWithoutExt + ext}:`, err);
     }
   }
   console.warn(`[resolvePublicImage] No image found for: ${pathWithoutExt}`);

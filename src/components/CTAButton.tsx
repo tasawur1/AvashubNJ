@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 type CTAButtonProps = {
   children: ReactNode;
@@ -30,18 +32,32 @@ export function CTAButton({
   type = "button",
   onClick,
 }: CTAButtonProps) {
+  const pendingRef = useRef(false);
+
+  function handleClick(e: React.MouseEvent) {
+    if (pendingRef.current) {
+      e.preventDefault();
+      return;
+    }
+    pendingRef.current = true;
+    onClick?.();
+    setTimeout(() => {
+      pendingRef.current = false;
+    }, 1500);
+  }
+
   const styles = `${base} ${variants[variant]} ${className}`;
 
   if (href) {
     return (
-      <Link href={href} className={styles}>
+      <Link href={href} className={styles} onClick={handleClick}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={styles} onClick={onClick}>
+    <button type={type} className={styles} onClick={handleClick}>
       {children}
     </button>
   );

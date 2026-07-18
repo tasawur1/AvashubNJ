@@ -543,7 +543,6 @@ function DesktopAdventurePage() {
               alt="Adventure Cohorts at Ava's Hub — Ages 5–11"
               width={1122}
               height={1402}
-              priority
               className="h-[min(76vh,48rem)] w-full object-cover object-[50%_32%]"
               sizes="(min-width: 1280px) 55vw, 100vw"
             />
