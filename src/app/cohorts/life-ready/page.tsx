@@ -174,7 +174,7 @@ function MobileLifeReadyPage() {
           </div>
 
           <div className="mt-6 space-y-3">
-            <CTAButton href="/contact" className="w-full">
+            <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756" className="w-full">
               <span className="inline-flex items-center gap-2">
                 Reserve Your Spot
                 <Icon name="arrowRight" size="sm" />
@@ -314,7 +314,7 @@ function MobileLifeReadyPage() {
           secure your teen&apos;s spot in the next cohort.
         </p>
         <div className="mt-7">
-          <CTAButton href="/contact" className="!shadow-lg !shadow-brand-purple-bright/30">
+          <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756" className="!shadow-lg !shadow-brand-purple-bright/30">
             <span className="inline-flex items-center gap-2">
               Reserve Your Spot
               <Icon name="arrowRight" size="sm" />
@@ -443,7 +443,7 @@ function MobileLifeReadyPage() {
               </a>
             </div>
             <div className="mt-5 w-full max-w-xs">
-              <CTAButton href="/contact" className="w-full">
+              <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756" className="w-full">
                 Reserve Your Spot
               </CTAButton>
             </div>
@@ -526,7 +526,7 @@ function DesktopLifeReadyPage() {
 
             <div className="mt-7 flex flex-wrap gap-3">
               <CTAButton
-                href="/contact"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756"
                 className="min-w-[13rem] !shadow-lg !shadow-brand-purple-bright/25"
               >
                 <span className="inline-flex items-center gap-2">
@@ -646,7 +646,7 @@ function DesktopLifeReadyPage() {
             </p>
             <div className="mt-8">
               <CTAButton
-                href="/contact"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756"
                 className="!px-10 !py-4 !shadow-xl !shadow-brand-purple-bright/30"
               >
                 <span className="inline-flex items-center gap-2 text-base">
@@ -744,7 +744,7 @@ function DesktopLifeReadyPage() {
                 about the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="/contact" className="w-full !py-3">
+                <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
                     Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
@@ -799,7 +799,7 @@ function DesktopLifeReadyPage() {
                   </a>
                 </div>
                 <div className="mx-auto mt-6 max-w-xs">
-                  <CTAButton href="/contact" className="w-full">
+                  <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950756" className="w-full">
                     Reserve Your Spot
                   </CTAButton>
                 </div>
