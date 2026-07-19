@@ -160,9 +160,6 @@ function MobileContactPage() {
             <p className="mt-3 text-base leading-relaxed text-brand-navy/85">
               Our team is here to help you every step of the way.
             </p>
-            <p className="mt-5 text-sm italic leading-relaxed text-brand-navy/70">
-              Intake forms for each service will be available here soon.
-            </p>
             <IntakePillButtons />
           </div>
         </div>

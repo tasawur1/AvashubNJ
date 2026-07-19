@@ -176,7 +176,7 @@ function MobileLifeReadyPage() {
           <div className="mt-6 space-y-3">
             <CTAButton href="/contact" className="w-full">
               <span className="inline-flex items-center gap-2">
-                Join the Waitlist
+                Reserve Your Spot
                 <Icon name="arrowRight" size="sm" />
               </span>
             </CTAButton>
@@ -316,7 +316,7 @@ function MobileLifeReadyPage() {
         <div className="mt-7">
           <CTAButton href="/contact" className="!shadow-lg !shadow-brand-purple-bright/30">
             <span className="inline-flex items-center gap-2">
-              Join the Waitlist
+              Reserve Your Spot
               <Icon name="arrowRight" size="sm" />
             </span>
           </CTAButton>
@@ -444,7 +444,7 @@ function MobileLifeReadyPage() {
             </div>
             <div className="mt-5 w-full max-w-xs">
               <CTAButton href="/contact" className="w-full">
-                Join the Waitlist
+                Reserve Your Spot
               </CTAButton>
             </div>
           </div>
@@ -530,7 +530,7 @@ function DesktopLifeReadyPage() {
                 className="min-w-[13rem] !shadow-lg !shadow-brand-purple-bright/25"
               >
                 <span className="inline-flex items-center gap-2">
-                  Join the Waitlist
+                  Reserve Your Spot
                   <Icon name="arrowRight" size="sm" />
                 </span>
               </CTAButton>
@@ -650,7 +650,7 @@ function DesktopLifeReadyPage() {
                 className="!px-10 !py-4 !shadow-xl !shadow-brand-purple-bright/30"
               >
                 <span className="inline-flex items-center gap-2 text-base">
-                  Join the Waitlist
+                  Reserve Your Spot
                   <Icon name="arrowRight" size="sm" />
                 </span>
               </CTAButton>
@@ -800,7 +800,7 @@ function DesktopLifeReadyPage() {
                 </div>
                 <div className="mx-auto mt-6 max-w-xs">
                   <CTAButton href="/contact" className="w-full">
-                    Join the Waitlist
+                    Reserve Your Spot
                   </CTAButton>
                 </div>
               </div>
