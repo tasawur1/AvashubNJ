@@ -179,7 +179,7 @@ function MobileAdventurePage() {
           </div>
 
           <div className="mt-6 space-y-3">
-            <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654" className="w-full">
+            <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts" className="w-full">
               <span className="inline-flex items-center gap-2">
                 Reserve a Spot
                 <Icon name="arrowRight" size="sm" />
@@ -324,7 +324,7 @@ function MobileAdventurePage() {
         </p>
         <div className="mt-7">
           <CTAButton
-            href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654"
+            href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts"
             className="!shadow-lg !shadow-brand-purple-bright/30"
           >
             <span className="inline-flex items-center gap-2">
@@ -455,7 +455,7 @@ function MobileAdventurePage() {
               </a>
             </div>
             <div className="mt-5 w-full max-w-xs">
-              <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654" className="w-full">
+              <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts" className="w-full">
                 Reserve a Spot
               </CTAButton>
             </div>
@@ -519,7 +519,7 @@ function DesktopAdventurePage() {
 
             <div className="mt-7 flex flex-wrap gap-3">
               <CTAButton
-                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts"
                 className="min-w-[13rem] !shadow-lg !shadow-brand-purple-bright/25"
               >
                 <span className="inline-flex items-center gap-2">
@@ -643,7 +643,7 @@ function DesktopAdventurePage() {
             </p>
             <div className="mt-8">
               <CTAButton
-                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts"
                 className="!px-10 !py-4 !shadow-xl !shadow-brand-purple-bright/30"
               >
                 <span className="inline-flex items-center gap-2 text-base">
@@ -743,7 +743,7 @@ function DesktopAdventurePage() {
                 about the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654" className="w-full !py-3">
+                <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
                     Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
@@ -797,7 +797,7 @@ function DesktopAdventurePage() {
                   </a>
                 </div>
                 <div className="mx-auto mt-6 max-w-xs">
-                  <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=95950654" className="w-full">
+                  <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049&appointmentType=category:Adventure%20Cohorts" className="w-full">
                     Reserve a Spot
                   </CTAButton>
                 </div>
