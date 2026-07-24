@@ -159,8 +159,8 @@ function MobileCohortsPage() {
                 <Icon name="arrowRight" size="sm" />
               </span>
             </CTAButton>
-            <CTAButton href="/contact" variant="secondary" className="w-full">
-              Join the Waitlist
+            <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" variant="secondary" className="w-full">
+              Reserve a Spot
             </CTAButton>
           </div>
         </div>
@@ -456,12 +456,12 @@ function MobileCohortsPage() {
         </h2>
         <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-brand-navy/75">
           Every child deserves experiences that prepare them for life. Cohorts fill
-          quickly. Join the waitlist to secure your spot.
+          quickly. Reserve a spot to secure your place.
         </p>
         <div className="mt-7">
-          <CTAButton href="/contact" className="!shadow-lg !shadow-brand-purple-bright/30">
+          <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" className="!shadow-lg !shadow-brand-purple-bright/30">
             <span className="inline-flex items-center gap-2">
-              Join the Waitlist
+              Reserve a Spot
               <Icon name="arrowRight" size="sm" />
             </span>
           </CTAButton>
@@ -489,7 +489,7 @@ function MobileCohortsPage() {
             </h2>
             <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-brand-navy/75">
               Cohorts are intentionally limited to 4–6 participants. Many fill before
-              registration closes. Join the waitlist today to receive priority
+              registration closes. Reserve a spot today to secure priority
               enrollment.
             </p>
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -509,8 +509,8 @@ function MobileCohortsPage() {
               </a>
             </div>
             <div className="mt-5 w-full max-w-xs">
-              <CTAButton href="/contact" className="w-full">
-                Join the Waitlist
+              <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" className="w-full">
+                Reserve a Spot
               </CTAButton>
             </div>
           </div>
@@ -575,8 +575,8 @@ function DesktopCohortsPage() {
               <CTAButton href="#cohort-types-desktop" className="min-w-[12rem]">
                 Explore Cohorts
               </CTAButton>
-              <CTAButton href="/contact" variant="secondary" className="min-w-[13rem]">
-                Join the Waitlist
+              <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" variant="secondary" className="min-w-[13rem]">
+                Reserve a Spot
               </CTAButton>
             </div>
           </div>
@@ -743,8 +743,8 @@ function DesktopCohortsPage() {
             ))}
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
-            <CTAButton href="/contact" className="!shadow-lg !shadow-brand-purple-bright/25">
-              Join the Waitlist
+            <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" className="!shadow-lg !shadow-brand-purple-bright/25">
+              Reserve a Spot
             </CTAButton>
             <CTAButton href="#cohort-types-desktop" variant="secondary">
               Explore Cohorts
@@ -880,7 +880,7 @@ function DesktopCohortsPage() {
                 the superbill process after you enroll.
               </p>
               <div className="mt-auto pt-6">
-                <CTAButton href="/contact" className="w-full !py-3">
+                <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" className="w-full !py-3">
                   <span className="inline-flex items-center gap-2">
                     Reserve Your Spot — $625
                     <Icon name="arrowRight" size="sm" />
@@ -909,15 +909,15 @@ function DesktopCohortsPage() {
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-brand-navy/75">
               Every child deserves experiences that prepare them for life. Cohorts fill
-              quickly. Join the waitlist to secure your spot.
+              quickly. Reserve a spot to secure your place.
             </p>
             <div className="mt-8">
               <CTAButton
-                href="/contact"
+                href="https://app.acuityscheduling.com/schedule.php?owner=39806049"
                 className="!px-10 !py-4 !shadow-xl !shadow-brand-purple-bright/30"
               >
                 <span className="inline-flex items-center gap-2 text-base">
-                  Join the Waitlist
+                  Reserve a Spot
                   <Icon name="arrowRight" size="sm" />
                 </span>
               </CTAButton>
@@ -949,7 +949,7 @@ function DesktopCohortsPage() {
                 </h2>
                 <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/75 xl:text-base">
                   Cohorts are intentionally limited to 4–6 participants. Many fill before
-                  registration closes. Join the waitlist today to receive priority enrollment.
+                  registration closes. Reserve a spot today to secure priority enrollment.
                 </p>
                 <div className="mt-5 flex flex-wrap justify-center gap-3">
                   <a
@@ -968,8 +968,8 @@ function DesktopCohortsPage() {
                   </a>
                 </div>
                 <div className="mx-auto mt-6 max-w-xs">
-                  <CTAButton href="/contact" className="w-full">
-                    Join the Waitlist
+                  <CTAButton href="https://app.acuityscheduling.com/schedule.php?owner=39806049" className="w-full">
+                    Reserve a Spot
                   </CTAButton>
                 </div>
               </div>
