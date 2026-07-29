@@ -122,35 +122,39 @@ export function IntakeOverlay({
           </button>
         </div>
 
-        {/* Form iframe — full remaining height */}
-        <div className="relative min-h-0 flex-1">
+        {/* Form iframe — full remaining height. The back button lives in its
+            own rail beside the iframe (not absolutely overlaid on top of it),
+            so it can never intercept taps meant for scrolled iframe content
+            (e.g. an insurance chip that happens to land at the same screen
+            position) and silently close the overlay before submission. */}
+        <div className="flex min-h-0 flex-1">
+          <div className="flex w-12 shrink-0 items-center justify-center bg-[#faf6f2]">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Go back to contact page"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-lg backdrop-blur-sm transition hover:bg-white hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+          </div>
           <iframe
             src={iframeSrc}
             title={`${label} Intake Form`}
-            className="h-full w-full border-0 bg-[#faf6f2]"
+            className="h-full min-w-0 flex-1 border-0 bg-[#faf6f2]"
             allow="clipboard-write"
           />
-
-          {/* Floating back arrow — left edge, thumb-friendly position */}
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Go back to contact page"
-            className="absolute left-3 top-1/2 -translate-y-1/2 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-brand-navy shadow-lg backdrop-blur-sm transition hover:bg-white hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
         </div>
       </div>
     </>
