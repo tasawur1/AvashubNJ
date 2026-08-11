@@ -3,6 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
+import { InsurancePartnersSection } from "@/components/page/InsurancePartnersSection";
 import { heroBannerImages } from "@/data/heroBannerImages";
 import { siteImages } from "@/data/images";
 import { programsImages } from "@/data/pageImages/programsImages";
@@ -307,6 +308,8 @@ function DesktopHomePage() {
         </SectionContainer>
       </section>
 
+      <InsurancePartnersSection />
+
       <section className="pb-10">
         <SectionContainer>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
@@ -588,6 +591,8 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        <InsurancePartnersSection />
 
         <section className="pb-8">
           <div className="overflow-x-auto px-6 pb-2">

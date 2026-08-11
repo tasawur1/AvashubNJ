@@ -24,6 +24,14 @@ Mobile-only image filenames should go in:
 
 See `public/images/home/mobile/README.md`.
 
+## Insurance Logo Images
+
+Insurance company logos for the "Accepted Insurance Plans" section go in:
+
+`public/images/home/insurance-logos/`
+
+See `public/images/home/insurance-logos/README.md`.
+
 ## Note
 
 Replacing an existing file with the same filename needs no code change. New filenames must be added to the image config.
