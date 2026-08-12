@@ -230,7 +230,7 @@ function DesktopHomePage() {
         Reuse detailed page-specific cards/accordions and support sections
         when they strengthen desktop depth without changing mobile.
       */}
-      <section className="min-h-[calc(100vh-5rem)] py-9 xl:py-12">
+      <section className="py-9 xl:py-12">
         <SectionContainer className="grid min-h-[74vh] items-center gap-10 xl:grid-cols-[0.43fr_0.57fr] xl:gap-12 2xl:gap-16">
           <div className="rounded-[2.25rem] bg-[#fffaf4]/95 p-8 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-10 2xl:p-12">
             <p className="inline-flex rounded-full bg-brand-lavender px-4 py-1.5 text-xs font-extrabold uppercase tracking-normal text-brand-purple-deep">
@@ -250,44 +250,6 @@ function DesktopHomePage() {
               independence, friendships, and real-life skills through
               meaningful, relationship-based occupational therapy.
             </p>
-
-            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
-              <Icon
-                name="heart"
-                className="mt-1 shrink-0 text-brand-purple-bright"
-                size="2x"
-              />
-              <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
-                Because families deserve more than worksheets, waiting rooms,
-                and one-size-fits-all therapy.
-              </p>
-            </div>
-
-            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
-              <CTAButton href="/contact" className="min-w-[15rem]">
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="calendar" size="sm" />
-                  Schedule a Consultation
-                </span>
-              </CTAButton>
-              <CTAButton
-                href="#programs-desktop"
-                variant="secondary"
-                className="min-w-[13rem]"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="resources" size="sm" />
-                  See How We Help
-                </span>
-              </CTAButton>
-            </div>
-            <a
-              href="/contact"
-              className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-brand-navy underline underline-offset-4"
-            >
-              <Icon name="community" size="sm" />
-              Join the Waitlist
-            </a>
           </div>
 
           <div className="relative">
@@ -300,7 +262,7 @@ function DesktopHomePage() {
                 width={1021}
                 height={1540}
                 priority
-                className="h-[min(78vh,50rem)] w-full object-cover object-[50%_36%]"
+                className="h-[min(76vh,48rem)] w-full object-cover object-[50%_36%]"
                 sizes="(min-width: 1280px) 54vw, 50vw"
               />
             </div>
@@ -309,6 +271,48 @@ function DesktopHomePage() {
       </section>
 
       <InsurancePartnersSection />
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="mx-auto flex max-w-xl gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7">
+            <Icon
+              name="heart"
+              className="mt-1 shrink-0 text-brand-purple-bright"
+              size="2x"
+            />
+            <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
+              Because families deserve more than worksheets, waiting rooms,
+              and one-size-fits-all therapy.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-8 flex max-w-xl flex-wrap items-center justify-center gap-4">
+            <CTAButton href="/contact" className="min-w-[15rem]">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="calendar" size="sm" />
+                Schedule a Consultation
+              </span>
+            </CTAButton>
+            <CTAButton
+              href="#programs-desktop"
+              variant="secondary"
+              className="min-w-[13rem]"
+            >
+              <span className="inline-flex items-center gap-2">
+                <Icon name="resources" size="sm" />
+                See How We Help
+              </span>
+            </CTAButton>
+          </div>
+          <a
+            href="/contact"
+            className="mt-5 flex items-center justify-center gap-2 text-sm font-bold text-brand-navy underline underline-offset-4"
+          >
+            <Icon name="community" size="sm" />
+            Join the Waitlist
+          </a>
+        </SectionContainer>
+      </section>
 
       <section className="pb-10">
         <SectionContainer>
@@ -559,40 +563,42 @@ export default function HomePage() {
                 meaningful, relationship-based occupational therapy.
               </p>
             </div>
-
-            <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
-              <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
-              <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
-                Because families deserve more than worksheets, waiting rooms,
-                and one-size-fits-all therapy.
-              </p>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              <CTAButton href="/contact" className="w-full">
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="calendar" size="sm" />
-                  Schedule a Consultation
-                </span>
-              </CTAButton>
-              <CTAButton href="#programs-mobile" variant="secondary" className="w-full">
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="resources" size="sm" />
-                  See How We Help
-                </span>
-              </CTAButton>
-              <a
-                href="/contact"
-                className="flex items-center justify-center gap-2 pt-1 text-sm font-bold text-brand-navy underline underline-offset-4"
-              >
-                <Icon name="community" size="sm" />
-                Join the Waitlist
-              </a>
-            </div>
           </div>
         </section>
 
         <InsurancePartnersSection />
+
+        <section className="px-6 pb-8">
+          <div className="flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
+            <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
+            <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
+              Because families deserve more than worksheets, waiting rooms,
+              and one-size-fits-all therapy.
+            </p>
+          </div>
+
+          <div className="mt-6 space-y-3">
+            <CTAButton href="/contact" className="w-full">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="calendar" size="sm" />
+                Schedule a Consultation
+              </span>
+            </CTAButton>
+            <CTAButton href="#programs-mobile" variant="secondary" className="w-full">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="resources" size="sm" />
+                See How We Help
+              </span>
+            </CTAButton>
+            <a
+              href="/contact"
+              className="flex items-center justify-center gap-2 pt-1 text-sm font-bold text-brand-navy underline underline-offset-4"
+            >
+              <Icon name="community" size="sm" />
+              Join the Waitlist
+            </a>
+          </div>
+        </section>
 
         <section className="pb-8">
           <div className="overflow-x-auto px-6 pb-2">
