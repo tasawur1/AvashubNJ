@@ -8,6 +8,7 @@ import {
 } from "@/components/page/ResourceMobileComponents";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
+import { InsurancePartnersSection } from "@/components/page/InsurancePartnersSection";
 import { MAP_EMBED_SRC } from "@/data/pageContent/contactContent";
 import { contactImages } from "@/data/pageImages/contactImages";
 import type { IconName } from "@/data/icons";
@@ -164,6 +165,8 @@ function MobileContactPage() {
           </div>
         </div>
       </section>
+
+      <InsurancePartnersSection />
 
       <section
         className="px-6 pb-10"
@@ -392,6 +395,8 @@ function DesktopContactPage() {
           </div>
         </SectionContainer>
       </section>
+
+      <InsurancePartnersSection />
 
       <section
         className="py-12 xl:py-14"

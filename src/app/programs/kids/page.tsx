@@ -7,6 +7,7 @@ import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { ResourceBottomCta } from "@/components/page/ResourceMobileComponents";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
 import { SectionContainer } from "@/components/SectionContainer";
+import { InsurancePartnersSection } from "@/components/page/InsurancePartnersSection";
 import type { IconName } from "@/data/icons";
 import { programsImages } from "@/data/pageImages/programsImages";
 
@@ -421,6 +422,8 @@ export default function KidsProgramPage() {
           </article>
         </SectionContainer>
       </section>
+
+      <InsurancePartnersSection />
 
       <section className="pb-10 lg:pb-14">
         <SectionContainer>

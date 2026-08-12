@@ -3,6 +3,7 @@ import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
+import { InsurancePartnersSection } from "@/components/page/InsurancePartnersSection";
 import type { IconName } from "@/data/icons";
 import { programsImages } from "@/data/pageImages/programsImages";
 
@@ -425,29 +426,6 @@ function MobileProgramHero() {
             through real-world experiences.
           </p>
         </div>
-
-        <div className="mt-6 flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
-          <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
-          <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
-            We help neurodiverse children and teens thrive at home, school, and
-            in their communities.
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-3">
-          <CTAButton href="/contact" className="w-full">
-            <span className="inline-flex items-center gap-2">
-              <Icon name="calendar" size="sm" />
-              Schedule Consultation
-            </span>
-          </CTAButton>
-          <CTAButton href="#program-list-mobile" variant="secondary" className="w-full">
-            <span className="inline-flex items-center gap-2">
-              <Icon name="resources" size="sm" />
-              Explore Programs
-            </span>
-          </CTAButton>
-        </div>
       </div>
     </section>
   );
@@ -523,6 +501,33 @@ function MobileProgramsPage() {
   return (
     <div className="xl:hidden">
       <MobileProgramHero />
+
+      <InsurancePartnersSection />
+
+      <section className="px-6 pb-8">
+        <div className="flex gap-4 rounded-3xl bg-white/90 p-5 shadow-card ring-1 ring-brand-purple-deep/10">
+          <Icon name="heart" className="mt-1 text-brand-purple-bright" size="lg" />
+          <p className="text-sm font-semibold leading-relaxed text-brand-navy/85">
+            We help neurodiverse children and teens thrive at home, school, and
+            in their communities.
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-3">
+          <CTAButton href="/contact" className="w-full">
+            <span className="inline-flex items-center gap-2">
+              <Icon name="calendar" size="sm" />
+              Schedule Consultation
+            </span>
+          </CTAButton>
+          <CTAButton href="#program-list-mobile" variant="secondary" className="w-full">
+            <span className="inline-flex items-center gap-2">
+              <Icon name="resources" size="sm" />
+              Explore Programs
+            </span>
+          </CTAButton>
+        </div>
+      </section>
 
       <section className="px-6 pb-10">
         <h2 className="font-serif text-[1.9rem] font-semibold leading-tight text-brand-navy">
@@ -802,37 +807,6 @@ function DesktopProgramsPage() {
               independence, confidence, participation, and meaningful life skills
               through real-world experiences.
             </p>
-
-            <div className="mt-8 flex max-w-lg gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10">
-              <Icon
-                name="heart"
-                className="mt-1 shrink-0 text-brand-purple-bright"
-                size="2x"
-              />
-              <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
-                We help neurodiverse children and teens thrive at home, school,
-                and in their communities.
-              </p>
-            </div>
-
-            <div className="mt-8 flex max-w-xl flex-wrap gap-4">
-              <CTAButton href="/contact" className="min-w-[14rem]">
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="calendar" size="sm" />
-                  Schedule Consultation
-                </span>
-              </CTAButton>
-              <CTAButton
-                href="#program-list-desktop"
-                variant="secondary"
-                className="min-w-[13rem]"
-              >
-                <span className="inline-flex items-center gap-2">
-                  <Icon name="resources" size="sm" />
-                  Explore Programs
-                </span>
-              </CTAButton>
-            </div>
           </div>
 
           <div className="relative">
@@ -849,6 +823,43 @@ function DesktopProgramsPage() {
                 sizes="(min-width: 1280px) 54vw, 50vw"
               />
             </div>
+          </div>
+        </SectionContainer>
+      </section>
+
+      <InsurancePartnersSection />
+
+      <section className="pb-12">
+        <SectionContainer>
+          <div className="mx-auto flex max-w-xl gap-5 rounded-3xl bg-white/92 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7">
+            <Icon
+              name="heart"
+              className="mt-1 shrink-0 text-brand-purple-bright"
+              size="2x"
+            />
+            <p className="text-base font-semibold leading-relaxed text-brand-navy/85">
+              We help neurodiverse children and teens thrive at home, school,
+              and in their communities.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-8 flex max-w-xl flex-wrap items-center justify-center gap-4">
+            <CTAButton href="/contact" className="min-w-[14rem]">
+              <span className="inline-flex items-center gap-2">
+                <Icon name="calendar" size="sm" />
+                Schedule Consultation
+              </span>
+            </CTAButton>
+            <CTAButton
+              href="#program-list-desktop"
+              variant="secondary"
+              className="min-w-[13rem]"
+            >
+              <span className="inline-flex items-center gap-2">
+                <Icon name="resources" size="sm" />
+                Explore Programs
+              </span>
+            </CTAButton>
           </div>
         </SectionContainer>
       </section>
