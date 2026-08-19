@@ -13,6 +13,12 @@ type DownloadCardProps = {
   category?: string;
   fileSize?: string;
   buttonLabel?: string;
+  /**
+   * When set, renders two buttons instead of one — "View" (opens `href`
+   * in a new tab) and "Download" (saves this URL). Omit to keep the
+   * original single-button behavior.
+   */
+  downloadHref?: string;
 };
 
 type ResourceBottomCtaProps = {
@@ -65,6 +71,15 @@ export function MobileSectionHeading({
   );
 }
 
+function EyeIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  );
+}
+
 export function MobileDownloadCard({
   title,
   description,
@@ -73,6 +88,7 @@ export function MobileDownloadCard({
   category,
   fileSize,
   buttonLabel = "Download",
+  downloadHref,
 }: DownloadCardProps) {
   return (
     <article className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10">
@@ -97,7 +113,7 @@ export function MobileDownloadCard({
         <p className="mt-3 text-sm leading-relaxed text-brand-navy/75">
           {description}
         </p>
-        <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
           {fileSize ? (
             <span className="rounded-full bg-brand-lavender px-3 py-1 text-xs font-bold text-brand-purple-deep">
               {fileSize}
@@ -105,14 +121,36 @@ export function MobileDownloadCard({
           ) : (
             <span />
           )}
-          <Link
-            href={href}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-purple-bright px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
-            download
-          >
-            <Icon name="resources" size="sm" />
-            {buttonLabel}
-          </Link>
+          {downloadHref ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full border border-brand-purple-deep/20 px-3.5 py-2 text-xs font-bold text-brand-purple-deep transition hover:bg-brand-lavender"
+              >
+                <EyeIcon />
+                View
+              </Link>
+              <Link
+                href={downloadHref}
+                download
+                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-purple-bright px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
+              >
+                <Icon name="resources" size="sm" />
+                Download
+              </Link>
+            </div>
+          ) : (
+            <Link
+              href={href}
+              download
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-purple-bright px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
+            >
+              <Icon name="resources" size="sm" />
+              {buttonLabel}
+            </Link>
+          )}
         </div>
       </div>
     </article>
