@@ -1,6 +1,22 @@
 import type { Metadata } from "next";
 import { MobileDownloadCard, ResourceBottomCta, ResourceNewsletterCard } from "@/components/page/ResourceMobileComponents";
-import { printables } from "@/data/printables";
+import { getPrintableCards } from "@/lib/printables";
+
+function ChevronLeft() {
+  return (
+    <svg aria-hidden width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M11 14L6 9l5-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg aria-hidden width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M7 4l5 5-5 5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export const metadata: Metadata = {
   title: "Printable Worksheets | Ava's Hub",
@@ -8,6 +24,8 @@ export const metadata: Metadata = {
     "Download printable worksheets and toolkits for home practice, routines, daily living skills, fine motor skills, communication, and family carryover.",
   alternates: { canonical: "/printables" },
 };
+
+export const revalidate = false;
 
 const ITEMS_PER_PAGE = 5;
 
@@ -18,8 +36,9 @@ type PrintablesPageProps = {
 export default async function PrintablesPage({ searchParams }: PrintablesPageProps) {
   const params = await searchParams;
   const page = Math.max(1, Number(params?.page ?? "1") || 1);
-  const totalPages = Math.ceil(printables.length / ITEMS_PER_PAGE);
-  const visiblePrintables = printables.slice(
+  const { cards } = await getPrintableCards();
+  const totalPages = Math.ceil(cards.length / ITEMS_PER_PAGE);
+  const visiblePrintables = cards.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE,
   );
@@ -40,14 +59,15 @@ export default async function PrintablesPage({ searchParams }: PrintablesPagePro
       </section>
 
       <section className="px-6 pb-10">
-        <div className="space-y-5">
+        <div className="grid gap-5 lg:grid-cols-3">
           {visiblePrintables.map((printable) => (
             <MobileDownloadCard
               key={printable.slug}
               title={printable.title}
               description={printable.description}
               image={printable.image}
-              href={printable.pdf}
+              href={printable.viewHref}
+              downloadHref={printable.downloadHref}
               category={printable.category}
               fileSize={printable.fileSize}
               buttonLabel="Download"
@@ -56,20 +76,56 @@ export default async function PrintablesPage({ searchParams }: PrintablesPagePro
         </div>
 
         {totalPages > 1 ? (
-          <nav className="mt-7 flex justify-center gap-2" aria-label="Printables pagination">
+          <nav className="mt-7 flex items-center justify-center gap-2" aria-label="Printables pagination">
+            {page > 1 ? (
+              <a
+                href={`/printables?page=${page - 1}`}
+                aria-label="Previous page"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-purple-deep/20 bg-white text-brand-purple-deep shadow-sm transition hover:bg-brand-lavender"
+              >
+                <ChevronLeft />
+              </a>
+            ) : (
+              <span
+                aria-hidden
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-purple-deep/20 bg-white text-brand-purple-deep/35"
+              >
+                <ChevronLeft />
+              </span>
+            )}
+
             {Array.from({ length: totalPages }, (_, index) => index + 1).map((item) => (
               <a
                 key={item}
                 href={`/printables?page=${item}`}
-                className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${
+                aria-label={`Page ${item}`}
+                aria-current={item === page ? "page" : undefined}
+                className={
                   item === page
-                    ? "bg-brand-purple-bright text-white"
-                    : "bg-white text-brand-purple-deep ring-1 ring-brand-purple-deep/15"
-                }`}
+                    ? "inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand-purple-bright text-sm font-bold text-white shadow-md"
+                    : "inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-purple-deep/20 bg-white text-sm font-semibold text-brand-navy shadow-sm transition hover:bg-brand-lavender"
+                }
               >
                 {item}
               </a>
             ))}
+
+            {page < totalPages ? (
+              <a
+                href={`/printables?page=${page + 1}`}
+                aria-label="Next page"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-purple-deep/20 bg-white text-brand-purple-deep shadow-sm transition hover:bg-brand-lavender"
+              >
+                <ChevronRight />
+              </a>
+            ) : (
+              <span
+                aria-hidden
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-purple-deep/20 bg-white text-brand-purple-deep/35"
+              >
+                <ChevronRight />
+              </span>
+            )}
           </nav>
         ) : null}
       </section>

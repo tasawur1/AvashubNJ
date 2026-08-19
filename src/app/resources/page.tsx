@@ -14,7 +14,7 @@ import { SectionContainer } from "@/components/SectionContainer";
 import { guides } from "@/data/guides";
 import type { IconName } from "@/data/icons";
 import { resourcesImages } from "@/data/pageImages/resourcesImages";
-import { printables } from "@/data/printables";
+import { getPrintableCards, type PrintableCard } from "@/lib/printables";
 
 export const metadata: Metadata = {
   title: "Resources | Ava's Hub Printables, Guides & Family Support",
@@ -252,12 +252,6 @@ const mobileResourceCategories: MobileResourceCategory[] = [
   },
 ];
 
-const mobilePrintableImages: Record<string, string> = {
-  "feelings-check-in": resourcesImages.mobileWorksheetCard1,
-  "first-then-visual-schedule": resourcesImages.mobileWorksheetCard2,
-  "morning-routine-chart": resourcesImages.mobileWorksheetCard3,
-};
-
 const mobileGuideImages: Record<string, string> = {
   "support-independence-at-home": resourcesImages.mobileGuideCard1,
   "calming-strategies": resourcesImages.mobileGuideCard2,
@@ -281,7 +275,7 @@ function ImageTile({ src, title }: { src: string; title: string }) {
   );
 }
 
-function MobileResourcesPage() {
+function MobileResourcesPage({ printableCards }: { printableCards: PrintableCard[] }) {
   return (
     <div className="bg-[#fffaf4] xl:hidden">
       <h1 className="sr-only">Ava's Hub Resources</h1>
@@ -371,13 +365,14 @@ function MobileResourcesPage() {
           subtitle="Download, print, and use at home for practice and carryover."
         />
         <div className="mt-6 space-y-5">
-          {printables.slice(0, 3).map((printable) => (
+          {printableCards.slice(0, 3).map((printable) => (
             <MobileDownloadCard
               key={printable.slug}
               title={printable.title}
               description={printable.description}
-              image={mobilePrintableImages[printable.slug] ?? printable.image}
-              href={printable.pdf}
+              image={printable.image}
+              href={printable.viewHref}
+              downloadHref={printable.downloadHref}
               category={printable.category}
               fileSize={printable.fileSize}
               buttonLabel="Download"
@@ -481,10 +476,14 @@ function MobileResourcesPage() {
   );
 }
 
-export default function ResourcesPage() {
+export const revalidate = false;
+
+export default async function ResourcesPage() {
+  const { cards: printableCards } = await getPrintableCards();
+
   return (
     <main className="flex-1 bg-[#fffaf4]">
-      <MobileResourcesPage />
+      <MobileResourcesPage printableCards={printableCards} />
       <div className="hidden bg-[#fffaf4] xl:block">
         <h1 className="sr-only">Ava&apos;s Hub Resources</h1>
 
@@ -660,13 +659,14 @@ export default function ResourcesPage() {
                 Download, print, and use at home for practice and carryover.
               </p>
               <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                {printables.slice(0, 3).map((printable) => (
+                {printableCards.slice(0, 3).map((printable) => (
                   <MobileDownloadCard
                     key={printable.slug}
                     title={printable.title}
                     description={printable.description}
-                    image={mobilePrintableImages[printable.slug] ?? printable.image}
-                    href={printable.pdf}
+                    image={printable.image}
+                    href={printable.viewHref}
+                    downloadHref={printable.downloadHref}
                     category={printable.category}
                     fileSize={printable.fileSize}
                     buttonLabel="Download"

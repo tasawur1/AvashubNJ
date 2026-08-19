@@ -4,6 +4,7 @@ export type StaffPermissions = {
   intakes: { view: boolean; edit: boolean; delete: boolean };
   clients: { view: boolean; edit: boolean; delete: boolean };
   blogs:   { view: boolean; edit: boolean; delete: boolean };
+  printables: { view: boolean; edit: boolean; delete: boolean };
   logs:    { view: boolean };
   team:    { view: boolean; manage: boolean };
 };
@@ -20,6 +21,7 @@ export const DEFAULT_STAFF_PERMISSIONS: StaffPermissions = {
   intakes: { view: true,  edit: false, delete: false },
   clients: { view: true,  edit: false, delete: false },
   blogs:   { view: false, edit: false, delete: false },
+  printables: { view: false, edit: false, delete: false },
   logs:    { view: false },
   team:    { view: false, manage: false },
 };

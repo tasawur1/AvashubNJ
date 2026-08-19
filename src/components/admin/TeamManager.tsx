@@ -16,6 +16,7 @@ const SECTIONS: { key: keyof StaffPermissions; label: string; actions: string[] 
   { key: "intakes", label: "Intake Forms", actions: ["view", "edit", "delete"] },
   { key: "clients", label: "Clients",      actions: ["view", "edit", "delete"] },
   { key: "blogs",   label: "Blogs",        actions: ["view", "edit", "delete"] },
+  { key: "printables", label: "Printables", actions: ["view", "edit", "delete"] },
   { key: "logs",    label: "Activity Logs", actions: ["view"] },
   { key: "team",    label: "Team",         actions: ["view", "manage"] },
 ];
@@ -25,6 +26,7 @@ function emptyPermissions(): StaffPermissions {
     intakes: { view: true,  edit: false, delete: false },
     clients: { view: true,  edit: false, delete: false },
     blogs:   { view: false, edit: false, delete: false },
+    printables: { view: false, edit: false, delete: false },
     logs:    { view: false },
     team:    { view: false, manage: false },
   };
