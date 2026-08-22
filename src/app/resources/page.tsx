@@ -11,10 +11,10 @@ import {
 } from "@/components/page/ResourceMobileComponents";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
-import { guides } from "@/data/guides";
 import type { IconName } from "@/data/icons";
 import { resourcesImages } from "@/data/pageImages/resourcesImages";
 import { getPrintableCards, type PrintableCard } from "@/lib/printables";
+import { getGuideCards, type GuideCard as DbGuideCard } from "@/lib/guides";
 
 export const metadata: Metadata = {
   title: "Resources | Ava's Hub Printables, Guides & Family Support",
@@ -252,13 +252,6 @@ const mobileResourceCategories: MobileResourceCategory[] = [
   },
 ];
 
-const mobileGuideImages: Record<string, string> = {
-  "support-independence-at-home": resourcesImages.mobileGuideCard1,
-  "calming-strategies": resourcesImages.mobileGuideCard2,
-  "successful-routines": resourcesImages.mobileGuideCard3,
-  "building-social-skills": resourcesImages.mobileGuideCard4,
-};
-
 function ImageTile({ src, title }: { src: string; title: string }) {
   return (
     <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-brand-teal/10">
@@ -275,7 +268,13 @@ function ImageTile({ src, title }: { src: string; title: string }) {
   );
 }
 
-function MobileResourcesPage({ printableCards }: { printableCards: PrintableCard[] }) {
+function MobileResourcesPage({
+  printableCards,
+  guideCards,
+}: {
+  printableCards: PrintableCard[];
+  guideCards: DbGuideCard[];
+}) {
   return (
     <div className="bg-[#fffaf4] xl:hidden">
       <h1 className="sr-only">Ava's Hub Resources</h1>
@@ -426,14 +425,16 @@ function MobileResourcesPage({ printableCards }: { printableCards: PrintableCard
           subtitle="In-depth guides to help you feel informed and empowered."
         />
         <div className="mt-6 space-y-5">
-          {guides.slice(0, 4).map((guide) => (
+          {guideCards.slice(0, 4).map((guide) => (
             <MobileDownloadCard
               key={guide.slug}
               title={guide.title}
               description={guide.description}
-              image={mobileGuideImages[guide.slug] ?? guide.image}
-              href={guide.pdf}
+              image={guide.image}
+              href={guide.viewHref}
+              downloadHref={guide.downloadHref}
               category={guide.category}
+              fileSize={guide.fileSize}
               buttonLabel="Download Guide"
             />
           ))}
@@ -480,10 +481,11 @@ export const revalidate = false;
 
 export default async function ResourcesPage() {
   const { cards: printableCards } = await getPrintableCards();
+  const { cards: guideCards } = await getGuideCards();
 
   return (
     <main className="flex-1 bg-[#fffaf4]">
-      <MobileResourcesPage printableCards={printableCards} />
+      <MobileResourcesPage printableCards={printableCards} guideCards={guideCards} />
       <div className="hidden bg-[#fffaf4] xl:block">
         <h1 className="sr-only">Ava&apos;s Hub Resources</h1>
 
@@ -631,14 +633,16 @@ export default async function ResourcesPage() {
                 In-depth guides to help you feel informed and empowered.
               </p>
               <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                {guides.slice(0, 3).map((guide) => (
+                {guideCards.slice(0, 3).map((guide) => (
                   <MobileDownloadCard
                     key={guide.slug}
                     title={guide.title}
                     description={guide.description}
-                    image={mobileGuideImages[guide.slug] ?? guide.image}
-                    href={guide.pdf}
+                    image={guide.image}
+                    href={guide.viewHref}
+                    downloadHref={guide.downloadHref}
                     category={guide.category}
+                    fileSize={guide.fileSize}
                     buttonLabel="Download Guide"
                   />
                 ))}

@@ -14,11 +14,21 @@ type Props = {
   value: string; // current file_url, "" if none
   fileType: "pdf" | "html" | "";
   onChange: (result: UploadResult | null) => void;
+  /** Storage bucket the signed upload URL is issued for — differs per content type. */
+  bucket: string;
+  /** Upload API routes — differ per content type (printables vs guides). */
+  initEndpoint: string;
+  verifyEndpoint: string;
 };
 
-const BUCKET = "printable-files";
-
-export default function PrintableFileUpload({ value, fileType, onChange }: Props) {
+export default function ContentFileUpload({
+  value,
+  fileType,
+  onChange,
+  bucket,
+  initEndpoint,
+  verifyEndpoint,
+}: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -31,7 +41,7 @@ export default function PrintableFileUpload({ value, fileType, onChange }: Props
 
     try {
       // Step 1 — ask our server for a signed upload URL (metadata only).
-      const initRes = await fetch("/api/admin/printables/upload-file/init", {
+      const initRes = await fetch(initEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contentType: file.type, size: file.size }),
@@ -48,20 +58,20 @@ export default function PrintableFileUpload({ value, fileType, onChange }: Props
       // Uploading raw bytes (not the File/Blob itself) so the SDK actually
       // honors the contentType option — passing a Blob directly makes it
       // wrap the request in FormData instead, which silently drops it.
-      // (Rendering no longer depends on this — /printables/files/[...path]
+      // (Rendering no longer depends on this — the /files/[...path] route
       // forces the right Content-Type by extension regardless — but it
       // keeps the stored file metadata accurate too.)
       const buffer = await file.arrayBuffer();
       const supabase = createBrowserSupabaseClient();
       const { error: uploadError } = await supabase.storage
-        .from(BUCKET)
+        .from(bucket)
         .uploadToSignedUrl(initData.path, initData.token, buffer, { contentType: file.type });
       if (uploadError) throw new Error(uploadError.message);
 
       // Step 3 — ask our server to verify the uploaded file is really a
       // PDF/HTML (never trusting the browser-reported type) before we
       // treat it as usable.
-      const verifyRes = await fetch("/api/admin/printables/upload-file/verify", {
+      const verifyRes = await fetch(verifyEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ path: initData.path }),

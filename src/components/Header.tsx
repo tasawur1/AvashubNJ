@@ -203,7 +203,7 @@ export function Header() {
       .catch(() => {});
   }, [pathname]);
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/account") || pathname === "/login" || pathname.startsWith("/printables/view")) return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/account") || pathname === "/login" || pathname.startsWith("/printables/view") || pathname.startsWith("/guides/view")) return null;
 
   return (
     <header className="sticky top-0 z-50 border-b border-brand-teal/10 bg-[#fffaf4]/95 backdrop-blur-md xl:bg-white/95">
