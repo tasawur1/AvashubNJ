@@ -103,9 +103,20 @@ export function MobileDownloadCard({
       </div>
       <div className="p-5">
         {category ? (
-          <p className="text-xs font-extrabold uppercase tracking-normal text-brand-purple-bright">
-            {category}
-          </p>
+          <div className="flex flex-wrap gap-1.5">
+            {category
+              .split(",")
+              .map((c) => c.trim())
+              .filter(Boolean)
+              .map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full bg-brand-lavender px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-normal text-brand-purple-deep"
+                >
+                  {c}
+                </span>
+              ))}
+          </div>
         ) : null}
         <h3 className="mt-2 text-lg font-extrabold leading-tight text-brand-navy">
           {title}
