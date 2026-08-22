@@ -51,6 +51,15 @@ function PrintablesIcon() {
   );
 }
 
+function GuidesIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function LogsIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -104,6 +113,7 @@ export function AdminSidebar({ isOpen, onClose, role, permissions, staffName }: 
     canView("intakes")  && { label: "Intake Forms",  href: "/admin/dashboard/intakes", icon: <IntakesIcon /> },
     canView("blogs")    && { label: "Blogs",          href: "/admin/dashboard/blogs",   icon: <BlogsIcon /> },
     canView("printables") && { label: "Printables",   href: "/admin/dashboard/printables", icon: <PrintablesIcon /> },
+    canView("guides")     && { label: "Guides",       href: "/admin/dashboard/guides",  icon: <GuidesIcon /> },
     canView("logs")     && { label: "Activity Logs", href: "/admin/dashboard/logs",    icon: <LogsIcon /> },
     isSuperAdmin        && { label: "Team",           href: "/admin/dashboard/team",    icon: <TeamIcon /> },
   ].filter(Boolean) as { label: string; href: string; icon: React.ReactNode }[];

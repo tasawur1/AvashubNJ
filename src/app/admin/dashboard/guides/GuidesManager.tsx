@@ -13,7 +13,7 @@ const ContentFileUpload = dynamic(() => import("@/components/admin/ContentFileUp
   loading: () => <div className="h-32 animate-pulse rounded-xl bg-brand-lavender/20" />,
 });
 
-type Printable = {
+type Guide = {
   id: string;
   slug: string;
   title: string;
@@ -29,9 +29,9 @@ type Printable = {
   created_at: string;
 };
 
-type Props = { initialPrintables: Record<string, unknown>[] };
+type Props = { initialGuides: Record<string, unknown>[] };
 
-function emptyForm(): Omit<Printable, "id" | "slug" | "created_at" | "hidden"> {
+function emptyForm(): Omit<Guide, "id" | "slug" | "created_at" | "hidden"> {
   return {
     title: "",
     description: "",
@@ -45,10 +45,10 @@ function emptyForm(): Omit<Printable, "id" | "slug" | "created_at" | "hidden"> {
   };
 }
 
-export function PrintablesManager({ initialPrintables }: Props) {
-  const [printables, setPrintables] = useState<Printable[]>(initialPrintables as Printable[]);
+export function GuidesManager({ initialGuides }: Props) {
+  const [guides, setGuides] = useState<Guide[]>(initialGuides as Guide[]);
   const [view, setView] = useState<"list" | "form">("list");
-  const [editingPrintable, setEditingPrintable] = useState<Printable | null>(null);
+  const [editingGuide, setEditingGuide] = useState<Guide | null>(null);
   const [form, setForm] = useState(emptyForm());
   const [saving, setSaving] = useState(false);
   const [toggling, setToggling] = useState(false);
@@ -57,24 +57,24 @@ export function PrintablesManager({ initialPrintables }: Props) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
   function openNew() {
-    setEditingPrintable(null);
+    setEditingGuide(null);
     setForm(emptyForm());
     setError("");
     setView("form");
   }
 
-  function openEdit(printable: Printable) {
-    setEditingPrintable(printable);
+  function openEdit(guide: Guide) {
+    setEditingGuide(guide);
     setForm({
-      title: printable.title,
-      description: printable.description,
-      category: printable.category,
-      card_image_url: printable.card_image_url,
-      card_image_storage_path: printable.card_image_storage_path,
-      file_url: printable.file_url,
-      file_type: printable.file_type,
-      file_size_bytes: printable.file_size_bytes,
-      storage_path: printable.storage_path,
+      title: guide.title,
+      description: guide.description,
+      category: guide.category,
+      card_image_url: guide.card_image_url,
+      card_image_storage_path: guide.card_image_storage_path,
+      file_url: guide.file_url,
+      file_type: guide.file_type,
+      file_size_bytes: guide.file_size_bytes,
+      storage_path: guide.storage_path,
     });
     setError("");
     setView("form");
@@ -96,10 +96,10 @@ export function PrintablesManager({ initialPrintables }: Props) {
     setError("");
 
     try {
-      const url = editingPrintable
-        ? `/api/admin/printables/${editingPrintable.id}`
-        : "/api/admin/printables";
-      const method = editingPrintable ? "PUT" : "POST";
+      const url = editingGuide
+        ? `/api/admin/guides/${editingGuide.id}`
+        : "/api/admin/guides";
+      const method = editingGuide ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
@@ -113,10 +113,10 @@ export function PrintablesManager({ initialPrintables }: Props) {
       const data = await res.json();
       if (!data.success) throw new Error(data.error ?? "Save failed.");
 
-      if (editingPrintable) {
-        setPrintables((prev) => prev.map((p) => (p.id === editingPrintable.id ? data.printable : p)));
+      if (editingGuide) {
+        setGuides((prev) => prev.map((g) => (g.id === editingGuide.id ? data.guide : g)));
       } else {
-        setPrintables((prev) => [data.printable, ...prev]);
+        setGuides((prev) => [data.guide, ...prev]);
       }
 
       setView("list");
@@ -131,7 +131,7 @@ export function PrintablesManager({ initialPrintables }: Props) {
     if (toggling) return;
     setToggling(true);
     try {
-      const res = await fetch(`/api/admin/printables/${id}`, {
+      const res = await fetch(`/api/admin/guides/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ hidden: !currentlyHidden }),
@@ -142,8 +142,8 @@ export function PrintablesManager({ initialPrintables }: Props) {
       }
       const data = await res.json();
       if (!data.success) throw new Error(data.error ?? "Failed to update visibility.");
-      setPrintables((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, hidden: !currentlyHidden } : p)),
+      setGuides((prev) =>
+        prev.map((g) => (g.id === id ? { ...g, hidden: !currentlyHidden } : g)),
       );
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to update visibility.");
@@ -156,14 +156,14 @@ export function PrintablesManager({ initialPrintables }: Props) {
     if (deleting) return;
     setDeleting(true);
     try {
-      const res = await fetch(`/api/admin/printables/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/guides/${id}`, { method: "DELETE" });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error((data as { error?: string }).error ?? "Delete failed.");
       }
       const data = await res.json();
       if (!data.success) throw new Error(data.error ?? "Delete failed.");
-      setPrintables((prev) => prev.filter((p) => p.id !== id));
+      setGuides((prev) => prev.filter((g) => g.id !== id));
     } catch (err) {
       alert(err instanceof Error ? err.message : "Delete failed.");
     } finally {
@@ -178,61 +178,61 @@ export function PrintablesManager({ initialPrintables }: Props) {
       <div className="min-h-full p-6 lg:p-10">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-brand-navy lg:text-3xl">Printables</h1>
+            <h1 className="text-2xl font-extrabold text-brand-navy lg:text-3xl">Guides</h1>
             <p className="mt-1 text-sm text-brand-navy/55">
-              {printables.length} printable{printables.length !== 1 ? "s" : ""}
+              {guides.length} guide{guides.length !== 1 ? "s" : ""}
             </p>
           </div>
           <button
             onClick={openNew}
             className="inline-flex items-center gap-2 rounded-full bg-brand-purple-bright px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
           >
-            <span className="text-lg leading-none">+</span> New Printable
+            <span className="text-lg leading-none">+</span> New Guide
           </button>
         </div>
 
-        {printables.length === 0 ? (
+        {guides.length === 0 ? (
           <div className="mt-16 text-center">
-            <p className="text-base text-brand-navy/50">No printables yet. Create your first one!</p>
+            <p className="text-base text-brand-navy/50">No guides yet. Create your first one!</p>
             <button
               onClick={openNew}
               className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-purple-bright px-6 py-3 text-sm font-bold text-white transition hover:bg-brand-purple-deep"
             >
-              + New Printable
+              + New Guide
             </button>
           </div>
         ) : (
           <div className="mt-6 grid gap-3">
-            {printables.map((printable) => (
+            {guides.map((guide) => (
               <div
-                key={printable.id}
-                className={"overflow-hidden rounded-xl border border-brand-purple-deep/10 bg-white shadow-sm " + (printable.hidden ? "opacity-55" : "")}
+                key={guide.id}
+                className={"overflow-hidden rounded-xl border border-brand-purple-deep/10 bg-white shadow-sm " + (guide.hidden ? "opacity-55" : "")}
               >
                 <div className="flex items-start gap-4 px-5 py-4">
                   {/* Avatar / thumbnail */}
-                  {printable.card_image_url ? (
+                  {guide.card_image_url ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={printable.card_image_url}
+                      src={guide.card_image_url}
                       alt=""
                       className="h-11 w-11 shrink-0 rounded-2xl object-cover"
                     />
                   ) : (
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-purple-deep/10 text-lg font-extrabold text-brand-purple-deep">
-                      {printable.title.charAt(0).toUpperCase()}
+                      {guide.title.charAt(0).toUpperCase()}
                     </div>
                   )}
 
                   {/* Info */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-brand-navy/70">{printable.category || "Uncategorized"}</p>
-                    <p className="truncate text-base font-extrabold leading-tight text-brand-navy">{printable.title}</p>
-                    <p className="mt-0.5 truncate text-xs text-brand-navy/50">{printable.description}</p>
+                    <p className="text-sm font-medium text-brand-navy/70">{guide.category || "Uncategorized"}</p>
+                    <p className="truncate text-base font-extrabold leading-tight text-brand-navy">{guide.title}</p>
+                    <p className="mt-0.5 truncate text-xs text-brand-navy/50">{guide.description}</p>
                     <div className="mt-2 flex flex-wrap items-center gap-1.5">
                       <span className="inline-flex items-center rounded-full bg-brand-teal-light px-2 py-0.5 text-xs font-semibold text-brand-teal ring-1">
-                        {printable.file_type === "pdf" ? "PDF" : printable.file_type === "html" ? "HTML" : "No file"}
+                        {guide.file_type === "pdf" ? "PDF" : guide.file_type === "html" ? "HTML" : "No file"}
                       </span>
-                      {printable.hidden && (
+                      {guide.hidden && (
                         <span className="rounded-full bg-brand-navy/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-navy/50">
                           Hidden
                         </span>
@@ -243,12 +243,12 @@ export function PrintablesManager({ initialPrintables }: Props) {
                   {/* Actions */}
                   <div className="flex shrink-0 flex-col items-end gap-2 sm:flex-row sm:items-center">
                     <button
-                      onClick={() => handleToggleHidden(printable.id, printable.hidden)}
+                      onClick={() => handleToggleHidden(guide.id, guide.hidden)}
                       disabled={toggling}
-                      title={printable.hidden ? "Unhide printable" : "Hide printable"}
+                      title={guide.hidden ? "Unhide guide" : "Hide guide"}
                       className="inline-flex items-center justify-center rounded-full border border-brand-purple-deep/20 p-1.5 text-brand-navy/50 transition hover:bg-brand-lavender hover:text-brand-navy disabled:cursor-not-allowed disabled:opacity-40"
                     >
-                      {printable.hidden ? (
+                      {guide.hidden ? (
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
                           <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -261,13 +261,13 @@ export function PrintablesManager({ initialPrintables }: Props) {
                       )}
                     </button>
                     <button
-                      onClick={() => openEdit(printable)}
+                      onClick={() => openEdit(guide)}
                       className="rounded-lg bg-brand-purple-deep/5 px-3 py-1.5 text-xs font-semibold text-brand-purple-deep hover:bg-brand-purple-deep/10"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => setDeleteId(printable.id)}
+                      onClick={() => setDeleteId(guide.id)}
                       className="rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-500 hover:bg-red-50"
                     >
                       Delete
@@ -286,7 +286,7 @@ export function PrintablesManager({ initialPrintables }: Props) {
             onClick={(e) => { if (e.target === e.currentTarget) setDeleteId(null); }}
           >
             <div className="w-full max-w-xs rounded-2xl bg-white p-5 shadow-2xl">
-              <h2 className="text-base font-extrabold text-brand-navy">Delete printable?</h2>
+              <h2 className="text-base font-extrabold text-brand-navy">Delete guide?</h2>
               <p className="mt-1.5 text-sm text-brand-navy/55">This cannot be reversed.</p>
               <div className="mt-5 flex justify-end gap-2">
                 <button onClick={() => setDeleteId(null)} className="rounded-xl px-4 py-2 text-sm font-semibold text-brand-navy/60 hover:text-brand-navy">Cancel</button>
@@ -311,10 +311,10 @@ export function PrintablesManager({ initialPrintables }: Props) {
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
             <path d="M12.5 15L7.5 10l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Back to printables
+          Back to guides
         </button>
         <h1 className="text-2xl font-extrabold text-brand-navy">
-          {editingPrintable ? "Edit Printable" : "New Printable"}
+          {editingGuide ? "Edit Guide" : "New Guide"}
         </h1>
       </div>
 
@@ -328,7 +328,7 @@ export function PrintablesManager({ initialPrintables }: Props) {
               required
               value={form.title}
               onChange={(e) => set("title", e.target.value)}
-              placeholder="Enter printable title…"
+              placeholder="Enter guide title…"
               className="w-full rounded-xl border border-brand-purple-deep/15 bg-white px-4 py-3 text-base font-semibold text-brand-navy outline-none transition placeholder:text-brand-navy/35 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/15"
             />
           </div>
@@ -349,7 +349,7 @@ export function PrintablesManager({ initialPrintables }: Props) {
             <label className="text-sm font-extrabold text-brand-navy">Card Image *</label>
             <SquareImageUpload
               value={form.card_image_url}
-              endpoint="/api/admin/printables/upload-image"
+              endpoint="/api/admin/guides/upload-image"
               onChange={(url, storagePath) => {
                 set("card_image_url", url);
                 set("card_image_storage_path", storagePath);
@@ -362,9 +362,9 @@ export function PrintablesManager({ initialPrintables }: Props) {
             <ContentFileUpload
               value={form.file_url}
               fileType={form.file_type}
-              bucket="printable-files"
-              initEndpoint="/api/admin/printables/upload-file/init"
-              verifyEndpoint="/api/admin/printables/upload-file/verify"
+              bucket="guide-files"
+              initEndpoint="/api/admin/guides/upload-file/init"
+              verifyEndpoint="/api/admin/guides/upload-file/verify"
               onChange={(result) => {
                 if (result) {
                   set("file_url", result.url);
@@ -411,15 +411,15 @@ export function PrintablesManager({ initialPrintables }: Props) {
             disabled={saving}
             className="w-full rounded-full bg-brand-purple-bright py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-purple-deep disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Saving…" : editingPrintable ? "Save Changes" : "Publish Printable"}
+            {saving ? "Saving…" : editingGuide ? "Save Changes" : "Publish Guide"}
           </button>
 
-          {editingPrintable && (
+          {editingGuide && (
             <a
               href={
-                editingPrintable.file_type === "html"
-                  ? `/printables/view/${editingPrintable.slug}`
-                  : "/printables"
+                editingGuide.file_type === "html"
+                  ? `/guides/view/${editingGuide.slug}`
+                  : "/guides"
               }
               target="_blank"
               rel="noopener noreferrer"

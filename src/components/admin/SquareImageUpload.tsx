@@ -5,9 +5,11 @@ import { useState, useRef } from "react";
 type Props = {
   value: string;
   onChange: (url: string, storagePath: string) => void;
+  /** Upload API route — differs per content type (printables vs guides). */
+  endpoint: string;
 };
 
-export default function SquareImageUpload({ value, onChange }: Props) {
+export default function SquareImageUpload({ value, onChange, endpoint }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,7 +23,7 @@ export default function SquareImageUpload({ value, onChange }: Props) {
       const formData = new FormData();
       formData.append("file", file, file.name);
 
-      const res = await fetch("/api/admin/printables/upload-image", {
+      const res = await fetch(endpoint, {
         method: "POST",
         body: formData,
       });
