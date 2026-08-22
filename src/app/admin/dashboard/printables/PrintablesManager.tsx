@@ -388,9 +388,12 @@ export function PrintablesManager({ initialPrintables }: Props) {
                 type="text"
                 value={form.category}
                 onChange={(e) => set("category", e.target.value)}
-                placeholder="e.g. Emotional Regulation"
+                placeholder="e.g. Emotional Regulation, Fine Motor Skills"
                 className="w-full rounded-xl border border-brand-purple-deep/15 bg-[#fffaf4] px-3 py-2.5 text-sm text-brand-navy outline-none transition placeholder:text-brand-navy/35 focus:border-brand-purple-bright focus:ring-1 focus:ring-brand-purple-bright/15"
               />
+              <p className="text-[11px] text-brand-navy/45">
+                Separate multiple categories with commas — each one shows as its own pill on the card.
+              </p>
             </div>
           </div>
 
