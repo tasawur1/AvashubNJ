@@ -53,12 +53,13 @@ export default async function GuideViewPage({
   // URL — see /guides/files/[...path].
   const maskedFileUrl = `/guides/files/${guide.storage_path}`;
 
-  // This route only renders the HTML viewer — PDFs link straight to their
-  // (masked) file URL from the card. If a PDF row somehow lands here
-  // anyway, send the visitor straight to the file instead of a broken viewer.
+  // PDFs go straight to the file — our own header bar sits on top of the
+  // browser's native PDF toolbar and blocks its print button, so PDFs skip
+  // the custom viewer entirely and open with the normal, fully-working
+  // browser PDF viewer. Only HTML content uses the custom viewer below.
   if (guide.file_type === "pdf") {
     redirect(maskedFileUrl);
   }
 
-  return <GuideViewer title={guide.title} fileUrl={maskedFileUrl} />;
+  return <GuideViewer title={guide.title} fileUrl={maskedFileUrl} next={`/guides/view/${slug}`} />;
 }

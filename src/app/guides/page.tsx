@@ -59,6 +59,12 @@ export default async function GuidesPage({ searchParams }: GuidesPageProps) {
       </section>
 
       <section className="px-6 pb-10">
+        {cards.length === 0 ? (
+          <p className="rounded-[1.75rem] bg-white/95 px-6 py-10 text-center text-sm font-semibold text-brand-navy/50 shadow-card ring-1 ring-brand-teal/10">
+            No guides published yet — check back soon!
+          </p>
+        ) : (
+        <>
         <div className="grid gap-5 lg:grid-cols-3">
           {visibleGuides.map((guide) => (
             <MobileDownloadCard
@@ -128,6 +134,8 @@ export default async function GuidesPage({ searchParams }: GuidesPageProps) {
             )}
           </nav>
         ) : null}
+        </>
+        )}
       </section>
 
       <ResourceNewsletterCard />

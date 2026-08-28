@@ -1,9 +1,11 @@
-import Link from "next/link";
+"use client";
+
 import { CTAButton } from "@/components/CTAButton";
 import { Icon } from "@/components/Icon";
 import { EmailSignupForm } from "@/components/page/EmailSignupForm";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { SectionContainer } from "@/components/SectionContainer";
+import { useResourceDownloadGate } from "@/components/page/ResourceDownloadGate";
 
 type DownloadCardProps = {
   title: string;
@@ -90,6 +92,8 @@ export function MobileDownloadCard({
   buttonLabel = "Download",
   downloadHref,
 }: DownloadCardProps) {
+  const { requestAccess } = useResourceDownloadGate();
+
   return (
     <article className="overflow-hidden rounded-[1.75rem] bg-white/95 shadow-card ring-1 ring-brand-teal/10">
       <div className="relative h-44 bg-brand-teal-light">
@@ -134,33 +138,32 @@ export function MobileDownloadCard({
           )}
           {downloadHref ? (
             <div className="flex flex-wrap items-center gap-2">
-              <Link
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={() => requestAccess({ href, download: false })}
                 className="inline-flex items-center justify-center gap-1.5 rounded-full border border-brand-purple-deep/20 px-3.5 py-2 text-xs font-bold text-brand-purple-deep transition hover:bg-brand-lavender"
               >
                 <EyeIcon />
                 View
-              </Link>
-              <Link
-                href={downloadHref}
-                download
+              </button>
+              <button
+                type="button"
+                onClick={() => requestAccess({ href: downloadHref, download: true })}
                 className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-purple-bright px-3.5 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
               >
                 <Icon name="resources" size="sm" />
                 Download
-              </Link>
+              </button>
             </div>
           ) : (
-            <Link
-              href={href}
-              download
+            <button
+              type="button"
+              onClick={() => requestAccess({ href, download: true })}
               className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-purple-bright px-4 py-2 text-xs font-bold text-white shadow-sm transition hover:bg-brand-purple-deep"
             >
               <Icon name="resources" size="sm" />
               {buttonLabel}
-            </Link>
+            </button>
           )}
         </div>
       </div>

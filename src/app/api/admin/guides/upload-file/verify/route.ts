@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { sessionOptions, type SessionData } from "@/lib/session";
 import { createAdminClient } from "@/lib/supabase-server";
 import { logRequest } from "@/lib/logger";
+import { checkPdfPageSize, pageSizeMismatchMessage } from "@/lib/pdf-page-size";
+import { getPaperSize } from "@/lib/paper-sizes";
 
 const BUCKET = "guide-files";
 const MAX_SIZE = 20 * 1024 * 1024; // 20MB
@@ -44,6 +46,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json().catch(() => ({}));
     path = (body as { path?: string }).path;
+    const paperSize = getPaperSize((body as { paper_size?: string }).paper_size);
     if (!path) {
       return NextResponse.json({ success: false, error: "Missing file path." }, { status: 400 });
     }
@@ -83,12 +86,41 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // PDFs must match the paper size the admin selected before uploading —
+    // reject (and clean up storage) rather than just warn, since a
+    // mismatched page size prints wrong no matter what the visitor does.
+    if (fileType === "pdf") {
+      let sizeCheck: Awaited<ReturnType<typeof checkPdfPageSize>> = null;
+      try {
+        const fullRes = await fetch(publicUrl);
+        if (fullRes.ok) {
+          const bytes = await fullRes.arrayBuffer();
+          sizeCheck = await checkPdfPageSize(bytes, paperSize);
+        }
+      } catch {
+        // Couldn't fetch/parse the PDF to check its size — don't block the
+        // upload over an infrastructure hiccup, just skip the size check.
+        sizeCheck = null;
+      }
+
+      // A confirmed mismatch must always be rejected — even if the
+      // best-effort storage cleanup below happens to fail, that failure
+      // must never be allowed to silently let a wrong-size PDF through.
+      if (sizeCheck && !sizeCheck.matches) {
+        try { await supabase.storage.from(BUCKET).remove([path]); } catch { /* orphaned file is an acceptable cost */ }
+        return NextResponse.json(
+          { success: false, error: pageSizeMismatchMessage(sizeCheck, paperSize) },
+          { status: 400 },
+        );
+      }
+    }
+
     logRequest({
       route: "/api/admin/guides/upload-file/verify",
       duration_ms: Date.now() - start,
       status_code: 200,
       success: true,
-      metadata: { path, file_type: fileType, size_bytes: fileSizeBytes },
+      metadata: { path, file_type: fileType, size_bytes: fileSizeBytes, paper_size: paperSize.id },
     });
 
     return NextResponse.json({

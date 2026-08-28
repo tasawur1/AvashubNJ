@@ -1,13 +1,56 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { RESOURCE_GATE_ENABLED, checkIsLoggedIn } from "@/components/page/ResourceDownloadGate";
+import { SignInRequiredNotice } from "@/components/page/SignInRequiredNotice";
 
 type Props = {
   title: string;
   fileUrl: string;
+  /** This page's own path — where sign-in sends the visitor back to. */
+  next: string;
 };
 
-export function PrintableViewer({ title, fileUrl }: Props) {
+export function PrintableViewer({ title, fileUrl, next }: Props) {
+  const [checking, setChecking] = useState(RESOURCE_GATE_ENABLED);
+  const [unlocked, setUnlocked] = useState(!RESOURCE_GATE_ENABLED);
+
+  useEffect(() => {
+    if (!RESOURCE_GATE_ENABLED) return;
+    let cancelled = false;
+    (async () => {
+      const isIn = await checkIsLoggedIn();
+      if (!cancelled) { setUnlocked(isIn); setChecking(false); }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (checking) {
+    return <div className="fixed inset-0 z-[9999] bg-[#faf6f2]" />;
+  }
+
+  if (!unlocked) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-6 bg-[#faf6f2] px-4 py-12">
+        <Link
+          href="/printables"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-navy/60 transition hover:text-brand-purple-bright"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+            <path d="M12.5 15L7.5 10l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Back to Printables
+        </Link>
+        <SignInRequiredNotice
+          next={next}
+          title="Sign in to view this printable"
+          subtitle={`You'll need to sign in or create a free account to view "${title}".`}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col bg-[#faf6f2]">
       {/* Top header bar */}

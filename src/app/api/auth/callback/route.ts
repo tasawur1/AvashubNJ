@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { createAdminClient } from "@/lib/supabase-server";
+import { isSafeResourceNext } from "@/lib/safe-next";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -49,12 +50,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login?error=auth_failed`);
   }
 
-  // Allow trusted next-paths (e.g. password reset flow)
+  // Allow trusted next-paths (e.g. password reset flow, or returning to
+  // the printable/guide page a visitor came from to sign in).
   const next = searchParams.get("next");
-  const SAFE_NEXT = ["/account/reset-password"];
+  const SAFE_NEXT_EXACT = ["/account/reset-password"];
 
   let redirectPath: string;
-  if (next && SAFE_NEXT.includes(next)) {
+  if (next && SAFE_NEXT_EXACT.includes(next)) {
+    redirectPath = next;
+  } else if (isSafeResourceNext(next)) {
     redirectPath = next;
   } else {
     try {
