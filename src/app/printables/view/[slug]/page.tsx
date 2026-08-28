@@ -53,12 +53,13 @@ export default async function PrintableViewPage({
   // URL — see the /printables/files rewrite in next.config.ts.
   const maskedFileUrl = `/printables/files/${printable.storage_path}`;
 
-  // This route only renders the HTML viewer — PDFs link straight to their
-  // (masked) file URL from the card. If a PDF row somehow lands here
-  // anyway, send the visitor straight to the file instead of a broken viewer.
+  // PDFs go straight to the file — our own header bar sits on top of the
+  // browser's native PDF toolbar and blocks its print button, so PDFs skip
+  // the custom viewer entirely and open with the normal, fully-working
+  // browser PDF viewer. Only HTML content uses the custom viewer below.
   if (printable.file_type === "pdf") {
     redirect(maskedFileUrl);
   }
 
-  return <PrintableViewer title={printable.title} fileUrl={maskedFileUrl} />;
+  return <PrintableViewer title={printable.title} fileUrl={maskedFileUrl} next={`/printables/view/${slug}`} />;
 }

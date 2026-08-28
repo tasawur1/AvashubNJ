@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { sessionOptions, type SessionData } from "@/lib/session";
 import { createAdminClient } from "@/lib/supabase-server";
+import { getPaperSize } from "@/lib/paper-sizes";
 
 const IMAGE_BUCKET = "guide-images";
 const FILE_BUCKET = "guide-files";
@@ -137,6 +138,7 @@ export async function PUT(
         file_type,
         file_size_bytes: (body.file_size_bytes as number | undefined) ?? null,
         storage_path,
+        paper_size: getPaperSize(body.paper_size as string | undefined).id,
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)

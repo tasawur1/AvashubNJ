@@ -2,12 +2,13 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
 import { PhoneInputField } from "@/components/PhoneInputField";
 import { isPersonalEmail, validateEmail, validatePhone, validateChildAge, suggestEmailCorrection } from "@/lib/validation";
+import { isSafeResourceNext } from "@/lib/safe-next";
 
 type Step  = 1 | 2 | 3 | 4;
 type Child = { name: string; age: string };
@@ -78,8 +79,15 @@ function GoogleIcon() {
 const inputCls = "w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-sm text-brand-navy outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
 const STEPS    = ["Account", "Your Info", "Children", "Confirm"] as const;
 
-export default function SignupPage() {
+function SignupPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+
+  function callbackUrl() {
+    const base = `${window.location.origin}/api/auth/callback`;
+    return isSafeResourceNext(next) ? `${base}?next=${encodeURIComponent(next)}` : base;
+  }
 
   const [step, setStep]     = useState<Step>(1);
   const [loading, setLoading] = useState(false);
@@ -112,7 +120,7 @@ export default function SignupPage() {
     const supabase = createBrowserSupabaseClient();
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      options: { redirectTo: callbackUrl() },
     });
     if (oauthError) { setError(oauthError.message); setLoading(false); }
   }
@@ -179,7 +187,7 @@ export default function SignupPage() {
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: email.trim().toLowerCase(),
         password,
-        options: { emailRedirectTo: `${window.location.origin}/api/auth/callback` },
+        options: { emailRedirectTo: callbackUrl() },
       });
       if (signUpError) {
         setError(signUpError.message);
@@ -203,7 +211,7 @@ export default function SignupPage() {
       const { error: resendError } = await supabase.auth.resend({
         type: "signup",
         email: email.trim().toLowerCase(),
-        options: { emailRedirectTo: `${window.location.origin}/api/auth/callback` },
+        options: { emailRedirectTo: callbackUrl() },
       });
       if (resendError) { setError(resendError.message); } else { setResendSent(true); }
     } catch {
@@ -249,7 +257,7 @@ export default function SignupPage() {
         const data = await res.json().catch(() => ({}));
         throw new Error((data as { error?: string }).error ?? "Could not save your profile. Please try again.");
       }
-      router.push("/account");
+      router.push(isSafeResourceNext(next) ? next : "/account");
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") {
         setError("Request timed out. Please try again.");
@@ -271,7 +279,7 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#fffaf4] px-4 py-12">
       <div className="mb-6 w-full max-w-md">
-        <Link href="/login"
+        <Link href={isSafeResourceNext(next) ? `/login?next=${encodeURIComponent(next)}` : "/login"}
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-navy/60 transition hover:text-brand-purple-bright">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
             <path d="M12.5 15L7.5 10l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -365,7 +373,7 @@ export default function SignupPage() {
 
             <p className="mt-6 text-center text-sm font-semibold text-brand-navy/60">
               Already have an account?{" "}
-              <Link href="/login" className="text-brand-purple-bright hover:underline">Sign in →</Link>
+              <Link href={isSafeResourceNext(next) ? `/login?next=${encodeURIComponent(next)}` : "/login"} className="text-brand-purple-bright hover:underline">Sign in →</Link>
             </p>
           </>
         )}
@@ -512,5 +520,13 @@ export default function SignupPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupPageInner />
+    </Suspense>
   );
 }

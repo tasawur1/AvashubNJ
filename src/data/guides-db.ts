@@ -10,6 +10,7 @@ export type DbGuide = {
   file_type: "pdf" | "html";
   file_size_bytes: number | null;
   storage_path: string;
+  paper_size: string;
   hidden: boolean;
   created_at: string;
   updated_at: string;

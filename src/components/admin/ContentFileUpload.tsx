@@ -19,6 +19,8 @@ type Props = {
   /** Upload API routes — differ per content type (printables vs guides). */
   initEndpoint: string;
   verifyEndpoint: string;
+  /** Paper size id (see src/lib/paper-sizes.ts) a PDF upload must match. */
+  paperSize: string;
 };
 
 export default function ContentFileUpload({
@@ -28,6 +30,7 @@ export default function ContentFileUpload({
   bucket,
   initEndpoint,
   verifyEndpoint,
+  paperSize,
 }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -69,12 +72,13 @@ export default function ContentFileUpload({
       if (uploadError) throw new Error(uploadError.message);
 
       // Step 3 — ask our server to verify the uploaded file is really a
-      // PDF/HTML (never trusting the browser-reported type) before we
-      // treat it as usable.
+      // PDF/HTML (never trusting the browser-reported type), and — for
+      // PDFs — that its page actually matches the paper size selected
+      // above, before we treat it as usable.
       const verifyRes = await fetch(verifyEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: initData.path }),
+        body: JSON.stringify({ path: initData.path, paper_size: paperSize }),
       });
       if (!verifyRes.ok) {
         const data = await verifyRes.json().catch(() => ({}));
@@ -120,7 +124,7 @@ export default function ContentFileUpload({
           {uploading ? "Uploading…" : value ? "Replace file" : "Upload PDF or HTML file"}
         </span>
         <span className="text-xs text-brand-navy/40">
-          PDF or HTML — under 20MB. Type is detected automatically.
+          PDF or HTML — under 20MB. A PDF must match the paper size selected above.
         </span>
         <input
           ref={inputRef}

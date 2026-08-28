@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { sessionOptions, type SessionData } from "@/lib/session";
 import { createAdminClient } from "@/lib/supabase-server";
+import { getPaperSize } from "@/lib/paper-sizes";
 
 async function requireAuth() {
   const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
@@ -53,6 +54,7 @@ export async function POST(request: NextRequest) {
       file_type,
       file_size_bytes,
       storage_path,
+      paper_size,
     } = body as {
       title?: string;
       description?: string;
@@ -63,6 +65,7 @@ export async function POST(request: NextRequest) {
       file_type?: string;
       file_size_bytes?: number | null;
       storage_path?: string;
+      paper_size?: string;
     };
 
     if (!title?.trim()) {
@@ -105,6 +108,7 @@ export async function POST(request: NextRequest) {
         file_type,
         file_size_bytes: file_size_bytes ?? null,
         storage_path: storage_path ?? "",
+        paper_size: getPaperSize(paper_size).id,
         hidden: false,
       })
       .select()

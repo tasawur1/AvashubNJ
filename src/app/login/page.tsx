@@ -2,10 +2,11 @@
 
 export const dynamic = "force-dynamic";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/lib/supabase-browser";
+import { isSafeResourceNext } from "@/lib/safe-next";
 
 type Step = "email" | "sent" | "forgot" | "reset-sent";
 
@@ -43,8 +44,10 @@ function EyeIcon({ open }: { open: boolean }) {
 
 const inputCls = "w-full rounded-full border border-brand-teal/20 bg-[#fffaf4] px-5 py-3 text-sm text-brand-navy shadow-sm outline-none transition placeholder:text-brand-navy/40 focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/20";
 
-export default function LoginPage() {
+function LoginPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
   const [step, setStep]         = useState<Step>("email");
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
@@ -54,13 +57,18 @@ export default function LoginPage() {
   const [loading, setLoading]         = useState(false);
   const [error, setError]             = useState("");
 
+  function callbackUrl() {
+    const base = `${window.location.origin}/api/auth/callback`;
+    return isSafeResourceNext(next) ? `${base}?next=${encodeURIComponent(next)}` : base;
+  }
+
   async function handleGoogleSignIn() {
     setLoading(true);
     setError("");
     const supabase = createBrowserSupabaseClient();
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      options: { redirectTo: callbackUrl() },
     });
     if (oauthError) { setError(oauthError.message); setLoading(false); }
   }
@@ -81,7 +89,7 @@ export default function LoginPage() {
         return;
       }
       const res = await fetch("/api/client/profile");
-      router.push(res.status === 404 ? "/account/setup" : "/account");
+      router.push(isSafeResourceNext(next) ? next : res.status === 404 ? "/account/setup" : "/account");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -98,7 +106,7 @@ export default function LoginPage() {
       email: email.trim().toLowerCase(),
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+        emailRedirectTo: callbackUrl(),
       },
     });
     setLoading(false);
@@ -122,7 +130,7 @@ export default function LoginPage() {
         return;
       }
       const res = await fetch("/api/client/profile");
-      router.push(res.status === 404 ? "/account/setup" : "/account");
+      router.push(isSafeResourceNext(next) ? next : res.status === 404 ? "/account/setup" : "/account");
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -301,7 +309,10 @@ export default function LoginPage() {
 
             <p className="mt-5 text-center text-sm font-semibold text-brand-navy/60">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-brand-purple-bright hover:underline">
+              <Link
+                href={isSafeResourceNext(next) ? `/signup?next=${encodeURIComponent(next)}` : "/signup"}
+                className="text-brand-purple-bright hover:underline"
+              >
                 Sign up →
               </Link>
             </p>
@@ -489,5 +500,13 @@ export default function LoginPage() {
 
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginPageInner />
+    </Suspense>
   );
 }

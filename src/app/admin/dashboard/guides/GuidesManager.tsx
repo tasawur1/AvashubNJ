@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { PAPER_SIZES, DEFAULT_PAPER_SIZE_ID } from "@/lib/paper-sizes";
 
 const SquareImageUpload = dynamic(() => import("@/components/admin/SquareImageUpload"), {
   ssr: false,
@@ -25,6 +26,7 @@ type Guide = {
   file_type: "pdf" | "html" | "";
   file_size_bytes: number | null;
   storage_path: string;
+  paper_size: string;
   hidden: boolean;
   created_at: string;
 };
@@ -42,6 +44,7 @@ function emptyForm(): Omit<Guide, "id" | "slug" | "created_at" | "hidden"> {
     file_type: "",
     file_size_bytes: null,
     storage_path: "",
+    paper_size: DEFAULT_PAPER_SIZE_ID,
   };
 }
 
@@ -75,6 +78,7 @@ export function GuidesManager({ initialGuides }: Props) {
       file_type: guide.file_type,
       file_size_bytes: guide.file_size_bytes,
       storage_path: guide.storage_path,
+      paper_size: guide.paper_size || DEFAULT_PAPER_SIZE_ID,
     });
     setError("");
     setView("form");
@@ -358,6 +362,32 @@ export function GuidesManager({ initialGuides }: Props) {
           </div>
 
           <div className="grid gap-1.5">
+            <label className="text-sm font-extrabold text-brand-navy">Paper Size *</label>
+            <select
+              value={form.paper_size}
+              onChange={(e) => {
+                set("paper_size", e.target.value);
+                // A file already verified against the old size may no
+                // longer match — clear it so it has to be re-checked.
+                if (form.file_url) {
+                  set("file_url", "");
+                  set("storage_path", "");
+                  set("file_type", "");
+                  set("file_size_bytes", null);
+                }
+              }}
+              className="w-full rounded-xl border border-brand-purple-deep/15 bg-white px-4 py-3 text-sm font-semibold text-brand-navy outline-none transition focus:border-brand-purple-bright focus:ring-2 focus:ring-brand-purple-bright/15"
+            >
+              {PAPER_SIZES.map((s) => (
+                <option key={s.id} value={s.id}>{s.label}</option>
+              ))}
+            </select>
+            <p className="text-[11px] text-brand-navy/45">
+              Choose the size this guide is designed for — the uploaded PDF must match it exactly.
+            </p>
+          </div>
+
+          <div className="grid gap-1.5">
             <label className="text-sm font-extrabold text-brand-navy">File (PDF or HTML) *</label>
             <ContentFileUpload
               value={form.file_url}
@@ -365,6 +395,7 @@ export function GuidesManager({ initialGuides }: Props) {
               bucket="guide-files"
               initEndpoint="/api/admin/guides/upload-file/init"
               verifyEndpoint="/api/admin/guides/upload-file/verify"
+              paperSize={form.paper_size}
               onChange={(result) => {
                 if (result) {
                   set("file_url", result.url);
@@ -416,11 +447,7 @@ export function GuidesManager({ initialGuides }: Props) {
 
           {editingGuide && (
             <a
-              href={
-                editingGuide.file_type === "html"
-                  ? `/guides/view/${editingGuide.slug}`
-                  : "/guides"
-              }
+              href={`/guides/view/${editingGuide.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="block rounded-full border border-brand-purple-deep/20 py-3 text-center text-sm font-bold text-brand-navy/60 transition hover:bg-brand-lavender"

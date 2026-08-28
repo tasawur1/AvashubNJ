@@ -6,6 +6,7 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { ScrollRevealController } from "@/components/ScrollRevealController";
 import { SubFooter } from "@/components/SubFooter";
+import { ResourceDownloadGateProvider } from "@/components/page/ResourceDownloadGate";
 import Script from "next/script";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -77,7 +78,7 @@ export default function RootLayout({
         />
         <Header />
         <ScrollRevealController />
-        {children}
+        <ResourceDownloadGateProvider>{children}</ResourceDownloadGateProvider>
         <SubFooter />
       </body>
     </html>

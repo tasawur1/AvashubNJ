@@ -29,6 +29,10 @@ export const metadata: Metadata = {
   },
 };
 
+// "Browse Resources by Category" is on hold for now — kept in code (not
+// deleted) in case we want it back later. Flip to true to bring it back.
+const SHOW_CATEGORY_SECTION = false;
+
 type Tone = "purple" | "teal" | "gold";
 
 type CategoryCard = {
@@ -312,7 +316,7 @@ function MobileResourcesPage({
                 View Printables
               </span>
               </CTAButton>
-              <CTAButton href="#mobile-categories" variant="secondary" className="w-full">
+              <CTAButton href="#mobile-links" variant="secondary" className="w-full">
               <span className="inline-flex items-center gap-2">
                 <Icon name="arrowRight" size="sm" />
                 Explore Resources
@@ -323,40 +327,42 @@ function MobileResourcesPage({
         </div>
       </section>
 
-      <section id="mobile-categories" className="px-6 pb-10">
-        <MobileSectionHeading title="Browse Resources by Category" />
-        <div className="mt-6 space-y-5">
-          {mobileResourceCategories.map((card) => (
-            <Link
-              key={card.title}
-              href={card.href}
-              className="grid grid-cols-[6.25rem_1fr_auto] items-center gap-4 rounded-[1.75rem] bg-white/95 p-3 shadow-card ring-1 ring-brand-teal/10"
-            >
-              <div className="flex h-24 items-center justify-center rounded-[1.25rem] bg-brand-lavender/60">
-                <span
-                  className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[card.tone].icon} shadow-sm`}
-                >
-                  <Icon name={card.icon} size="lg" />
-                </span>
-              </div>
-              <div>
-                <h3 className="text-base font-extrabold leading-tight text-brand-navy">
-                  {card.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
-                  {card.description}
-                </p>
-              </div>
-              <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
-                aria-hidden
+      {SHOW_CATEGORY_SECTION && (
+        <section id="mobile-categories" className="px-6 pb-10">
+          <MobileSectionHeading title="Browse Resources by Category" />
+          <div className="mt-6 space-y-5">
+            {mobileResourceCategories.map((card) => (
+              <Link
+                key={card.title}
+                href={card.href}
+                className="grid grid-cols-[6.25rem_1fr_auto] items-center gap-4 rounded-[1.75rem] bg-white/95 p-3 shadow-card ring-1 ring-brand-teal/10"
               >
-                <Icon name="arrowRight" size="sm" />
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+                <div className="flex h-24 items-center justify-center rounded-[1.25rem] bg-brand-lavender/60">
+                  <span
+                    className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[card.tone].icon} shadow-sm`}
+                  >
+                    <Icon name={card.icon} size="lg" />
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold leading-tight text-brand-navy">
+                    {card.title}
+                  </h3>
+                  <p className="mt-2 text-xs leading-relaxed text-brand-navy/70">
+                    {card.description}
+                  </p>
+                </div>
+                <span
+                  className={`flex h-9 w-9 items-center justify-center rounded-full ${toneStyles[card.tone].icon}`}
+                  aria-hidden
+                >
+                  <Icon name="arrowRight" size="sm" />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section id="mobile-printables" className="px-6 pb-10">
         <MobileSectionHeading
@@ -419,30 +425,32 @@ function MobileResourcesPage({
         </div>
       </section>
 
-      <section id="mobile-guides" className="px-6 pb-10">
-        <MobileSectionHeading
-          title="Featured Guides & Downloads"
-          subtitle="In-depth guides to help you feel informed and empowered."
-        />
-        <div className="mt-6 space-y-5">
-          {guideCards.slice(0, 4).map((guide) => (
-            <MobileDownloadCard
-              key={guide.slug}
-              title={guide.title}
-              description={guide.description}
-              image={guide.image}
-              href={guide.viewHref}
-              downloadHref={guide.downloadHref}
-              category={guide.category}
-              fileSize={guide.fileSize}
-              buttonLabel="Download Guide"
-            />
-          ))}
-        </div>
-        <CTAButton href="/guides" className="mt-6 w-full">
-          View All Guides
-        </CTAButton>
-      </section>
+      {guideCards.length > 0 && (
+        <section id="mobile-guides" className="px-6 pb-10">
+          <MobileSectionHeading
+            title="Featured Guides & Downloads"
+            subtitle="In-depth guides to help you feel informed and empowered."
+          />
+          <div className="mt-6 space-y-5">
+            {guideCards.slice(0, 4).map((guide) => (
+              <MobileDownloadCard
+                key={guide.slug}
+                title={guide.title}
+                description={guide.description}
+                image={guide.image}
+                href={guide.viewHref}
+                downloadHref={guide.downloadHref}
+                category={guide.category}
+                fileSize={guide.fileSize}
+                buttonLabel="Download Guide"
+              />
+            ))}
+          </div>
+          <CTAButton href="/guides" className="mt-6 w-full">
+            View All Guides
+          </CTAButton>
+        </section>
+      )}
 
       <ResourceNewsletterCard />
 
@@ -514,7 +522,7 @@ export default async function ResourcesPage() {
                   </span>
                 </CTAButton>
                 <CTAButton
-                  href="#desktop-categories"
+                  href="#desktop-links"
                   variant="secondary"
                   className="min-w-[13rem]"
                 >
@@ -544,34 +552,36 @@ export default async function ResourcesPage() {
           </SectionContainer>
         </section>
 
-        <section id="desktop-categories" className="pb-12">
-          <SectionContainer>
-            <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
-              Browse Resources by Category
-            </h2>
-            <div className="mt-8 grid gap-5 lg:grid-cols-3 xl:grid-cols-6">
-              {mobileResourceCategories.map((card) => (
-                <Link
-                  key={card.title}
-                  href={card.href.replace("mobile", "desktop")}
-                  className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10 transition hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <span
-                    className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[card.tone].icon} shadow-sm`}
+        {SHOW_CATEGORY_SECTION && (
+          <section id="desktop-categories" className="pb-12">
+            <SectionContainer>
+              <h2 className="font-serif text-[clamp(2rem,3vw,3rem)] font-semibold leading-tight text-brand-navy">
+                Browse Resources by Category
+              </h2>
+              <div className="mt-8 grid gap-5 lg:grid-cols-3 xl:grid-cols-6">
+                {mobileResourceCategories.map((card) => (
+                  <Link
+                    key={card.title}
+                    href={card.href.replace("mobile", "desktop")}
+                    className="rounded-[1.75rem] bg-white/95 p-5 shadow-card ring-1 ring-brand-teal/10 transition hover:-translate-y-0.5 hover:shadow-md"
                   >
-                    <Icon name={card.icon} size="lg" />
-                  </span>
-                  <h3 className="mt-5 text-base font-extrabold leading-tight text-brand-navy">
-                    {card.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-brand-navy/70">
-                    {card.description}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </SectionContainer>
-        </section>
+                    <span
+                      className={`flex h-16 w-16 items-center justify-center rounded-full ${toneStyles[card.tone].icon} shadow-sm`}
+                    >
+                      <Icon name={card.icon} size="lg" />
+                    </span>
+                    <h3 className="mt-5 text-base font-extrabold leading-tight text-brand-navy">
+                      {card.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-relaxed text-brand-navy/70">
+                      {card.description}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </SectionContainer>
+          </section>
+        )}
 
         <section id="desktop-links" className="pb-12" aria-labelledby="desktop-links-heading">
           <SectionContainer>
@@ -622,39 +632,41 @@ export default async function ResourcesPage() {
 
         <section className="pb-12">
           <SectionContainer>
-            <div
-              id="desktop-guides"
-              className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
-            >
-              <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
-                Featured Guides & Downloads
-              </h2>
-              <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
-                In-depth guides to help you feel informed and empowered.
-              </p>
-              <div className="mt-6 grid gap-5 lg:grid-cols-3">
-                {guideCards.slice(0, 3).map((guide) => (
-                  <MobileDownloadCard
-                    key={guide.slug}
-                    title={guide.title}
-                    description={guide.description}
-                    image={guide.image}
-                    href={guide.viewHref}
-                    downloadHref={guide.downloadHref}
-                    category={guide.category}
-                    fileSize={guide.fileSize}
-                    buttonLabel="Download Guide"
-                  />
-                ))}
+            {guideCards.length > 0 && (
+              <div
+                id="desktop-guides"
+                className="rounded-[1.75rem] bg-white/90 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
+              >
+                <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
+                  Featured Guides & Downloads
+                </h2>
+                <p className="mt-3 max-w-xl text-sm leading-relaxed text-brand-navy/70">
+                  In-depth guides to help you feel informed and empowered.
+                </p>
+                <div className="mt-6 grid gap-5 lg:grid-cols-3">
+                  {guideCards.slice(0, 3).map((guide) => (
+                    <MobileDownloadCard
+                      key={guide.slug}
+                      title={guide.title}
+                      description={guide.description}
+                      image={guide.image}
+                      href={guide.viewHref}
+                      downloadHref={guide.downloadHref}
+                      category={guide.category}
+                      fileSize={guide.fileSize}
+                      buttonLabel="Download Guide"
+                    />
+                  ))}
+                </div>
+                <CTAButton href="/guides" className="mt-6">
+                  View All Guides
+                </CTAButton>
               </div>
-              <CTAButton href="/guides" className="mt-6">
-                View All Guides
-              </CTAButton>
-            </div>
+            )}
 
             <div
               id="desktop-printables"
-              className="mt-6 rounded-[1.75rem] bg-brand-lavender/45 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7"
+              className={`${guideCards.length > 0 ? "mt-6" : ""} rounded-[1.75rem] bg-brand-lavender/45 p-6 shadow-card ring-1 ring-brand-purple-deep/10 xl:p-7`}
             >
               <h2 className="font-serif text-[clamp(1.8rem,2.5vw,2.5rem)] font-semibold leading-tight text-brand-navy">
                 Printable Worksheets & Tools
