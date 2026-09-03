@@ -61,5 +61,5 @@ export default async function PrintableViewPage({
     redirect(maskedFileUrl);
   }
 
-  return <PrintableViewer title={printable.title} fileUrl={maskedFileUrl} next={`/printables/view/${slug}`} />;
+  return <PrintableViewer title={printable.title} fileUrl={maskedFileUrl} />;
 }

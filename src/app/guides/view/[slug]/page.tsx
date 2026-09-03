@@ -61,5 +61,5 @@ export default async function GuideViewPage({
     redirect(maskedFileUrl);
   }
 
-  return <GuideViewer title={guide.title} fileUrl={maskedFileUrl} next={`/guides/view/${slug}`} />;
+  return <GuideViewer title={guide.title} fileUrl={maskedFileUrl} />;
 }
