@@ -6,8 +6,12 @@ import { createContext, useCallback, useContext, useState } from "react";
 // back to false to switch it off again without removing the feature.
 export const RESOURCE_GATE_ENABLED = true;
 
-// Once shown, don't show it again to the same browser for this long —
-// a repeat click within the window just opens/downloads immediately.
+// Once someone actually submits their email, don't show the popup again
+// to the same browser for this long — a repeat click within the window
+// just opens/downloads immediately. Canceling the popup without
+// submitting does NOT start this cooldown — otherwise closing it once
+// would permanently skip the popup for 12 hours without ever capturing
+// an email, defeating the point of it.
 const SUPPRESS_MS = 12 * 60 * 60 * 1000; // 12 hours
 const SHOWN_KEY = "avashub-resource-newsletter-shown-at";
 
@@ -91,6 +95,7 @@ function EmailCaptureCard({ action, onClose }: { action: OpenAction; onClose: ()
     }
     setError("");
     setSubmitted(true);
+    markShownNow();
 
     fetch("/api/resource-newsletter", {
       method: "POST",
@@ -167,9 +172,9 @@ const GateContext = createContext<GateContextValue | null>(null);
 
 /**
  * Mounted once near the root. Any MobileDownloadCard "View"/"Download"
- * click routes through requestAccess() — if the popup was already shown
- * to this browser within the last 12 hours it opens the file immediately,
- * otherwise it shows the email popup above.
+ * click routes through requestAccess() — if this browser already
+ * submitted an email within the last 12 hours it opens the file
+ * immediately, otherwise it shows the email popup above.
  */
 export function ResourceDownloadGateProvider({ children }: { children: React.ReactNode }) {
   const [pendingAction, setPendingAction] = useState<OpenAction | null>(null);
@@ -179,7 +184,6 @@ export function ResourceDownloadGateProvider({ children }: { children: React.Rea
       performOpen(action);
       return;
     }
-    markShownNow();
     setPendingAction(action);
   }, []);
 
